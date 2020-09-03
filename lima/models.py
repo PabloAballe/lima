@@ -25,6 +25,8 @@ class Paciente(models.Model):
     autorizacion=models.BooleanField(default=False)
     protec_datos=models.BooleanField(default=False)
     centro=models.ForeignKey(Centro, on_delete=models.CASCADE)
+    poblacion=models.CharField(max_length=50,help_text="Ingrese la población del/la paciente",  default='Valencia')
+    direccion=models.CharField(max_length=50,help_text="Ingrese la dirección del/la paciente",  default='Valencia')
 
     class Meta:
         verbose_name_plural = "Pacientes"
@@ -71,4 +73,4 @@ class Cita(models.Model):
         verbose_name_plural = "Citas"
 
     def __str__(self):
-        return f"Cita : {self.id_cita}"
+        return f"Cita : {self.fecha}"
