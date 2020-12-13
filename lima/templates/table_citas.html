@@ -1,0 +1,52 @@
+<div class="table" id="table">
+  <table class="table">
+    <thead>
+      <tr>
+        <th><abbr title="ID">ID</abbr></th>
+        <th><abbr title="Tecnica">Tecnica</abbr></th>
+        <th><abbr title="Zona">Zona</abbr></th>
+        <th><abbr title="Hertz">Hertz</abbr></th>
+        <th><abbr title="Milisegundos">Milisegundos</abbr></th>
+        <th><abbr title="Julios">Julios</abbr></th>
+        <th><abbr title="Comentario">Comentario</abbr></th>
+        <th><abbr title="Fecha">Fecha</abbr></th>
+        <th><abbr title="Acción">Acción</abbr></th>
+
+      </tr>
+    </thead>
+    <tfoot>
+
+    </tfoot>
+    <tbody>
+      {%for cita in cita%}
+      <tr>
+        <th>{{ forloop.revcounter }}</th>
+
+        <td>{{cita.tecnica}}</td>
+        <td>{{cita.zona}}</td>
+        <td>{{cita.hertz}}</td>
+        <td>{{cita.milisegundos}}</td>
+        <td>{{cita.julios}}</td>
+        <td>{{cita.comentario}}</td>
+        <td>{{cita.fecha}}</td>
+        <td>
+          <!-- <a href="{% url 'edit_cita' pk=cita.id_cita %}">
+            <button class="button is-warning">Editar</button>
+
+          </a> -->
+
+
+          <a href="{%url 'delete_cita' pk=cita.id_cita %}" style="margin-right:30px;">
+            <button class="button is-danger">Borrar</button>
+
+          </a>
+
+        </td>
+
+      </tr>
+      {%endfor%}
+
+    </tbody>
+  </table>
+
+</div>

@@ -1,0 +1,19 @@
+{%extends 'base.html'%}
+
+{%block content%}
+{%include 'nav.html'%}
+<div class="index">
+<h1>Centro {{centro.nombre_centro}}</h1>
+<a href="{% url 'new_cliente' pk=centro.id_centro %}" class="top-menu">
+<button class="button is-primary" style="margin-left: 5%;">Añadir un cliente</button>
+
+   </a>
+{%include 'shearch.html'%}
+{%include 'table_clientes.html'%}
+{%include 'pagination.html'%}
+
+</div>
+
+
+
+{%endblock%}

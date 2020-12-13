@@ -25,7 +25,9 @@ SECRET_KEY = '!)^^qd0wp-%y)95no^1^%2&&mhm2z#5#eoxr)4#i*&$m0j*=r='
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+'*'
+]
 
 
 # Application definition
@@ -39,11 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'lima',
-
-
+    'material',
     #custom admin
     'admin_interface',
     'colorfield',
+    'simple_history',
+    'import_export',
 ]
 
 MIDDLEWARE = [
@@ -54,6 +57,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'simple_history.middleware.HistoryRequestMiddleware',
 ]
 
 ROOT_URLCONF = 'limayneon.urls'
@@ -61,7 +65,7 @@ ROOT_URLCONF = 'limayneon.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -83,8 +87,13 @@ WSGI_APPLICATION = 'limayneon.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        'NAME': os.path.join(BASE_DIR, 'dab.sqlite3'),
+        'TEST' :
+               {
+                   'NAME': 'test_db',
+               }
     }
+
 }
 
 
@@ -125,8 +134,12 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+STATIC_ROOT = os.path.join(BASE_DIR, "static")
 
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+MEDIA_URL = '/media/'
 
 #color django admin_interface
 
 X_FRAME_OPTIONS='SAMEORIGIN' # only if django version >= 3.0
+IMPORT_EXPORT_USE_TRANSACTIONS = True

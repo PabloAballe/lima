@@ -1,0 +1,49 @@
+
+{% ifequal  notfound True %}
+{% include 'notfound.html'%}
+{% else %}
+<div class="table" id="table">
+  <table class="table">
+    <thead>
+      <tr>
+        <th title="ID"><abbr title="ID">ID</abbr></th>
+        <th title="Centros">Centros</th>
+        <th><abbr title="Propietaria">Propietaria</abbr></th>
+        <th><abbr title="Localización">Localización</abbr></th>
+        <th><abbr title="Acción">Acción</abbr></th>
+
+      </tr>
+    </thead>
+    <tfoot>
+
+    </tfoot>
+    <tbody>
+      {%for cen in cen%}
+      <tr>
+        <th>{{ forloop.counter }}</th>
+        <td><a href="{% url 'centro_details' pk=cen.id_centro %}">{{cen.nombre_centro}}</a> <strong></strong>
+        </td>
+
+        <td>{{cen.propietaria}}</td>
+        <td>{{cen.localizacion}}</td>
+        <td><a href="{%url 'edit_centro' pk=cen.pk %}">
+            <button class="button is-warning">Editar</button>
+
+          </a>
+
+
+          <a href="{%url 'delete_centro' pk=cen.pk %}">
+              <button class="button is-danger">Borrar</button>
+
+            </a>
+
+        </td>
+
+      </tr>
+      {%endfor%}
+
+    </tbody>
+  </table>
+
+</div>
+{% endifequal %}

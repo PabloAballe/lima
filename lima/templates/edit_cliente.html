@@ -1,0 +1,23 @@
+{%extends 'base.html'%}
+{% load material_form %}
+{%load static%}
+
+{%block content%}
+
+<div class="login ">
+<img src="{%static 'img/login.png'%}" alt="Lima y Neon" >
+  <br>
+  <h2>Editando centro</h2>
+  <br>
+  <form method="post">
+    {% csrf_token %}
+    {% form form=form %}{% endform %}
+    <button type="submit" class="button is-warning">Enviar</button>
+
+  </form>
+  <a href="/" class="cancel"> <button class="button is-danger cancel">Cancelar</button></a>
+</div>
+
+
+
+{%endblock%}

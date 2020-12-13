@@ -1,0 +1,40 @@
+
+.limpiar{
+  position: absolute;
+  top: 72px;
+  right: 80px;
+}
+.login{
+  width: 25%;
+  margin: 2% 10% 30% 40%;
+  height: 50px;
+}
+.index h1 {
+  text-align: center;
+  font-size: 50px;
+  margin: 2%;
+}
+.index .table{
+  margin: 2%;
+}
+.index .pagination{
+  margin: 2%;
+}
+.pagination  li{
+  width: 10%;
+  height: 10%;
+
+}
+.index .table tr:hover{
+  background-color: #F8F8F8 ;
+
+}
+.shearch{
+  position: absolute;
+  top: 10%;
+  right: 1%;
+  width: auto;
+}
+.cancel{
+margin: -11% 0% 0% 30%;
+}

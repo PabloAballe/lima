@@ -1,0 +1,78 @@
+{%load static%}
+
+
+<nav class="navbar" role="navigation" aria-label="main navigation">
+  <div class="navbar-brand">
+    <a class="navbar-item" href="/">
+      <img src="{%static 'img/login.png'%}" alt="Lima y Neon" >
+    </a>
+
+    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+      <span aria-hidden="true"></span>
+    </a>
+  </div>
+
+  <div id="navbarBasicExample" class="navbar-menu">
+    <div class="navbar-start">
+      <a class="navbar-item" href="/">
+        Home
+      </a>
+      <a class="navbar-item" href="{%url 'historial'%}">
+        Historial
+      </a>
+      <a class="navbar-item" href="{% url 'clientes' %}">
+        Buscador de clientes
+      </a>
+      <a class="navbar-item"  href="{% url 'perfil'%}">
+        Bienvenido
+        <img src="{{request.user.tecnica.imagen.url}}" alt="{{request.user.username}}" style ="border-radius: 50px; margin-left :10px; margin-right:10px;">
+         &nbsp; <b> {{request.user.username}}</b>
+      </a>
+{% if request.resolver_match.url_name == "index"%}
+{% ifequal salida False %}
+      <a href="{% url 'entrada' %}" class="button is-primary" style="margin-top:10px;">
+       Fichar la entrada
+      </a>
+      {% else %}
+      <a href="{% url 'salida' %}" class="button is-warning" style="margin-top:10px;">
+       Fichar la salida
+      </a>
+      {% endifequal%}
+    {% endif %}
+    {% if request.resolver_match.url_name == "perfil"%}
+    {% ifequal salida False %}
+          <a href="{% url 'entrada' %}" class="button is-primary" style="margin-top:10px;">
+           Fichar la entrada
+          </a>
+          {% else %}
+          <a href="{% url 'salida' %}" class="button is-warning" style="margin-top:10px;">
+           Fichar la salida
+          </a>
+          {% endifequal%}
+        {% endif %}
+     {% if request.user.is_staff %}
+     <a href="{% url 'admin' %}" class="button is-dark" style="margin-top:10px; margin-left:5px;">
+    Adminstrar sitio
+     </a>
+     {%endif%}
+    </div>
+
+    <div class="navbar-end">
+      <div class="navbar-item">
+
+
+
+        <div class="buttons">
+          <a href="#" class="button is-link" onclick="window.print();">
+          Inprimir
+          </a>
+          <a href="/logout" class="button is-light">
+            Cerrar sesión
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

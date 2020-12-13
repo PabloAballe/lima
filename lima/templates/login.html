@@ -1,0 +1,22 @@
+{%extends 'base.html'%}
+{% load material_form %}
+{%block content%}
+
+<div class="login ">
+
+
+  <img src="../media/img/login.png" alt="Login | Lima y Neon">
+<h1>Bienvenido a Lima y Neon</h1>
+<br>
+  <h2>Iniciar sesión</h2>
+<br>
+  <form method="POST">
+    {% csrf_token %}
+    {% form form=form %}{% endform %}
+    <button type="submit" class="button is-warning">Login</button>
+  </form>
+</div>
+
+
+
+{%endblock%}

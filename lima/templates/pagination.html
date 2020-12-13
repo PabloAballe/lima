@@ -1,0 +1,28 @@
+
+<div class="pagination">
+
+
+  {% if cen.has_other_pages %}
+    <ul class="pagination">
+      {% if cen.has_previous %}
+        <li><a href="?page={{ cen.previous_page_number }}">&laquo;</a></li>
+      {% else %}
+        <li class="disabled"><span>&laquo;</span></li>
+      {% endif %}
+      {% for i in cen.paginator.page_range %}
+        {% if cen.number == i %}
+          <li class="active" style="color: white; background-color: #FFDB4A;"><span>{{ i }} <span class="sr-only">(current)</span></span></li>
+        {% else %}
+          <li><a href="?page={{ i }}">{{ i }}</a></li>
+        {% endif %}
+      {% endfor %}
+      {% if cen.has_next %}
+        <li><a href="?page={{ cen.next_page_number }}">&raquo;</a></li>
+      {% else %}
+        <li class="disabled"><span>&raquo;</span></li>
+      {% endif %}
+    </ul>
+  {% endif %}
+
+
+</div>
