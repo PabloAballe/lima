@@ -386,3 +386,18 @@ def ver_horario_visual(request, pk):
     else:
         salida=False
     return render(request, 'calendar_horario.html', {'meses': meses, 'salida': salida, 'tecnica': tecnica , 'today': today})
+
+@login_required(login_url='login')
+def ver_visual_tecnica(request, pk):
+    today = date.today()
+    salida=False
+    #checkea si ha enytrado o salido
+    tecnica=get_object_or_404(Tecnica, pk=pk)
+    meses=Cita.objects.filter(tecnica=tecnica).order_by("-fecha")[:100]
+    horario=ControlHorario.objects.filter(tecnica=tecnica).last()
+    if horario:
+        if horario.salida is None:
+            salida=True
+    else:
+        salida=False
+    return render(request, 'ver_visual_tecnica.html', {'meses': meses, 'salida': salida, 'tecnica': tecnica , 'today': today})

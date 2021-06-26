@@ -6,7 +6,7 @@
             <th><abbr title="ID">ID</abbr></th>
           <th><abbr title="Imagen de perfil">Imagen de perfil</abbr></th>
           <th><abbr title="Tecnicaim">Tecnica</abbr></th>
-          <th><abbr title="Tecnicaim">Acción</abbr></th>
+          <th colspan="3"><abbr title="Tecnicaim">Acción</abbr></th>
         </tr>
       </thead>
       <tfoot>
@@ -22,7 +22,7 @@
         </td>
           <td>{{tecnica.nombre_tecnica}}</td>
         
-          <td>
+          <td colspan="3">
           
             <a href="{%url 'ver_horario_visual' pk=tecnica.id_tecnica %}" style="margin-right:30px;">
               <button class="button is-success">Ver Horario Visual</button>
@@ -30,6 +30,10 @@
             <a href="{%url 'ver_horario' pk=tecnica.id_tecnica %}" style="margin-right:30px;">
               <button class="button is-primary">Ver Horario</button>
   
+            </a>
+            <a href="{%url 'ver_visual_tecnica' pk=tecnica.id_tecnica %}" style="margin-right:30px;">
+              <button class="button is-link">Ver visual de citas</button>
+
             </a>
   
           </td>

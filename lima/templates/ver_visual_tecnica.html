@@ -7,6 +7,7 @@
 
 <link href="{% static 'fullcalendar/main.css' %}" rel='stylesheet' />
 <script src="{% static 'fullcalendar/main.js' %}"></script>
+<script src="{% static 'fullcalendar/locales-all.js' %}"></script>
 <script>
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -19,8 +20,8 @@ document.addEventListener('DOMContentLoaded', function() {
         {% if not forloop.first %},{% endif %}
         {
             title: "{{mes.tecnica.nombre_tecnica}}  {{mes.tecnica.apellidos_tecnica}}",
-            start: "{{mes.fecha |date:'Y-m-d'}} {{mes.entrada}}",
-            end: "{{mes.fecha |date:'Y-m-d'}}{% if mes.salida is None %}"+time+" {% else %} {{mes.salida }}{%endif  %}",
+            start: "{{mes.fecha |date:'Y-m-d H:i'}}",
+            end: "{{mes.fecha |date:'Y-m-d H:i'}}",
         }
     {% endfor %}
     ];
@@ -33,9 +34,9 @@ document.addEventListener('DOMContentLoaded', function() {
       center: 'title',
       right: 'dayGridMonth,timeGridWeek,timeGridDay'
     },
+    lang: 'es',
     events: articles
   });
-  calendar.getOption('locale', 'es');
   calendar.render();
 });
 

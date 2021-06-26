@@ -29,5 +29,6 @@ urlpatterns = [
     path('perfil', views.perfil, name="perfil"),
     path('ver_horario/<int:pk>/', views.ver_horario, name="ver_horario"),
     path('ver_horario_visual/<int:pk>/', views.ver_horario_visual, name="ver_horario_visual"),
+    path('ver_visual_tecnica/<int:pk>/', views.ver_visual_tecnica, name="ver_visual_tecnica"),
     path('view_perfiles', views.view_perfiles, name="view_perfiles"),
 ]
