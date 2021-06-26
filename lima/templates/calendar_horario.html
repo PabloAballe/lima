@@ -1,0 +1,51 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block content%}
+{%include 'nav.html'%}
+<div class="index">
+<h1>Horario de {{tecnica.nombre_tecnica}}</h1>
+
+<link href="{% static 'fullcalendar/main.css' %}" rel='stylesheet' />
+<script src="{% static 'fullcalendar/main.js' %}"></script>
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    initialDate: today,
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    events: [
+        {
+        title: 'Prueba',
+        start: '2021-06-21 01:00:00',
+        end: '2021-06-21 18:00:00'
+      },
+   
+    ]
+  });
+  calendar.getOption('locale', 'es');
+  calendar.render();
+});
+
+
+</script>
+
+
+<div id="calendar"></div>
+
+<script>
+   
+</script>
+</div>
+
+
+
+{%endblock%}

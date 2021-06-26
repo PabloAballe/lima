@@ -1,0 +1,44 @@
+{%load static%}
+<div class="table">
+    <table class="table" id="table" width="80%">
+      <thead>
+        <tr>
+            <th><abbr title="ID">ID</abbr></th>
+          <th><abbr title="Imagen de perfil">Imagen de perfil</abbr></th>
+          <th><abbr title="Tecnicaim">Tecnica</abbr></th>
+          <th><abbr title="Tecnicaim">Acción</abbr></th>
+        </tr>
+      </thead>
+      <tfoot>
+  
+      </tfoot>
+      <tbody>
+        {%for tecnica in tecnica%}
+        <tr>
+          <th>{{ forloop.revcounter }}</th>
+         
+          <td> 
+            <img src="{{tecnica.imagen.url}}" alt="{{tecnica.nombre_tecnica}}" style ="border-radius: 50px; margin-left :10px; margin-right:10px; width: 50px;">
+        </td>
+          <td>{{tecnica.nombre_tecnica}}</td>
+        
+          <td>
+          
+            <a href="{%url 'ver_horario_visual' pk=tecnica.id_tecnica %}" style="margin-right:30px;">
+              <button class="button is-success">Ver Horario Visual</button>
+
+            <a href="{%url 'ver_horario' pk=tecnica.id_tecnica %}" style="margin-right:30px;">
+              <button class="button is-primary">Ver Horario</button>
+  
+            </a>
+  
+          </td>
+  
+        </tr>
+        {%endfor%}
+  
+      </tbody>
+    </table>
+  
+  </div>
+  

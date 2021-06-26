@@ -11,7 +11,6 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
-import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -43,6 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'lima',
     'material',
+    'crispy_forms',
     #custom admin
     'admin_interface',
     'colorfield',
@@ -144,9 +144,10 @@ MEDIA_URL = '/media/'
 
 X_FRAME_OPTIONS='SAMEORIGIN' # only if django version >= 3.0
 IMPORT_EXPORT_USE_TRANSACTIONS = True
-django_heroku.settings(locals())
 
 try:
     from .local_settings import *
 except ImportError:
     pass
+
+CRISPY_TEMPLATE_PACK = 'bootstrap4'

@@ -20,7 +20,15 @@
         <td>{{mes.tecnica.nombre_tecnica}} &nbsp;{{mes.tecnica.apellidos_tecnica}}</td>
         <td>{{mes.fecha}}</td>
         <td>{{mes.entrada }} UTC</td>
-        <td>{{mes.salida }} UTC</td>
+        <td>
+          
+          {% if mes.salida is None %}
+            Trabajando
+          {% else %}
+          {{mes.salida }} UTC
+          {%endif  %}
+          
+           </td>
 
 
       </tr>

@@ -17,6 +17,11 @@ class ClienteForm(forms.ModelForm):
         model = Paciente
         fields = ('nombre_paciente','apellidos_paciente','telefono_paciente','email', 'autorizacion','protec_datos', 'poblacion', 'direccion')
 
+class CitaFormAdmin(forms.ModelForm):
+    class Meta:
+        model=Cita
+        fields=('zona', 'comentario', 'hertz', 'milisegundos','julios', 'fecha', 'tecnica' )
+
 class CitaForm(forms.ModelForm):
     class Meta:
         model=Cita

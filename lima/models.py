@@ -8,6 +8,7 @@ from datetime import date
 import datetime
 from django.utils import timezone
 
+
 # Create your models here.
 
 class Centro(models.Model):
@@ -34,7 +35,7 @@ class Paciente(models.Model):
     email=models.EmailField(help_text="Ingrese el correo electronico de la/el paciente")
     autorizacion=models.BooleanField(default=False)
     protec_datos=models.BooleanField(default=False)
-    centro=models.ForeignKey(Centro, on_delete=models.CASCADE)
+    centro=models.ForeignKey(Centro, on_delete=models.RESTRICT)
     poblacion=models.CharField(max_length=50,help_text="Ingrese la población del/la paciente",  default='Valencia')
     direccion=models.CharField(max_length=50,help_text="Ingrese la dirección del/la paciente",  default='Valencia')
     history = HistoricalRecords()
@@ -51,7 +52,7 @@ class Tecnica(models.Model):
     nombre_tecnica=models.CharField(max_length=50,help_text="Ingrese el nombre de la/el tecnic@")
     apellidos_tecnica=models.CharField(max_length=50,help_text="Ingrese los apellidos de la/el tecnic@")
     history = HistoricalRecords()
-    user = models.OneToOneField(User, on_delete=models.CASCADE)
+    user = models.OneToOneField(User, on_delete=models.RESTRICT)
 
     class Meta:
         verbose_name_plural = "Tecnicas | Tecnicos"
@@ -67,8 +68,8 @@ post_save.connect(create_user_profile, sender=User)
 
 class Cita(models.Model):
     id_cita=models.AutoField(primary_key=True, auto_created = True)
-    tecnica=models.ForeignKey(Tecnica, on_delete=models.CASCADE, null=False)
-    paciente=models.ForeignKey(Paciente, on_delete=models.CASCADE , null=False)
+    tecnica=models.ForeignKey(Tecnica, on_delete=models.RESTRICT, null=False)
+    paciente=models.ForeignKey(Paciente, on_delete=models.RESTRICT , null=False)
     fecha=models.DateTimeField(null=False)
     zona=models.CharField(max_length=50,help_text="Ingrese la zona tratada o por tratar" , null=False)
     comentario=models.TextField(help_text="Ingrese los comentarios sobre la cita")
@@ -85,7 +86,7 @@ class Cita(models.Model):
         return f"Cita : {self.fecha}"
 
 class ControlHorario(models.Model):
-    tecnica=models.ForeignKey(Tecnica, on_delete=models.CASCADE,auto_created = True, default="lima")
+    tecnica=models.ForeignKey(Tecnica, on_delete=models.RESTRICT,auto_created = True, default="lima")
     fecha=models.DateField()
     entrada=models.TimeField()
     salida=models.TimeField(default=None, blank=True, null=True)

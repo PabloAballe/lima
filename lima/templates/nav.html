@@ -32,28 +32,31 @@
       </a>
 {% if request.resolver_match.url_name == "index"%}
 {% ifequal salida False %}
-      <a href="{% url 'entrada' %}" class="button is-primary" style="margin-top:10px;">
+      <a href="{% url 'entrada' %}" class="button is-primary" style="margin-top:10px; margin-left:5px; font-size: 12px;">
        Fichar la entrada
       </a>
       {% else %}
-      <a href="{% url 'salida' %}" class="button is-warning" style="margin-top:10px;">
+      <a href="{% url 'salida' %}" class="button is-warning" style="margin-top:10px; margin-left:5px; font-size: 12px;">
        Fichar la salida
       </a>
       {% endifequal%}
     {% endif %}
     {% if request.resolver_match.url_name == "perfil"%}
-    {% ifequal salida False %}
-          <a href="{% url 'entrada' %}" class="button is-primary" style="margin-top:10px;">
-           Fichar la entrada
-          </a>
-          {% else %}
-          <a href="{% url 'salida' %}" class="button is-warning" style="margin-top:10px;">
-           Fichar la salida
-          </a>
-          {% endifequal%}
+    {{% ifequal salida False %}
+    <a href="{% url 'entrada' %}" class="button is-primary" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+     Fichar la entrada
+    </a>
+    {% else %}
+    <a href="{% url 'salida' %}" class="button is-warning" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+     Fichar la salida
+    </a>
+    {% endifequal%}
         {% endif %}
      {% if request.user.is_staff %}
-     <a href="{% url 'admin' %}" class="button is-dark" style="margin-top:10px; margin-left:5px;">
+     <a href="{% url 'view_perfiles' %}" class="button is-info" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+      Ver listado de Tecnicas 
+       </a>
+     <a href="{% url 'admin' %}" class="button is-dark" style="margin-top:10px; margin-left:5px; font-size: 12px;">
     Adminstrar sitio
      </a>
      {%endif%}
@@ -76,3 +79,25 @@
     </div>
   </div>
 </nav>
+
+<script>
+  function printData()
+{
+   var divToPrint=document.getElementById("table");
+   newWin= window.open("");
+   newWin= window;
+   newWin.document.write(divToPrint.outerHTML);
+   newWin.print();
+   newWin.close();
+}
+
+function imprimir() {
+        var divToPrint=document.getElementById("table");
+        newWin= window.open("");
+        newWin.document.write(divToPrint.outerHTML);
+        newWin.document.write();
+        newWin.print();
+        newWin.close();
+    }
+
+</script>
