@@ -1,4 +1,4 @@
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 1024px) {
   .login{
     width: 80%;
     margin: 2% 2% 2% 10%;
@@ -14,4 +14,7 @@
     top: 242px;
     right: 280px;
   }
+.navbar-menu{
+    margin-left: 70px;
+}
 }

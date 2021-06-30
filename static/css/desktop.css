@@ -9,13 +9,19 @@
   margin: 2% 10% 30% 40%;
   height: 50px;
 }
-.index h1 {
+.index h1{
   text-align: center;
-  font-size: 50px;
+  font-size: 30px;
   margin: 2%;
 }
+body{
+  font-size: 14px !important;
+}
+button {
+  font-size: 14px !important;
+}
 .index .table{
-  margin: 2%;
+  margin: 0%;
 }
 .index .pagination{
   margin: 2%;
@@ -36,5 +42,10 @@
   width: auto;
 }
 .cancel{
-margin: -11% 0% 0% 30%;
+margin: -35px 0% 0% 30%;
+}
+
+#calendar {
+  max-width: 1100px;
+  margin: 40px auto;
 }

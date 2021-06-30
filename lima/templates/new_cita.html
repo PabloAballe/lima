@@ -11,7 +11,7 @@
 
 <div class="login ">
 
-<img src="{%static 'img/login.png'%}" alt="Lima y Neon" >
+<img src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" style="height: 50px;" />
   <br>
   <h2>Añade una una cita</h2>
   <br>
@@ -25,7 +25,7 @@
   <input type="button" value="Cancelar" class="button is-danger cancel" onClick="javascript:history.go(-1);">
 </div>
 <script>
-  
+
   $(function () {
     jQuery.datetimepicker.setLocale('es');
     $("#id_fecha").datetimepicker({ format:'Y-m-d H:i'});

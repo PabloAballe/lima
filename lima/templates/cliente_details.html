@@ -4,12 +4,15 @@
 {%include 'nav.html'%}
 <div class="index">
 <h1>Cliente {{cliente.nombre_paciente}} {{cliente.apellidos_paciente}}</h1>
-<a href="{% url 'new_cita' pk=cliente.id_paciente%}" class="top-menu">
+<a href="{% url 'new_cita' pk=cliente.id_paciente %}" class="top-menu">
 <button class="button is-primary" style="margin-left: 5%;">Añadir una cita</button>
+ </a>
 
-   </a>
+   <a href="{% url 'new_tratamiento' pk=cliente.id_paciente%}" class="top-menu">
+   <button class="button is-link" style="margin-left: 5%;">Añadir un tratamiento</button>
+     </a>
 {% include 'table_citas.html'%}
-
+{% include 'table_tratamientos.html'%}
 </div>
 
 

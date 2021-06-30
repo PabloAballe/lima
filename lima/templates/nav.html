@@ -2,35 +2,47 @@
 
 
 <nav class="navbar" role="navigation" aria-label="main navigation">
-  <div class="navbar-brand">
+  <div class="navbar-brand" style="position:fixed; width:90%">
     <a class="navbar-item" href="/">
-      <img src="{%static 'img/login.png'%}" alt="Lima y Neon" >
+      <img src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" style="height: 50px;" />
     </a>
 
-    <a role="button" class="navbar-burger burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
-      <span aria-hidden="true"></span>
+  <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false" data-target="navbarBasicExample">
+      <span style="color: grey;" aria-hidden="true"></span>
+      <span style="color: grey;" aria-hidden="true"></span>
+      <span style="color: grey;" aria-hidden="true"></span>
     </a>
-  </div>
+</div>
 
-  <div id="navbarBasicExample" class="navbar-menu">
+
+    <div id="navbarBasicExample" class="navbar-menu" style="margin-left: 100px;">
     <div class="navbar-start">
-      <a class="navbar-item" href="/">
-        Home
-      </a>
-      <a class="navbar-item" href="{%url 'historial'%}">
+        <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link" href="{%url 'index'%}">
+          Inicio
+        </a>
+
+        <div class="navbar-dropdown">
+           <a class="navbar-item" href="{%url 'historial'%}">
         Historial
       </a>
       <a class="navbar-item" href="{% url 'clientes' %}">
         Buscador de clientes
       </a>
-      <a class="navbar-item"  href="{% url 'perfil'%}">
-        Bienvenido
-        <img src="{{request.user.tecnica.imagen.url}}" alt="{{request.user.username}}" style ="border-radius: 50px; margin-left :10px; margin-right:10px;">
-         &nbsp; <b> {{request.user.username}}</b>
-      </a>
-{% if request.resolver_match.url_name == "index"%}
+        </div>
+      </div>
+
+      <div class="navbar-item has-dropdown is-hoverable">
+        <!--<a class="navbar-link">-->
+          <a class="navbar-link"  href="{% url 'perfil'%}">
+            Bienvenido
+            <img src="{{request.user.tecnica.imagen.url}}" alt="{{request.user.username}}" style ="border-radius: 50px; margin-left :10px; margin-right:10px;"/>
+             &nbsp; <b> {{request.user.username}}</b>
+          </a>
+        <!--</a>-->
+
+        <div class="navbar-dropdown">
+            {% if request.resolver_match.url_name == "index"%}
 {% ifequal salida False %}
       <a href="{% url 'entrada' %}" class="button is-primary" style="margin-top:10px; margin-left:5px; font-size: 12px;">
        Fichar la entrada
@@ -52,52 +64,96 @@
     </a>
     {% endifequal%}
         {% endif %}
+        <hr class="navbar-divider">
+         <a href="{%url 'ver_horario_visual' pk=user.tecnica.pk %}" class="button is-primary" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+              Ver visual de mi Horario
+
+            </a>
+            <a href="{%url 'ver_visual_tecnica' pk=user.tecnica.pk %}" class="button is-link" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+              Ver visual de mis citas
+
+            </a>
+            <a href="{%url 'edit_turno' pk=user.tecnica.pk %}" class="button is-warning" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+              Ver mis turnos de trabajo
+
+            </a>
+            </div>
+        </div>
+
+
      {% if request.user.is_staff %}
-     <a href="{% url 'view_perfiles' %}" class="button is-info" style="margin-top:10px; margin-left:5px; font-size: 12px;">
-      Ver listado de Tecnicas 
+     <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Administrar sitio
+        </a>
+
+     <div class="navbar-dropdown">
+        <a href="{% url 'view_perfiles' %}" class="button is-info" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+      Ver listado de Tecnicas
        </a>
+
+     <a href="{%url 'edit_turno' pk=0 %}" class="button is-primary" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+              Ver turnos de trabajo
+
+            </a>
      <a href="{% url 'admin' %}" class="button is-dark" style="margin-top:10px; margin-left:5px; font-size: 12px;">
-    Adminstrar sitio
+     Ver administración del sitio
      </a>
-     {%endif%}
+         </div>
     </div>
+
+     <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Acciones de Marketing
+        </a>
+
+        <div class="navbar-dropdown">
+             <a class="navbar-item" href="{% url 'emails_templates' %}">
+            Plantillas de Email
+          </a>
+          <a class="navbar-item" href="{% url 'send_emails' %}">
+            Envío de Emails
+          </a>
+
+    </div>
+        </div>
+     {%endif%}
+      <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Obtener ayuda
+        </a>
+
+        <div class="navbar-dropdown">
+          <a class="navbar-item" href="mailto:pablo970616@gmail.com?subject=Lima y Neon Portal Ayuda">
+            Envíar email de soporte
+          </a>
+
+        </div>
+    </div>
+
+
 
     <div class="navbar-end">
       <div class="navbar-item">
 
-
-
-        <div class="buttons">
-          <a href="#" class="button is-link" onclick="window.print();">
-          Inprimir
+    <div class="navbar-item has-dropdown is-hoverable">
+        <a class="navbar-link">
+          Acciones
+        </a>
+     <div class="navbar-dropdown">
+          <a href="#" class="button is-link" onclick="window.print();" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+          Imprimir
           </a>
-          <a href="/logout" class="button is-light">
+          <a href="/logout" class="button is-warning" style="margin-top:10px; margin-left:5px; font-size: 12px;">
             Cerrar sesión
           </a>
         </div>
+      </div>
+
+
       </div>
     </div>
   </div>
 </nav>
 
-<script>
-  function printData()
-{
-   var divToPrint=document.getElementById("table");
-   newWin= window.open("");
-   newWin= window;
-   newWin.document.write(divToPrint.outerHTML);
-   newWin.print();
-   newWin.close();
-}
 
-function imprimir() {
-        var divToPrint=document.getElementById("table");
-        newWin= window.open("");
-        newWin.document.write(divToPrint.outerHTML);
-        newWin.document.write();
-        newWin.print();
-        newWin.close();
-    }
-
-</script>

@@ -2,8 +2,9 @@
 {%load static%}
 {%block content%}
 {%include 'nav.html'%}
+ {% load tz %}
 <div class="index">
-<h1>Horario de {{tecnica.nombre_tecnica}}</h1>
+<h1>Citas {{tecnica.nombre_tecnica}}</h1>
 
 <link href="{% static 'fullcalendar/main.css' %}" rel='stylesheet' />
 <script src="{% static 'fullcalendar/main.js' %}"></script>
@@ -19,9 +20,10 @@ document.addEventListener('DOMContentLoaded', function() {
      {%for mes in meses %}
         {% if not forloop.first %},{% endif %}
         {
-            title: "{{mes.tecnica.nombre_tecnica}}  {{mes.tecnica.apellidos_tecnica}}",
-            start: "{{mes.fecha |date:'Y-m-d H:i'}}",
-            end: "{{mes.fecha |date:'Y-m-d H:i'}}",
+            title: "Cita de {{mes.tecnica.nombre_tecnica}}  {{mes.tecnica.apellidos_tecnica}} // Centro {% firstof mes.cliente.centro  mes.paciente.centro  %}",
+            start: "{{mes.fecha |date:'Y-m-d'}}",
+            end: "{{mes.fecha  |date:'Y-m-d'}}",
+            color: "{{mes.tecnica.color}}"
         }
     {% endfor %}
     ];
@@ -47,7 +49,7 @@ document.addEventListener('DOMContentLoaded', function() {
 <div id="calendar"></div>
 
 <script>
-   
+
 </script>
 </div>
 

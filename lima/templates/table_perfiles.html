@@ -10,39 +10,45 @@
         </tr>
       </thead>
       <tfoot>
-  
+
       </tfoot>
       <tbody>
+
+
         {%for tecnica in tecnica%}
+        {% if tecnica.habilitado %}
         <tr>
           <th>{{ forloop.revcounter }}</th>
-         
-          <td> 
+
+          <td>
             <img src="{{tecnica.imagen.url}}" alt="{{tecnica.nombre_tecnica}}" style ="border-radius: 50px; margin-left :10px; margin-right:10px; width: 50px;">
         </td>
           <td>{{tecnica.nombre_tecnica}}</td>
-        
+
           <td colspan="3">
-          
+
             <a href="{%url 'ver_horario_visual' pk=tecnica.id_tecnica %}" style="margin-right:30px;">
               <button class="button is-success">Ver Horario Visual</button>
 
             <a href="{%url 'ver_horario' pk=tecnica.id_tecnica %}" style="margin-right:30px;">
               <button class="button is-primary">Ver Horario</button>
-  
+
             </a>
             <a href="{%url 'ver_visual_tecnica' pk=tecnica.id_tecnica %}" style="margin-right:30px;">
               <button class="button is-link">Ver visual de citas</button>
 
             </a>
-  
+            <a href="{%url 'edit_turno' pk=tecnica.id_tecnica %}" class="button is-dark" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+              Ver turno de trabajo
+
+            </a>
           </td>
-  
+
         </tr>
+        {%endif%}
         {%endfor%}
-  
+
       </tbody>
     </table>
-  
+
   </div>
-  

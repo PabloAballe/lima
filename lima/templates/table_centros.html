@@ -2,6 +2,7 @@
 {% ifequal  notfound True %}
 {% include 'notfound.html'%}
 {% else %}
+
 <div class="table" id="table">
   <table class="table">
     <thead>
@@ -19,6 +20,7 @@
     </tfoot>
     <tbody>
       {%for cen in cen%}
+      {% if cen.habilitado %}
       <tr>
         <th>{{ forloop.counter }}</th>
         <td><a href="{% url 'centro_details' pk=cen.id_centro %}">{{cen.nombre_centro}}</a> <strong></strong>
@@ -31,14 +33,15 @@
           </a>
 
 
-          <a href="{%url 'delete_centro' pk=cen.pk %}">
-              <button class="button is-danger">Borrar</button>
+          <!--<a href="{%url 'delete_centro' pk=cen.pk %}">-->
+          <!--    <button class="button is-danger">Borrar</button>-->
 
-            </a>
+          <!--  </a>-->
 
         </td>
 
       </tr>
+      {% endif %}
       {%endfor%}
 
     </tbody>

@@ -1,3 +1,5 @@
+
+{% load tz %}
 <div class="table">
   <table class="table" id="table">
     <thead>
@@ -18,16 +20,16 @@
         <th>{{ forloop.revcounter }}</th>
 
         <td>{{mes.tecnica.nombre_tecnica}} &nbsp;{{mes.tecnica.apellidos_tecnica}}</td>
-        <td>{{mes.fecha}}</td>
-        <td>{{mes.entrada }} UTC</td>
+        <td>{{mes.fecha }}</td>
+        <td>{{mes.entrada  }} UTC</td>
         <td>
-          
+
           {% if mes.salida is None %}
             Trabajando...
           {% else %}
-          {{mes.salida }} UTC
+          {{mes.salida  }} UTC
           {%endif  %}
-          
+
            </td>
 
 

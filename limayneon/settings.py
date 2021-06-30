@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'colorfield',
     'simple_history',
     'import_export',
+    'django_summernote',
+    'ckeditor',
 ]
 
 MIDDLEWARE = [
@@ -122,13 +124,13 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'es'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Europe/Madrid'
 
 USE_I18N = True
 
 USE_L10N = True
 
-USE_TZ = True
+USE_TZ = False
 
 
 # Static files (CSS, JavaScript, Images)
@@ -144,10 +146,19 @@ MEDIA_URL = '/media/'
 
 X_FRAME_OPTIONS='SAMEORIGIN' # only if django version >= 3.0
 IMPORT_EXPORT_USE_TRANSACTIONS = True
-
+SUMMERNOTE_THEME = 'bs4'  # Show summernote with Bootstrap4
 try:
     from .local_settings import *
 except ImportError:
     pass
-
+CKEDITOR_BASEPATH = "/static/ckeditor/ckeditor/"
+CKEDITOR_UPLOAD_PATH = "uploads/"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
+
+# For Django Email Backend
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'thewavecompany.app@gmail.com'
+EMAIL_HOST_PASSWORD = 'bworedjxndeiivbw'  # os.environ['password_key'] suggested
+EMAIL_USE_TLS = True

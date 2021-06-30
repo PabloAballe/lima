@@ -1,0 +1,47 @@
+<div class="table" id="table">
+  <table class="table">
+    <thead>
+      <tr>
+        <th><abbr title="ID">ID</abbr></th>
+        <th><abbr title="Tecnica">Tecnica</abbr></th>
+        <th><abbr title="Zona">J/S</abbr></th>
+        <th><abbr title="Hertz">J/L</abbr></th>
+        <th><abbr title="Fecha">Fecha</abbr></th>
+        <th><abbr title="Acción">Acción</abbr></th>
+
+      </tr>
+    </thead>
+    <tfoot>
+
+    </tfoot>
+    <tbody>
+      {%for tratamiento in tratamientos %}
+      <tr>
+        <th>{{ forloop.counter }}</th>
+
+        <td>{{tratamiento.tecnica}}</td>
+        <td>{{tratamiento.js}}</td>
+        <td>{{tratamiento.jl}}</td>
+        <td>{{tratamiento.fecha}}</td>
+        <td>
+              <a href="{% url 'edit_tratamiento' pk=tratamiento.id_tratamiento %}">
+            <button class="button is-warning">Ver</button>
+
+          </a>
+
+
+          <a href="{%url 'delete_tratamiento' pk=tratamiento.id_tratamiento %}" style="margin-right:30px;">
+            <button class="button is-danger">Borrar</button>
+
+          </a>
+
+
+        </td>
+
+      </tr>
+      {%endfor%}
+
+    </tbody>
+  </table>
+
+</div>

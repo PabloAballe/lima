@@ -2,6 +2,7 @@
 {%load static%}
 {% load crispy_forms_tags %}
 {%block content%}
+{%include 'nav.html'%}
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
 
 <!-- XDSoft DateTimePicker -->
@@ -11,7 +12,7 @@
 
 <div class="login ">
 
-<img src="{%static 'img/login.png'%}" alt="Lima y Neon" >
+<img src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" style="height: 50px;" />
   <br>
   <h2>Editando la cita</h2>
   <br>
@@ -25,7 +26,7 @@
   <input type="button" value="Cancelar" class="button is-danger cancel" onClick="javascript:history.go(-1);">
 </div>
 <script>
-  
+
   $(function () {
     jQuery.datetimepicker.setLocale('es');
     $("#id_fecha").datetimepicker({ format:'Y-m-d H:i'});

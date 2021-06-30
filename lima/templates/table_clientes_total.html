@@ -16,7 +16,7 @@
       <tr>
         <th><abbr title="ID">ID</abbr></th>
         <th><abbr title="ID">Centro</abbr></th>
-  
+
         <th><abbr title="Propietaria">Nombre</abbr></th>
         <th><abbr title="Localización">Apellidos</abbr></th>
         <th><abbr title="Localización">Teléfono</abbr></th>
@@ -78,10 +78,10 @@
           </a>
 
 
-          <a href="{%url 'delete_cliente' pk=cl.id_paciente %}">
-              <button class="button is-danger">Borrar</button>
+          <!--<a href="{%url 'delete_cliente' pk=cl.id_paciente %}">-->
+          <!--    <button class="button is-danger">Borrar</button>-->
 
-            </a>
+          <!--  </a>-->
 
         </td>
 
@@ -93,7 +93,7 @@
 </div>
 {% endifequal %}
 {%include 'shearch.html'%}
-
+{%include 'pagination.html'%}
 
 
 </div>

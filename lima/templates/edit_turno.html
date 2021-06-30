@@ -1,0 +1,59 @@
+{%extends 'base.html'%}
+{%load static%}
+{%block content%}
+{%include 'nav.html'%}
+ {% load tz %}
+<div class="index">
+<h1>Turnos de trabajo</h1>
+
+<link href="{% static 'fullcalendar/main.css' %}" rel='stylesheet' />
+<script src="{% static 'fullcalendar/main.js' %}"></script>
+<script src="{% static 'fullcalendar/locale/es.js' %}"></script>
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+  var articles = [
+     {%for mes in meses %}
+        {% if not forloop.first %},{% endif %}
+        {
+            title: "{{mes.tecnica.nombre_tecnica}}  {{mes.tecnica.apellidos_tecnica}} //  {{mes.centro.nombre_centro}}",
+            start: "{{mes.turno |date:'Y-m-d H:i'}}",
+            end: "{{mes.turno  |date:'Y-m-d H:i'}}",
+            color: "{{mes.tecnica.color}}"
+        }
+    {% endfor %}
+    ];
+    console.log(articles)
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+    initialView: 'dayGridMonth',
+    initialDate: today,
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+    },
+    editable: true,
+    lang: 'es',
+    events: articles
+  });
+  calendar.render();
+});
+
+
+</script>
+
+
+<div id="calendar"></div>
+
+<script>
+
+</script>
+</div>
+
+
+
+{%endblock%}

@@ -22,4 +22,22 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   }
 
+
 });
+
+function PrintElem(elem)
+{
+    var mywindow = window.open('', 'PRINT', 'height=1000,width=1000');
+
+    mywindow.document.write('<html><head><title>' + document.title  + '</title>');
+    mywindow.document.write('</head><body >');
+    mywindow.document.write('<h1>' + document.title  + '</h1>');
+    mywindow.document.write(document.getElementById(elem).innerHTML);
+    mywindow.document.write('</body></html>');
+
+
+    mywindow.print();
+  
+
+    return true;
+}

@@ -18,7 +18,6 @@ urlpatterns = [
     path('cliente/<int:pk>/', views.cliente_details, name='cliente_details'),
     path('edit/<int:pk>/', views.edit_centro, name='edit_centro'),
     path('edit_cliente/<int:pk>/', views.edit_cliente, name='edit_cliente'),
-    path('edit_cita/<int:pk>/', views.edit_cita, name='edit_cita'),
     path('delete/<int:pk>/', views.delete_centro, name='delete_centro'),
     path('delete_cliente/<int:pk>/', views.delete_cliente, name='delete_cliente'),
     path('delete_cita/<int:pk>/', views.delete_cita, name='delete_cita'),
@@ -31,4 +30,14 @@ urlpatterns = [
     path('ver_horario_visual/<int:pk>/', views.ver_horario_visual, name="ver_horario_visual"),
     path('ver_visual_tecnica/<int:pk>/', views.ver_visual_tecnica, name="ver_visual_tecnica"),
     path('view_perfiles', views.view_perfiles, name="view_perfiles"),
+    path('send_emails', views.send_emails, name="send_emails"),
+    path('new_tratamiento/<int:pk>/', views.new_tratamiento, name="new_tratamiento"),
+    path('edit_tratamiento/<int:pk>/', views.edit_tratamiento, name="edit_tratamiento"),
+    path('delete_tratamiento/<int:pk>/', views.delete_tratamiento, name='delete_tratamiento'),
+    path('edit_turno/<int:pk>/', views.edit_turno, name="edit_turno"),
+    path('emails_template/<int:pk>/', views.emails_template, name="emails_template"),
+    path('emails_templates', views.emails_templates, name="emails_templates"),
+    path('delete_email/<int:pk>/', views.delete_email, name="delete_email"),
+    path('new_emails_template', views.new_emails_template, name="new_emails_template"),
+
 ]
