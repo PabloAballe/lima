@@ -32,7 +32,7 @@ class HorariosAdmin(ImportExportModelAdmin):
     list_display= ['tecnica','fecha', 'entrada', 'salida','trabajado']
     search_fields =  ['tecnica__nombre_tecnica','fecha', 'entrada', 'salida','trabajado']
     list_filter =   ['tecnica__nombre_tecnica','fecha', 'entrada', 'salida','trabajado']
-    readonly_fields = ['trabajado']
+    readonly_fields = ['tecnica','fecha', 'entrada', 'salida','trabajado']
 
     def horas_trabajadas(self, obj):
         entrada = dt.datetime.strptime(str(obj.entrada), '%H:%M:%S')
@@ -41,7 +41,7 @@ class HorariosAdmin(ImportExportModelAdmin):
         return result
 
 class ConfiguracionAdmin(ImportExportModelAdmin):
-    list_display= ['nombre_comercial','propietario', 'logo', 'politica', 'email_nuevos_clientes']
+    list_display= ['nombre_comercial','propietario']
     search_fields =  ['nombre_comercial','propietario']
     list_filter =   ['nombre_comercial','propietario']
 
@@ -65,6 +65,8 @@ admin.site.register(Configuracion, ConfiguracionAdmin)
 admin.site.register(Tratamientos, TratamientosAdmin)
 admin.site.register(Turnos, TurnosAdmin)
 admin.site.register(Paciente, PacienteAdmin)
+admin.site.register(DocTemplate)
+admin.site.register(DocSings)
 admin.site.register(Tecnica, TecnicaAdmin)
 admin.site.register(Cita, CitaAdmin)
 admin.site.register(ControlHorario, HorariosAdmin)

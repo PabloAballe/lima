@@ -11,6 +11,11 @@
    <a href="{% url 'new_tratamiento' pk=cliente.id_paciente%}" class="top-menu">
    <button class="button is-link" style="margin-left: 5%;">Añadir un tratamiento</button>
      </a>
+
+       <a href="{% url 'docs_sign_list' user=cliente.pk  %}" class="top-menu">
+   <button class="button is-link" style="margin-left: 5%;">Firmar documento</button>
+     </a>
+     <br><br>
 {% include 'table_citas.html'%}
 {% include 'table_tratamientos.html'%}
 </div>

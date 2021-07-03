@@ -50,6 +50,7 @@ INSTALLED_APPS = [
     'import_export',
     'django_summernote',
     'ckeditor',
+    'jsignature',
 ]
 
 MIDDLEWARE = [
@@ -162,3 +163,7 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = 'thewavecompany.app@gmail.com'
 EMAIL_HOST_PASSWORD = 'bworedjxndeiivbw'  # os.environ['password_key'] suggested
 EMAIL_USE_TLS = True
+
+#firma
+JSIGNATURE_WIDTH = 500
+JSIGNATURE_HEIGHT = 200

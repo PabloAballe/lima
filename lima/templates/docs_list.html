@@ -1,0 +1,19 @@
+{%extends 'base.html'%}
+
+{%block content%}
+{%include 'nav.html'%}
+<div class="index">
+<h1>Listado de Documentos </h1>
+<a href="{% url 'new_doc_template' %}" class="top-menu">
+<button class="button is-primary" style="margin-left: 5%;">Añadir una nueva plantilla</button>
+
+   </a>
+{%include 'shearch.html'%}
+{%include 'table_doc_list.html'%}
+{%include 'pagination.html'%}
+
+</div>
+
+
+
+{%endblock%}

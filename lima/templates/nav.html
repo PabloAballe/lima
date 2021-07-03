@@ -44,36 +44,36 @@
         <div class="navbar-dropdown">
             {% if request.resolver_match.url_name == "index"%}
 {% ifequal salida False %}
-      <a href="{% url 'entrada' %}" class="button is-primary" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+      <a href="{% url 'entrada' %}"  class="navbar-item">
        Fichar la entrada
       </a>
       {% else %}
-      <a href="{% url 'salida' %}" class="button is-warning" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+      <a href="{% url 'salida' %}"  class="navbar-item">
        Fichar la salida
       </a>
       {% endifequal%}
     {% endif %}
     {% if request.resolver_match.url_name == "perfil"%}
     {{% ifequal salida False %}
-    <a href="{% url 'entrada' %}" class="button is-primary" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+    <a href="{% url 'entrada' %}"  class="navbar-item">
      Fichar la entrada
     </a>
     {% else %}
-    <a href="{% url 'salida' %}" class="button is-warning" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+    <a href="{% url 'salida' %}"  class="navbar-item">
      Fichar la salida
     </a>
     {% endifequal%}
         {% endif %}
         <hr class="navbar-divider">
-         <a href="{%url 'ver_horario_visual' pk=user.tecnica.pk %}" class="button is-primary" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+         <a href="{%url 'ver_horario_visual' pk=user.tecnica.pk %}"  class="navbar-item">
               Ver visual de mi Horario
 
             </a>
-            <a href="{%url 'ver_visual_tecnica' pk=user.tecnica.pk %}" class="button is-link" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+            <a href="{%url 'ver_visual_tecnica' pk=user.tecnica.pk %}"  class="navbar-item">
               Ver visual de mis citas
 
             </a>
-            <a href="{%url 'edit_turno' pk=user.tecnica.pk %}" class="button is-warning" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+            <a href="{%url 'edit_turno' pk=user.tecnica.pk %}"  class="navbar-item">
               Ver mis turnos de trabajo
 
             </a>
@@ -88,15 +88,24 @@
         </a>
 
      <div class="navbar-dropdown">
-        <a href="{% url 'view_perfiles' %}" class="button is-info" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+        <a href="{% url 'view_perfiles' %}"  class="navbar-item">
       Ver listado de Tecnicas
        </a>
-
-     <a href="{%url 'edit_turno' pk=0 %}" class="button is-primary" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+       <a href="{% url 'ver_visual_tecnica' pk=0 %}"  class="navbar-item">
+      Ver global de citas
+       </a>
+ <hr class="navbar-divider">
+     <a href="{%url 'edit_turno' pk=0 %}"  class="navbar-item" >
               Ver turnos de trabajo
 
             </a>
-     <a href="{% url 'admin' %}" class="button is-dark" style="margin-top:10px; margin-left:5px; font-size: 12px;">
+        <hr class="navbar-divider">
+     <a href="{%url 'docs_list'%}"  class="navbar-item" >
+              Plantillas de documentos
+
+            </a>
+             <hr class="navbar-divider">
+     <a href="{% url 'admin' %}"  class="navbar-item" >
      Ver administración del sitio
      </a>
          </div>

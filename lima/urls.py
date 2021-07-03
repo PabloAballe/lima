@@ -39,5 +39,14 @@ urlpatterns = [
     path('emails_templates', views.emails_templates, name="emails_templates"),
     path('delete_email/<int:pk>/', views.delete_email, name="delete_email"),
     path('new_emails_template', views.new_emails_template, name="new_emails_template"),
+    #documentos
+    path('docs_template/<int:pk>/', views.docs_template, name="docs_template"),
+    path('docs_list', views.docs_list, name="docs_list"),
+    path('delete_doc/<int:pk>/', views.delete_doc, name="delete_doc"),
+    path('new_doc_template', views.new_doc_template, name="new_doc_template"),
+    path('docs_sign_list/<int:user>/', views.docs_sign_list, name="docs_sign_list"),
+    path('doc_prerender/<int:user>/<int:doc>/', views.doc_prerender, name="doc_prerender"),
+    path('doc_prerender/<int:pk>/', views.doc_prerender, name="doc_prerender"),
+    path('sing/<int:pk>/', views.sing, name="sing"),
 
 ]

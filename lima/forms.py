@@ -4,6 +4,8 @@ from .models import *
 from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
 from django_summernote.fields import SummernoteTextFormField, SummernoteTextField
 from ckeditor.widgets import CKEditorWidget
+from django.template import Context, Template
+from jsignature.forms import JSignatureField
 
 class SheachForm(forms.Form):
     shearch = forms.CharField( label="", max_length=1000 , widget= forms.TextInput(attrs={'class':'form-control mr-sm-2'}))
@@ -52,6 +54,7 @@ class EmailTemplateEditForm(forms.ModelForm):
         fields=('nombre', 'plantilla' )
 
 
+
 class EmailTemplateNewForm(forms.ModelForm):
     class Meta:
         model=EmailTemplates
@@ -60,6 +63,39 @@ class EmailTemplateNewForm(forms.ModelForm):
         }
         fields=('nombre', 'plantilla' )
 
+class DocTemplateEditForm(forms.ModelForm):
+    class Meta:
+        model=DocTemplate
+        widgets = {
+            'plantilla_doc': forms.Textarea(attrs={'class':'some_class', 'id':'summernote'}),
+        }
+        fields=('nombre_doc', 'plantilla_doc' )
+
+class DocTemplateNewForm(forms.ModelForm):
+    class Meta:
+        model=DocTemplate
+        widgets = {
+            'plantilla_doc': forms.Textarea(attrs={'class':'some_class', 'id':'summernote'}),
+        }
+        fields=('nombre_doc', 'plantilla_doc' )
+
+class SingForm(forms.ModelForm):
+    class Meta:
+        model=DocSings
+        fields=('firma', )
+
+
+class SingForm__(forms.Form):
+    signature = JSignatureField()
+
+
+class PrerenderForm(forms.ModelForm):
+    class Meta:
+        model=DocSings
+        widgets = {
+            'plantilla_render': forms.Textarea(attrs={'class':'some_class', 'id':'summernote'}),
+        }
+        fields=('plantilla_render', )
 
 class EmailForm(forms.Form):
     asunto=forms.CharField(label='Asunto del Email:', max_length=100)

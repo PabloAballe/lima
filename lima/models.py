@@ -9,6 +9,9 @@ import datetime
 from django.utils import timezone
 from colorfield.fields import ColorField
 import datetime as dt
+from jsignature.fields import JSignatureField
+from jsignature.mixins import JSignatureFieldsMixin
+from django_base64field.fields import Base64Field
 
 # Create your models here.
 
@@ -67,7 +70,7 @@ class Tecnica(models.Model):
 
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
-       profile, created = Tecnica.objects.get_or_create(user=instance)
+       profile, created = Tecnica.objects.get_or_create(user=instance, nombre_tecnica=instance.username)
 
 post_save.connect(create_user_profile, sender=User)
 
@@ -137,11 +140,41 @@ class EmailTemplates(models.Model):
     def __str__(self):
         return f"Plantilla : {self.nombre}"
 
+class DocTemplate(models.Model):
+    id=models.AutoField(primary_key=True, auto_created = True)
+    nombre_doc=models.CharField(max_length=100,help_text="Ingrese el nombre de la plantilla" )
+    plantilla_doc=models.TextField(help_text="Confifure su plantilla")
+    creado_el=models.DateTimeField(null=False, auto_now_add=True,)
+    history = HistoricalRecords()
+
+    class Meta:
+        verbose_name_plural = "Plantillas de documentos"
+
+    def __str__(self):
+        return f"Plantilla Documento : {self.nombre_doc}"
+
+class DocSings(models.Model):
+    id=models.AutoField(primary_key=True, auto_created = True)
+    plantilla_doc=models.ForeignKey(DocTemplate, on_delete=models.RESTRICT)
+    plantilla_render=models.TextField(default="")
+    cliente=models.ForeignKey(Paciente, on_delete=models.RESTRICT , null=False)
+    firmado_el=models.DateTimeField(null=False, auto_now_add=True)
+    firma=JSignatureField(null=True , blank=True)
+    firma_imagen=models.CharField(max_length=100,help_text="Ingrese la url de la firma" )
+
+    class Meta:
+        verbose_name_plural = "Documentos firmados"
+
+    def __str__(self):
+        return f"Firmado el : {self.firmado_el}"
+
 class Configuracion(models.Model):
     id=models.AutoField(primary_key=True, auto_created = True)
     nombre_comercial=models.CharField(max_length=100,help_text="Ingrese el nombre comercial del negocio" , null=False)
     propietario=models.CharField(max_length=100,help_text="Ingrese el nombre del propietario del negocio" , null=False)
+    telefono=models.CharField(max_length=100,help_text="Ingrese el telefono del negocio", default="00000000" )
     logo=models.ImageField(upload_to='images/', default='img/login.png')
+    slots=models.IntegerField(default='15', help_text="Ingrese el tamaño de los slots")
     politica=models.TextField(help_text="Ingrese la política  de la empresa que aparecera en la parte inferior de los textos")
     email_nuevos_clientes=models.BooleanField(default=True)
     plantilla_email=models.ForeignKey(EmailTemplates, on_delete=models.RESTRICT , blank=True, default="1")

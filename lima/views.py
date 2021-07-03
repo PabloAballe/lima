@@ -27,6 +27,15 @@ from django.utils.safestring import SafeString
 from django.core import mail
 from django.template.loader import render_to_string
 from django.utils.html import strip_tags
+from django.template import Context, Template
+from jsignature.utils import draw_signature
+import base64
+from django.core.files.base import ContentFile
+from io import BytesIO
+from PIL import Image
+import PIL
+from django.conf import settings
+
 
 @login_required(login_url='login')
 def admin(request):
@@ -190,6 +199,7 @@ def new_cliente(request, pk):
     footer=Configuracion.objects.all().last()
     centro1=get_object_or_404(Centro, id_centro=pk)
     form=ClienteForm()
+    mensaje=footer.plantilla_email.plantilla
     if request.method == 'POST':
         form = ClienteForm(request.POST)
         if form.is_valid():
@@ -197,8 +207,22 @@ def new_cliente(request, pk):
             cliente.centro=centro1
             form.save()
             if footer.email_nuevos_clientes and footer.plantilla_email:
+                mensaje=Template(mensaje)
+                c = Context({'usuario': f'{cliente.nombre_paciente} {cliente.apellidos_paciente}',
+                            'centro': cliente.centro.nombre_centro, 'localizacion_centro': cliente.centro.localizacion,
+                            'nombre_comercial': footer.nombre_comercial, 'propietario': footer.propietario,
+                            'telefono': footer.telefono,
+                            'TelefonoUsuario':  cliente.telefono_paciente,
+                            'EmailUsuario': cliente.email,
+                            'dni': cliente.dni,
+                            'poblacion': cliente.poblacion,
+                            'direccion': cliente.direccion,
+                            'FechaActual' : timezone.now(),
+                })
+                mensaje=mensaje.render(c)
                 subject = f'Bienvenido a {footer.nombre_comercial}'
-                html_message = render_to_string('blanc.html', {'mensaje': footer.plantilla_email.plantilla, 'footer': footer})
+                template=mensaje
+                html_message = render_to_string('blanc.html', {'mensaje': template, 'footer': footer})
                 plain_message = strip_tags(html_message)
                 from_email = f'Enviado por {footer.propietario}'
                 to = cliente.email
@@ -308,7 +332,7 @@ def new_tratamiento(request, pk):
 def edit_tratamiento(request, pk):
     footer=Configuracion.objects.all().last()
     tratamiento=get_object_or_404(Tratamientos, pk=pk)
-    cliente1=get_object_or_404(Paciente, pk=pk)
+    cliente1=tratamiento.cliente
     if request.user.is_staff:
          form=TratamientoFormAdmin(instance=tratamiento)
          if request.method == 'POST':
@@ -528,12 +552,20 @@ def ver_visual_tecnica(request, pk):
     footer=Configuracion.objects.all().last()
     today = date.today()
     salida=False
+    tecnica=request.user.tecnica
     #checkea si ha enytrado o salido
-    tecnica=get_object_or_404(Tecnica, pk=pk)
-    tratamientos=Tratamientos.objects.filter(tecnica=tecnica).order_by("-fecha")
-    citas=Cita.objects.filter(tecnica=tecnica).order_by("-fecha")
-    horario=ControlHorario.objects.filter(tecnica=tecnica).last()
-    meses = list(chain(citas, tratamientos))
+    if pk !=0:
+        tecnica=get_object_or_404(Tecnica, pk=pk)
+        tratamientos=Tratamientos.objects.filter(tecnica=tecnica).order_by("-fecha")
+        citas=Cita.objects.filter(tecnica=tecnica).order_by("-fecha")
+        meses = list(chain(citas, tratamientos))
+        horario=ControlHorario.objects.filter(tecnica=tecnica).last()
+    else:
+        tratamientos=Tratamientos.objects.all().order_by("-fecha")
+        citas=Cita.objects.all().order_by("-fecha")
+        meses = list(chain(citas, tratamientos))
+        horario=ControlHorario.objects.filter(tecnica=request.user.tecnica).last()
+
     if horario:
         if horario.salida is None:
             salida=True
@@ -552,16 +584,20 @@ def send_emails(request):
         if form.is_valid():
             asunto=form.cleaned_data["asunto"]
             destinatario=form.cleaned_data["destinatario"]
-            #emails=form.cleaned_data.get["emails"]
             mensaje=form.cleaned_data["plantilla"].plantilla
             for users in form.cleaned_data['emails']:
-                # send_mail(
-                # asunto,
-                # SafeString(mensaje),
-                # destinatario,
-                # [users.email],
-                # fail_silently=False,
-                # )
+                mensaje=Template(mensaje)
+                c = Context({'usuario': f'{users.nombre_paciente} {users.apellidos_paciente}',
+                            'centro': users.centro.nombre_centro, 'localizacion_centro': users.centro.localizacion,
+                            'nombre_comercial': footer.nombre_comercial, 'propietario': footer.propietario,
+                            'telefono': footer.telefono,
+                            'TelefonoUsuario':  users.telefono_paciente,
+                            'EmailUsuario': users.email,
+                            'dni': users.dni,
+                            'poblacion': users.poblacion,
+                            'direccion': users.direccion,
+                            'FechaActual' : timezone.now(),})
+                mensaje=mensaje.render(c)
                 subject = asunto
                 html_message = render_to_string('blanc.html', {'mensaje': mensaje, 'footer': footer})
                 plain_message = strip_tags(html_message)
@@ -583,10 +619,10 @@ def edit_turno(request, pk):
     salida=False
     if pk !=0:
         tecnica=get_object_or_404(Tecnica, pk=pk)
-        meses=Turnos.objects.filter(tecnica=tecnica).order_by("-turno")[:90]
+        meses=Turnos.objects.filter(tecnica=tecnica).order_by("-turno")
     else:
         tecnica =request.user.tecnica
-        meses=Turnos.objects.all().order_by("-turno")[:90]
+        meses=Turnos.objects.all().order_by("-turno")
 
     horario=ControlHorario.objects.filter(tecnica=tecnica).last()
     if horario:
@@ -620,7 +656,7 @@ def emails_templates(request):
 def emails_template(request, pk):
     footer=Configuracion.objects.all().last()
     email=get_object_or_404(EmailTemplates, pk=pk)
-    form = EmailTemplateEditForm( instance=email)
+    form = EmailTemplateEditForm(instance=email)
     if request.method == 'POST':
         form = EmailTemplateEditForm(request.POST, instance=email)
         if form.is_valid():
@@ -651,4 +687,165 @@ def delete_email(request, pk):
     email=get_object_or_404(EmailTemplates, pk=pk).delete()
     return redirect("emails_templates")
 
+#documentos firmables
+@login_required(login_url='login')
+def docs_list(request):
+    footer=Configuracion.objects.all().last()
+    docs=DocTemplate.objects.all()
 
+    #shearch emails
+    notfound=False
+    if request.method == "GET":
+        form = SheachForm(request.GET)
+
+    if form.is_valid():
+            q= form.cleaned_data['shearch']
+            existe=DocTemplate.objects.all().order_by('nombre_doc').filter(nombre__icontains=q).exists()
+            if existe==True:
+                docs=DocTemplate.objects.all().order_by('nombre_doc').filter(nombre__icontains=q)
+            else:
+                notfound=True
+                print("no hay resultados")
+    else:
+        form = SheachForm()
+    return render(request, 'docs_list.html', {'footer': footer, 'docs': docs, 'form': form ,'notfound': notfound})
+@login_required(login_url='login')
+def docs_template(request, pk):
+    footer=Configuracion.objects.all().last()
+    doc=get_object_or_404(DocTemplate, pk=pk)
+    form = DocTemplateEditForm(instance=doc)
+    if request.method == 'POST':
+        form = DocTemplateEditForm(request.POST, instance=doc)
+        if form.is_valid():
+            doc = form.save(commit=False)
+            form.save()
+            return redirect("docs_list")
+        else:
+           print(f"Ha sucedido el siguiennte error {form.errors }")
+    return render(request, 'docs_template.html', {'footer': footer, 'form': form })
+
+
+@login_required(login_url='login')
+def delete_doc(request, pk):
+    footer=Configuracion.objects.all().last()
+    doc=get_object_or_404(DocTemplate, pk=pk).delete()
+    return redirect("docs_list")
+@login_required(login_url='login')
+def new_doc_template(request):
+    footer=Configuracion.objects.all().last()
+    form=DocTemplateNewForm()
+    if request.method == 'POST':
+        form = DocTemplateNewForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("docs_list")
+    else:
+        #form = EmailTemplateNewForm()
+        print(f"Ha sucedido el siguiennte error {form.errors }")
+    return render(request, 'docs_template.html', {'footer': footer, 'form': form})
+
+@login_required(login_url='login')
+def sing(request, pk):
+    footer=Configuracion.objects.all().last()
+    sign_=get_object_or_404(DocSings, pk=pk)
+    form = SingForm()
+    baseurl='https://anahi.pythonanywhere.com/media'
+    if request.method == 'POST':
+        form = SingForm(request.POST or None, instance=sign_)
+        if form.is_valid():
+            signature = form.cleaned_data.get('firma')
+            if signature:
+                # as an image
+                signature_picture = draw_signature(signature)
+                signature_file_path = draw_signature(signature, as_file=True)
+                try:
+                     filename=f'tmp_sign_{timezone.now()}-{sign_.cliente.pk}.png'
+                     file = signature_picture.save(f'{settings.MEDIA_ROOT}/sings_user/{filename}' , mode='RGB')
+                     sign_.firma_imagen = f'{baseurl}/sings_user/{filename}'
+                except Exception as e:
+                    return HttpResponse(f"Error {e}")
+                form.save()
+            return redirect("cliente_details", pk=sign_.cliente.pk)
+        else:
+           print(f"Ha sucedido el siguiennte error {form.errors }")
+    return render(request, 'sing.html', {'footer': footer, 'form': form})
+@login_required(login_url='login')
+def doc_prerender(request, user,doc):
+    footer=Configuracion.objects.all().last()
+    doc_=get_object_or_404(DocTemplate, pk=doc)
+    user_=get_object_or_404(Paciente, pk=user)
+    sign = DocSings.objects.get_or_create(cliente=user_, plantilla_doc=doc_)
+    sign_=get_object_or_404(DocSings, cliente=user_, plantilla_doc=doc_)
+    if sign_.plantilla_render=='':
+        sign_.plantilla_render=doc_.plantilla_doc
+    firm=' <img   width="20%"  src="{{ sign_.firma_imagen }}" alt=" {{sign_.plantilla_doc.nombre_doc}} " />'
+    mensaje= sign_.plantilla_render
+    mensaje=Template(mensaje)
+    c = Context({
+                'usuario': f'{user_.nombre_paciente} {user_.apellidos_paciente}',
+                'centro': user_.centro.nombre_centro, 'localizacion_centro': user_.centro.localizacion,
+                'nombre_comercial': footer.nombre_comercial, 'propietario': footer.propietario,
+                'telefono': footer.telefono,
+                'firma' : firm, 'sign_': sign_ ,
+                'TelefonoUsuario':  user_.telefono_paciente,
+                'EmailUsuario': user_.email,
+                'dni': user_.dni,
+                'poblacion': user_.poblacion,
+                'direccion': user_.direccion,
+                'FechaActual' : timezone.now(),
+
+                })
+    sign_.plantilla_render=mensaje.render(c)
+    mensaje=Template(sign_.plantilla_render)
+    c = Context({
+                'usuario': f'{user_.nombre_paciente} {user_.apellidos_paciente}',
+                'centro': user_.centro.nombre_centro, 'localizacion_centro': user_.centro.localizacion,
+                'nombre_comercial': footer.nombre_comercial, 'propietario': footer.propietario,
+                'telefono': footer.telefono,
+                'firma' : firm, 'sign_': sign_ ,
+                'TelefonoUsuario':  user_.telefono_paciente,
+                'EmailUsuario': user_.email,
+                'dni': user_.dni,
+                'poblacion': user_.poblacion,
+                'direccion': user_.direccion,
+                'FechaActual' : timezone.now(),
+
+                })
+    sign_.plantilla_render=mensaje.render(c)
+    form=PrerenderForm(instance=sign_)
+    if request.method == 'POST':
+        form = PrerenderForm(request.POST, instance=sign_)
+        if form.is_valid():
+            sign = form.save(commit=False)
+            sign.plantilla_doc = doc_
+            sign.cliente=user_
+            sign.save()
+            return redirect("sing", pk=sign_.pk)
+    else:
+        form=PrerenderForm(instance=sign_)
+
+    return render(request, "doc_prerender.html", {'form': form, 'footer': footer, 'doc': doc_, 'user_':user_ ,'firma': sign_.firma_imagen})
+@login_required(login_url='login')
+def docs_sign_list(request, user=0):
+    footer=Configuracion.objects.all().last()
+    docs=DocTemplate.objects.all()
+    #shearch emails
+    if user!=0:
+        user=get_object_or_404(Paciente, pk=user)
+    else:
+        user=0
+    notfound=False
+    if request.method == "GET":
+        form = SheachForm(request.GET)
+
+    if form.is_valid():
+            q= form.cleaned_data['shearch']
+            existe=DocTemplate.objects.all().order_by('nombre_doc').filter(nombre__icontains=q).exists()
+            if existe==True:
+                docs=DocTemplate.objects.all().order_by('nombre_doc').filter(nombre__icontains=q)
+            else:
+                notfound=True
+                print("no hay resultados")
+    else:
+        form = SheachForm()
+    return render(request, 'docs_list.html', {'footer': footer, 'docs': docs, 'form': form ,'notfound': notfound, 'cliente': user })

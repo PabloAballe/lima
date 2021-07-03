@@ -8,6 +8,7 @@
 
 <link href="{% static 'fullcalendar/main.css' %}" rel='stylesheet' />
 <script src="{% static 'fullcalendar/main.js' %}"></script>
+<script src="{% static 'fullcalendar/locales-all.js' %}"></script>
 <script>
 
 document.addEventListener('DOMContentLoaded', function() {
@@ -28,15 +29,27 @@ document.addEventListener('DOMContentLoaded', function() {
     ];
     console.log(articles)
   var calendar = new FullCalendar.Calendar(calendarEl, {
-    initialView: 'dayGridMonth',
+       dateClick: function(info) {
+            //alert('Date: ' + info.dateStr);
+            //alert('Resource ID: ' + info.resource.id);
+            calendar.gotoDate( info.dateStr )
+            calendar.changeView( 'timeGridDay', info.dateStr);
+          },
+
+     locale: 'es',
+    initialView: 'timeGridWeek',
+    slotLabelInterval: '00:{{footer.slots}}:00',
+    slotDuration: '00:{{footer.slots}}:00',
     initialDate: today,
     headerToolbar: {
       left: 'prev,next today',
       center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay'
+      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+
     },
     events: articles
   });
+
   calendar.getOption('locale', 'es');
   calendar.render();
 });

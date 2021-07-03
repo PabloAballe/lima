@@ -1,5 +1,6 @@
 {%extends 'base.html'%}
 {% load material_form %}
+{% load crispy_forms_tags %}
 {%block content%}
 
 <div class="login ">
@@ -12,7 +13,7 @@
 <br>
   <form method="POST">
     {% csrf_token %}
-    {% form form=form %}{% endform %}
+    {{ form|crispy }}
     <button type="submit" class="button is-warning">Inicia Sesión</button>
   </form>
 </div>

@@ -1,0 +1,51 @@
+
+{% ifequal  notfound True %}
+{% include 'notfound.html'%}
+{% else %}
+
+<div class="table" id="table">
+  <table class="table">
+    <thead>
+      <tr>
+        <th title="ID"><abbr title="ID">ID</abbr></th>
+        <th title="Nombre">Nombre</th>
+        <th><abbr title="Acción">Acción</abbr></th>
+
+      </tr>
+    </thead>
+    <tfoot>
+
+    </tfoot>
+    <tbody>
+      {%for doc in docs %}
+      <tr>
+        <th>{{ forloop.counter }}</th>
+        <td><a href="{% url 'docs_template' pk=doc.pk %}">{{doc.nombre_doc}}</a> <strong></strong>
+        </td>
+        <td>
+{% if request.user.is_staff %}
+   <a href="{%url 'docs_template' pk=doc.pk %}">
+            <button class="button is-warning">Ver</button>
+          </a>
+
+          <a href="{%url 'delete_doc' pk=doc.pk %}">
+              <button class="button is-danger">Borrar Plantilla</button>
+
+            </a>
+
+ {%endif%}
+  {% if request.resolver_match.url_name == "docs_sign_list"%}
+   <a href="{%url 'doc_prerender' user=cliente.pk  doc=doc.pk %}">
+            <button class="button is-link">Firmar</button>
+          </a>
+           {%endif%}
+   </td>
+</tr>
+      {%endfor%}
+
+
+    </tbody>
+  </table>
+
+</div>
+{% endifequal %}

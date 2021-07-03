@@ -1,7 +1,7 @@
 {%extends 'base.html'%}
 {% load material_form %}
 {%load static%}
-
+{% load crispy_forms_tags %}
 {%block content%}
 {%include 'nav.html'%}
 <div class="login ">
@@ -11,7 +11,7 @@
   <br>
   <form method="post">
     {% csrf_token %}
-    {% form form=form %}{% endform %}
+     {{ form|crispy }}
     <button type="submit" class="button is-warning">Guardar</button>
 
   </form>

@@ -13,7 +13,6 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
 <div class="login ">
-
 <img src="{%static 'img/login.png'%}" alt="Lima y Neon" >
   <br>
   <h2>Añade una nueva plantilla</h2>
@@ -30,8 +29,40 @@
 <script>
 
  $(document).ready(function() {
-  $('#summernote').summernote();
+  $('#summernote').summernote({
+    toolbar: [
+        // [groupName, [list of button]]
+        ['img', ['picture']],
+        ['style', ['style', 'clear' ]],
+        ['fontstyle', ['bold', 'italic', 'ul', 'ol', 'link', 'paragraph']],
+        ['fontstyleextra', ['strikethrough', 'underline', 'hr', 'color', 'superscript', 'subscript']],
+        ['extra', ['video', 'table', 'height']],
+        ['misc', ['undo', 'redo', 'codeview', 'fullscreen','help']],
+        ['customOptions', ['AddCheckList',]],
+
+
+    ],
+    buttons: {
+                    AddCheckList: addCheckList
+                },
+      placeholder: 'Escribe aquí...',
+      height: 500,
+
+  });
 });
+ function addCheckList(context) {
+            var ui = $.summernote.ui;
+            var button = ui.button({
+                contents: '☑︁',
+                tooltip: 'Insert a Checklist',
+                click: function() {
+                    context.invoke('editor.pasteHTML', '<div class="checkbox-field col s12" id="id_autorizacion_container"><label></label><label><input class="filled-in " id="id_autorizacion" name="autorizacion" type="checkbox"><span for="id_autorizacion">&nbsp;</span></label></div>');
+
+                }
+            });
+            return button.render();
+        }
+
 </script>
 
 
