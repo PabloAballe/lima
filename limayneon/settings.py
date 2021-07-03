@@ -89,14 +89,14 @@ WSGI_APPLICATION = 'limayneon.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'dab.sqlite3'),
-        'TEST' :
-               {
-                   'NAME': 'test_db',
-               }
-    }
+  'default': {
+            'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'wavecompany$lima',
+            'USER': 'wavecompany',
+            'PASSWORD': 't73@ZeN89B5mt75',
+            'HOST': 'wavecompany.mysql.pythonanywhere-services.com',
+            'PORT': '3306',
+        },
 
 }
 
