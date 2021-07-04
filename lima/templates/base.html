@@ -76,15 +76,20 @@ function(){
 });
 
 </script>
+
   {%block content%}
 
   {%endblock%}
+
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+ {% include 'message.html'%}
+  <script src="https://use.fontawesome.com/339a78d04c.js"></script>
   <script src="sweetalert2.all.min.js"></script>
   <!-- Optional: include a polyfill for ES6 Promises for IE11 -->
   <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
   <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
   <script src="{% static 'js/main.js' %}"></script>
-{% include 'footer.html' %}
+
 </body>
 
 </html>

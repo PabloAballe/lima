@@ -173,6 +173,7 @@ class Configuracion(models.Model):
     nombre_comercial=models.CharField(max_length=100,help_text="Ingrese el nombre comercial del negocio" , null=False)
     propietario=models.CharField(max_length=100,help_text="Ingrese el nombre del propietario del negocio" , null=False)
     telefono=models.CharField(max_length=100,help_text="Ingrese el telefono del negocio", default="00000000" )
+    email=models.CharField(max_length=100,help_text="Ingrese el Email del negocio", default="hola@minegocio.com" )
     logo=models.ImageField(upload_to='images/', default='img/login.png')
     slots=models.IntegerField(default='15', help_text="Ingrese el tamaño de los slots")
     politica=models.TextField(help_text="Ingrese la política  de la empresa que aparecera en la parte inferior de los textos")
@@ -202,3 +203,18 @@ class Tratamientos(models.Model):
 
     def __str__(self):
         return f"Tratamiento con fecha : {self.fecha}"
+
+
+class Suscription(models.Model):
+    OPCIONES_SUSCRIPTIONS = (
+    ('S', 'Suscripción'),
+    ('E', 'Extras'),
+    ('O', 'Otras')  # hay que ser inclusivos
+)
+    id_sicription=models.AutoField(primary_key=True, auto_created = True)
+    nombre_suscription=models.CharField(max_length=100,help_text="Ingrese el nombre de la suscripción" )
+    type=models.CharField(max_length=1, choices=OPCIONES_SUSCRIPTIONS, default="S")
+    coments_suscription=models.TextField(help_text="Comentarios de la suscripción")
+    stardate=models.DateTimeField(null=False, auto_now_add=True)
+    enddate=models.DateTimeField(null=False, auto_now_add=True)
+    pagada=models.BooleanField(default=False)

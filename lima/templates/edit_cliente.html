@@ -5,13 +5,13 @@
 {%block content%}
 {%include 'nav.html'%}
 <div class="login ">
-<img src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" style="height: 50px;" />
+<img src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" style="height: 300px;" />
   <br>
   <h2>Editando centro</h2>
   <br>
   <form method="post">
     {% csrf_token %}
-     {{ form|crispy }}
+   {% form form=form %}{% endform %}
     <button type="submit" class="button is-warning">Guardar</button>
 
   </form>

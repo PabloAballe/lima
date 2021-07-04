@@ -1,0 +1,12 @@
+{% if messages %}
+    {% for message in messages %}
+    
+        <script>
+        //const Swal = require('sweetalert2')
+        Swal.fire({
+          text: '{{ message }} ',
+          icon: '{{ message.tags }}',
+        })
+        </script>
+    {% endfor %}
+{% endif %}

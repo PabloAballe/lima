@@ -35,14 +35,25 @@ from io import BytesIO
 from PIL import Image
 import PIL
 from django.conf import settings
+from datetime import datetime
+
+from django.contrib import messages
 
 
 @login_required(login_url='login')
 def admin(request):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     return redirect("admin/")
 
 @login_required(login_url='login')
 def index(request):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     centro=Centro.objects.all().order_by('nombre_centro')
     notfound=False
@@ -102,6 +113,7 @@ def login(request):
             if user is not None:
                 # Hacemos el login manualmente
                 do_login(request, user)
+                messages.success(request,f'Has iniciado sesión como {username}')
                 # Y le redireccionamos a la portada
                 return redirect('/')
 
@@ -111,9 +123,14 @@ def login(request):
 def logout(request):
     footer=Configuracion.objects.all().last()
     do_logout(request)
+    messages.warning(request,f'Has cerrado sesión')
     return redirect('login')
 @login_required(login_url='login')
 def centro_details(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     centro=get_object_or_404(Centro, id_centro=pk)
     notfound=False
@@ -146,6 +163,10 @@ def centro_details(request, pk):
     return render(request, "centro_details.html", {'centro': centro, 'cliente': cen, 'cen': cen, 'form': form, 'notfound': notfound, 'footer': footer})
 @login_required(login_url='login')
 def clientes(request):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     cliente=Paciente.objects.all().order_by('nombre_paciente')
     notfound=False
@@ -176,6 +197,10 @@ def clientes(request):
     return render (request, 'table_clientes_total.html', context)
 @login_required(login_url='login')
 def cliente_details(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     cliente1=get_object_or_404(Paciente, pk=pk)
     cita=Cita.objects.all().order_by("fecha").filter(paciente=cliente1)
@@ -183,12 +208,17 @@ def cliente_details(request, pk):
     return render(request, "cliente_details.html", {'cliente': cliente1, 'cita': cita, 'footer': footer, 'tratamientos': tratamientos})
 @login_required(login_url='login')
 def new_centro(request):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     form=CentroForm()
     if request.method == 'POST':
         form = CentroForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,f'Se ha creado el centro ')
             return redirect("index")
     else:
         form = CentroForm()
@@ -196,6 +226,10 @@ def new_centro(request):
     return render(request, "new_centro.html", {'form': form, 'footer': footer})
 @login_required(login_url='login')
 def new_cliente(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     centro1=get_object_or_404(Centro, id_centro=pk)
     form=ClienteForm()
@@ -227,7 +261,9 @@ def new_cliente(request, pk):
                 from_email = f'Enviado por {footer.propietario}'
                 to = cliente.email
                 mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
-                print(f"Email Enviado a {cliente.email}")
+                print(f"Email Enviado a {cliente.email} ")
+                messages.success(request,f'Se ha enviado el Email a la dirección {cliente.email} ')
+            messages.success(request,f'Se ha creado el cliente {cliente.nombre_paciente}')
             return redirect("centro_details", pk=centro1.id_centro)
     else:
         form = ClienteForm()
@@ -236,6 +272,10 @@ def new_cliente(request, pk):
 
 @login_required(login_url='login')
 def new_cita(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     cliente1=get_object_or_404(Paciente, id_paciente=pk)
     if request.user.is_staff:
@@ -246,9 +286,10 @@ def new_cita(request, pk):
                  cita = form.save(commit=False)
                  cita.paciente=cliente1
                  form.save()
+                 messages.success(request,f'Se ha guardado la cita del cliente {cita.paciente.nombre_paciente}')
                  return redirect("cliente_details", pk=cliente1.id_paciente)
              else:
-                 print(f"Ha sucedido el siguiennte error {form.errors }")
+                 messages.error(request,f'Ha sucedido el siguiente error {form.errors }')
                  form = CitaFormAdmin()
     else:
          form=CitaForm()
@@ -259,15 +300,20 @@ def new_cita(request, pk):
                  cita.paciente=cliente1
                  cita.tecnica=request.user.tecnica
                  form.save()
+                 messages.success(request,f'Se ha creado el cliente {cita.paciente.nombre_paciente}')
                  return redirect("cliente_details", pk=cliente1.id_paciente)
              else:
-                print(f"Ha sucedido el siguiennte error {form.errors }")
+                #messages.error(request,f'Ha sucedido el siguiennte error {form.errors }')
                 form = CitaForm()
 
     return render(request, "new_cita.html", {'form': form, 'footer': footer})
 
 @login_required(login_url='login')
 def edit_cita(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     cita=get_object_or_404(Cita, pk=pk)
     if request.user.is_staff:
@@ -278,9 +324,10 @@ def edit_cita(request, pk):
                  cita = form.save(commit=False)
                  cita.paciente=cliente1
                  form.save()
+                 messages.success(request,f'Se ha guardado la cita')
                  return redirect("cliente_details", pk=cliente1.id_paciente)
              else:
-                 print(f"Ha sucedido el siguiennte error {form.errors }")
+                 #messages.error(request,f'Ha sucedido el siguiente error {form.errors }')
                  form = CitaFormAdmin()
     else:
          form=CitaForm()
@@ -291,14 +338,19 @@ def edit_cita(request, pk):
                  cita.paciente=cliente1
                  cita.tecnica=request.user.tecnica
                  form.save()
+                 messages.success(request,f'Se ha guardado la cita')
                  return redirect("cliente_details", pk=cliente1.id_paciente)
              else:
-                print(f"Ha sucedido el siguiennte error {form.errors }")
+                #messages.error(request,f'Ha sucedido el siguiente error {form.errors }')
                 form = CitaForm()
 
     return render(request, "edit_cita.html", {'form': form, 'footer': footer})
 @login_required(login_url='login')
 def new_tratamiento(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     cliente1=get_object_or_404(Paciente, id_paciente=pk)
     if request.user.is_staff:
@@ -309,9 +361,10 @@ def new_tratamiento(request, pk):
                  cita = form.save(commit=False)
                  cita.cliente=cliente1
                  form.save()
+                 messages.success(request,f'Se ha guardado el tratamiento')
                  return redirect("cliente_details", pk=cliente1.id_paciente)
              else:
-                 print(f"Ha sucedido el siguiente error {form.errors }")
+                 pass
 
     else:
          form=TratamientoForm()
@@ -322,14 +375,19 @@ def new_tratamiento(request, pk):
                  cita.cliente=cliente1
                  cita.tecnica=request.user.tecnica
                  form.save()
+                 messages.success(request,f'Se ha guardado el tratamiento')
                  return redirect("cliente_details", pk=cliente1.id_paciente)
              else:
-                print(f"Ha sucedido el siguiente error {form.errors }")
+                pass
 
     return render(request, "new_tratamiento.html", {'form': form, 'footer': footer})
 
 @login_required(login_url='login')
 def edit_tratamiento(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     tratamiento=get_object_or_404(Tratamientos, pk=pk)
     cliente1=tratamiento.cliente
@@ -341,9 +399,10 @@ def edit_tratamiento(request, pk):
                  cita = form.save(commit=False)
                  cita.cliente=cliente1
                  form.save()
+                 messages.success(request,f'Se ha guardado el tratamiento')
                  return redirect("cliente_details", pk=cliente1.id_paciente)
              else:
-                 print(f"Ha sucedido el siguiennte error {form.errors }")
+                 #messages.error(request,f'Ha sucedido el siguiente error {form.errors }')
                  form = CitaFormAdmin()
     else:
          form=TratamientoForm(instance=tratamiento)
@@ -354,15 +413,20 @@ def edit_tratamiento(request, pk):
                  cita.cliente=cliente1
                  cita.tecnica=request.user.tecnica
                  form.save()
+                 messages.success(request,f'Se ha guardado el tratamiento')
                  return redirect("cliente_details", pk=cliente1.id_paciente)
              else:
-                print(f"Ha sucedido el siguiennte error {form.errors }")
+                pass
 
 
     return render(request, "edit_tratamiento.html", {'form': form, 'footer': footer})
 
 @login_required(login_url='login')
 def edit_centro(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     post = get_object_or_404(Centro, pk=pk)
     if request.method == "POST":
@@ -370,12 +434,17 @@ def edit_centro(request, pk):
         if form.is_valid():
             post = form.save(commit=False)
             post.save()
+            messages.success(request,f'Se han guardado los datos del centro')
             return redirect('index')
     else:
         form = CentroForm(instance=post)
     return render(request, 'edit_centro.html', {'form': form, 'footer': footer})
 @login_required(login_url='login')
 def edit_cliente(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     cliente = get_object_or_404(Paciente, pk=pk)
     if request.method == "POST":
@@ -383,12 +452,17 @@ def edit_cliente(request, pk):
         if form.is_valid():
             post = form.save(commit=False)
             post.save()
+            messages.success(request,f'Se han guardado los datos del cliente {cliente.nombre_paciente}')
             return redirect("cliente_details", pk=cliente.id_paciente)
     else:
         form = ClienteForm(instance=cliente)
     return render(request, 'edit_cliente.html', {'form': form, 'footer': footer})
 @login_required(login_url='login')
 def edit_cita(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     cita = get_object_or_404(Cita, id_cita=pk)
     if request.method == "POST":
@@ -396,12 +470,17 @@ def edit_cita(request, pk):
         if form.is_valid():
             post = form.save(commit=False)
             post.save()
+            messages.success(request,f'Se ha guardado la cita')
             return redirect("cliente_details", pk=cita.paciente.id_paciente)
     else:
         form = CitaForm(instance=cita)
     return render(request, 'edit_cita.html', {'form': form, 'footer': footer})
 @login_required(login_url='login')
 def historial(request):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     historial_centro=Centro.history.all().order_by("-history_date")[:500]
     historial_paciente=Paciente.history.all().order_by("-history_date")[:500]
@@ -423,43 +502,73 @@ def historial(request):
     return render(request, 'history.html', {'historial_centro': cen , 'cen': cen , 'footer': footer})
 @login_required(login_url='login')
 def delete_centro(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     centro=get_object_or_404(Centro, pk=pk).delete()
+    messages.error(request,f'Se ha borrado el centro')
     return redirect("index")
 @login_required(login_url='login')
 def delete_cliente(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     cliente1=get_object_or_404(Paciente, pk=pk)
     cliente=get_object_or_404(Paciente, pk=pk).delete()
+    messages.error(request,f'Se ha borrado el cliente')
     return redirect("centro_details", pk=cliente1.centro.id_centro)
 @login_required(login_url='login')
 def delete_cita(request, pk):
     footer=Configuracion.objects.all().last()
     cita1=get_object_or_404(Cita, pk=pk)
     cita=get_object_or_404(Cita, pk=pk).delete()
+    messages.error(request,f'Se ha borrado la cita')
     return redirect("cliente_details", pk=cita1.paciente.id_paciente)
 @login_required(login_url='login')
 def delete_tratamiento(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     tratamiento=get_object_or_404(Tratamientos, pk=pk).delete()
+    messages.error(request,f'Se ha borrado el tratamiento')
     return redirect("cliente_details", pk=tratamiento.paciente.id_paciente)
 @login_required(login_url='login')
 def entrada(request):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     user=request.user
-    entrada=ControlHorario(tecnica=request.user.tecnica, fecha=datetime.date.today(), entrada=timezone.now().time())
+    entrada=ControlHorario(tecnica=request.user.tecnica, fecha=datetime.now(), entrada=timezone.now().time())
     entrada.save()
+    messages.success(request,f'Has fichado la entrada como {user.tecnica.nombre_tecnica}')
     return redirect("index")
 @login_required(login_url='login')
 def salida(request):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     user=request.user
     salida=ControlHorario.objects.filter(tecnica=user.tecnica, salida=None).last()
     salida.salida=timezone.now().time()
     salida.save()
+    messages.warning(request,f'Has fichado la salida como {user.tecnica.nombre_tecnica}')
     return redirect("index")
 @login_required(login_url='login')
 def perfil(request):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     user=request.user
     meses=ControlHorario.objects.filter(tecnica=user.tecnica).order_by("-fecha", "-entrada")
@@ -485,6 +594,10 @@ def perfil(request):
 
 @login_required(login_url='login')
 def view_perfiles(request):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     tecnica= Tecnica.objects.all().order_by("-nombre_tecnica")
     notfound=False
@@ -516,6 +629,10 @@ def view_perfiles(request):
 
 @login_required(login_url='login')
 def ver_horario(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     salida=False
     #checkea si ha enytrado o salido
@@ -533,8 +650,12 @@ def ver_horario(request, pk):
 
 @login_required(login_url='login')
 def ver_horario_visual(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
-    today = date.today()
+    today = datetime.now()
     salida=False
     #checkea si ha enytrado o salido
     tecnica=get_object_or_404(Tecnica, pk=pk)
@@ -549,8 +670,12 @@ def ver_horario_visual(request, pk):
 
 @login_required(login_url='login')
 def ver_visual_tecnica(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
-    today = date.today()
+    today = datetime.now()
     salida=False
     tecnica=request.user.tecnica
     #checkea si ha enytrado o salido
@@ -576,6 +701,10 @@ def ver_visual_tecnica(request, pk):
 
 @login_required(login_url='login')
 def send_emails(request):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     users=Paciente.objects.exclude(email='')
     form=EmailForm()
@@ -605,17 +734,20 @@ def send_emails(request):
                 to = users.email
                 mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
                 print(f"Email Enviado a {users.email}")
-
+            messages.success(request,f'Se han enviado los Emails')
             return redirect("index")
         else:
-           HttpResponse(f"Ha sucedido el siguiennte error {form.errors }")
-           #form = EmailForm()
+           pass
 
     return render(request, "send_emails.html", {'form': form, 'footer': footer})
 @login_required(login_url='login')
 def edit_turno(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
-    today = date.today()
+    today = datetime.now()
     salida=False
     if pk !=0:
         tecnica=get_object_or_404(Tecnica, pk=pk)
@@ -633,6 +765,10 @@ def edit_turno(request, pk):
     return render(request, 'edit_turno.html', {'meses': meses, 'salida': salida, 'tecnica': tecnica , 'today': today, 'footer': footer})
 @login_required(login_url='login')
 def emails_templates(request):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     emails=EmailTemplates.objects.all()
     #shearch emails
@@ -654,6 +790,10 @@ def emails_templates(request):
 
 @login_required(login_url='login')
 def emails_template(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     email=get_object_or_404(EmailTemplates, pk=pk)
     form = EmailTemplateEditForm(instance=email)
@@ -662,34 +802,48 @@ def emails_template(request, pk):
         if form.is_valid():
             cita = form.save(commit=False)
             form.save()
+            messages.success(request,f'Se han guardado la plantilla')
             return redirect("emails_templates")
         else:
-           print(f"Ha sucedido el siguiennte error {form.errors }")
+           pass
     return render(request, 'emails_template.html', {'footer': footer, 'form': form })
 
 @login_required(login_url='login')
 def new_emails_template(request):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     form=EmailTemplateNewForm()
     if request.method == 'POST':
         form = EmailTemplateNewForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,f'Se ha creado la plantilla')
             return redirect("emails_templates")
     else:
-        #form = EmailTemplateNewForm()
-        print(f"Ha sucedido el siguiennte error {form.errors }")
+        messages.error(request,f'Ha sucedido el siguiente error {form.errors }')
     return render(request, 'new_email_templates.html', {'footer': footer, 'form': form})
 
 @login_required(login_url='login')
 def delete_email(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     email=get_object_or_404(EmailTemplates, pk=pk).delete()
+    messages.error(request,f'Se ha borrado la plantilla')
     return redirect("emails_templates")
 
 #documentos firmables
 @login_required(login_url='login')
 def docs_list(request):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     docs=DocTemplate.objects.all()
 
@@ -711,6 +865,10 @@ def docs_list(request):
     return render(request, 'docs_list.html', {'footer': footer, 'docs': docs, 'form': form ,'notfound': notfound})
 @login_required(login_url='login')
 def docs_template(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     doc=get_object_or_404(DocTemplate, pk=pk)
     form = DocTemplateEditForm(instance=doc)
@@ -719,37 +877,52 @@ def docs_template(request, pk):
         if form.is_valid():
             doc = form.save(commit=False)
             form.save()
+            messages.success(request,f'Se ha guardado el documento')
             return redirect("docs_list")
         else:
-           print(f"Ha sucedido el siguiennte error {form.errors }")
+           pass
     return render(request, 'docs_template.html', {'footer': footer, 'form': form })
 
 
 @login_required(login_url='login')
 def delete_doc(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     doc=get_object_or_404(DocTemplate, pk=pk).delete()
+    messages.error(request,f'Se ha borrado el docuemento')
     return redirect("docs_list")
 @login_required(login_url='login')
 def new_doc_template(request):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     form=DocTemplateNewForm()
     if request.method == 'POST':
         form = DocTemplateNewForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request,f'Se ha creado el documento')
             return redirect("docs_list")
     else:
-        #form = EmailTemplateNewForm()
-        print(f"Ha sucedido el siguiennte error {form.errors }")
+        pass
     return render(request, 'docs_template.html', {'footer': footer, 'form': form})
 
 @login_required(login_url='login')
 def sing(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     sign_=get_object_or_404(DocSings, pk=pk)
     form = SingForm()
-    baseurl='https://anahi.pythonanywhere.com/media'
+    formatted_date = dateformat.format(timezone.now(), 'Y-m-d H:i:s')
+    baseurl='https://wavecompany.pythonanywhere.com/media'
     if request.method == 'POST':
         form = SingForm(request.POST or None, instance=sign_)
         if form.is_valid():
@@ -759,18 +932,23 @@ def sing(request, pk):
                 signature_picture = draw_signature(signature)
                 signature_file_path = draw_signature(signature, as_file=True)
                 try:
-                     filename=f'tmp_sign_{timezone.now()}-{sign_.cliente.pk}.png'
+                     filename=f'tmp_sign_{formatted_date}-{sign_.cliente.pk}.png'
                      file = signature_picture.save(f'{settings.MEDIA_ROOT}/sings_user/{filename}' , mode='RGB')
                      sign_.firma_imagen = f'{baseurl}/sings_user/{filename}'
                 except Exception as e:
                     return HttpResponse(f"Error {e}")
                 form.save()
+            messages.success(request,f'Se ha guardado la firma')
             return redirect("cliente_details", pk=sign_.cliente.pk)
         else:
-           print(f"Ha sucedido el siguiennte error {form.errors }")
+           pass
     return render(request, 'sing.html', {'footer': footer, 'form': form})
 @login_required(login_url='login')
 def doc_prerender(request, user,doc):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     doc_=get_object_or_404(DocTemplate, pk=doc)
     user_=get_object_or_404(Paciente, pk=user)
@@ -824,9 +1002,13 @@ def doc_prerender(request, user,doc):
     else:
         form=PrerenderForm(instance=sign_)
 
-    return render(request, "doc_prerender.html", {'form': form, 'footer': footer, 'doc': doc_, 'user_':user_ ,'firma': sign_.firma_imagen})
+    return render(request, "doc_prerender.html", {'form': form, 'footer': footer, 'doc': doc_, 'user_':user_ ,'firma': sign_.firma_imagen, 'sign': sign_})
 @login_required(login_url='login')
 def docs_sign_list(request, user=0):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     docs=DocTemplate.objects.all()
     #shearch emails
@@ -849,3 +1031,31 @@ def docs_sign_list(request, user=0):
     else:
         form = SheachForm()
     return render(request, 'docs_list.html', {'footer': footer, 'docs': docs, 'form': form ,'notfound': notfound, 'cliente': user })
+
+
+def suscripcion(request):
+    footer=Configuracion.objects.all().last()
+    return render(request, 'suscripcion.html', {'footer': footer })
+
+def doc_email(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<datetime.now():
+        messages.success(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
+    footer=Configuracion.objects.all().last()
+    doc=get_object_or_404(DocSings, pk=pk)
+    cliente=doc.cliente
+    mensaje=doc.plantilla_render
+    mensaje=Template(mensaje)
+    c = Context()
+    mensaje=mensaje.render(c)
+    subject = f'Tu documento de {doc.plantilla_doc.nombre_doc} de {footer.nombre_comercial}'
+    template=mensaje
+    html_message = render_to_string('blanc.html', {'mensaje': template, 'footer': footer})
+    plain_message = strip_tags(html_message)
+    from_email = f'Enviado por {footer.propietario}'
+    to = cliente.email
+    mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+    mail.send_mail(subject, plain_message, from_email, [footer.email], html_message=html_message)
+    messages.success(request,f"Email Enviado a {cliente.email}")
+    return redirect("cliente_details", pk=doc.cliente.pk)

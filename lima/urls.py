@@ -48,5 +48,6 @@ urlpatterns = [
     path('doc_prerender/<int:user>/<int:doc>/', views.doc_prerender, name="doc_prerender"),
     path('doc_prerender/<int:pk>/', views.doc_prerender, name="doc_prerender"),
     path('sing/<int:pk>/', views.sing, name="sing"),
-
+    path('suscripcion', views.suscripcion, name="suscripcion"),
+    path('doc_email/<int:pk>/', views.doc_email, name="doc_email"),
 ]

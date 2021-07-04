@@ -6,7 +6,7 @@
 
 <div class="login ">
 
-<img src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" style="height: 50px;" />
+<img src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" style="height: 300px;" />
   <br>
   <h2>Añade un centro nuevo</h2>
   <br>
@@ -16,10 +16,7 @@
     <button type="submit" class="button is-warning" >Añadir</button>
 
   </form>
-  <a href="{%url 'emails_templates'%}">
-    <!-- <input type=button value="Cancelar" class="button is-danger cancel" style="margin-top: -35px;" onClick="javascript:history.go(-1);"> -->
-    <input type=button value="Cancelar" class="button is-danger cancel" style="margin-top: -35px;">
-  </a>
+<button class="button is-danger cancel" onClick="javascript:history.go(-1);">Cancelar</button>
 
 
 </div>
