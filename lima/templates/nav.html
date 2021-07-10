@@ -76,8 +76,6 @@
 </svg>  &nbsp;     Fichar la salida
       </a>
  {% endifequal%}
-
-  {% endif %}
         <hr class="navbar-divider">
          <a href="{%url 'ver_horario_visual' pk=user.tecnica.pk %}"  class="navbar-item">
             <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar-day" viewBox="0 0 16 16">
@@ -86,6 +84,8 @@
 </svg>  &nbsp;    Ver visual de mi Horario
 
             </a>
+  {% endif %}
+
 
    {% endif %}
     {% if perms.lima.view_cita %}
@@ -291,7 +291,7 @@
     {%endif%}
      <!--end cajas-->
 
-
+ {% if request.user.is_staff %}
       <div class="navbar-item has-dropdown is-hoverable">
         <a class="navbar-link">
         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-question-square" viewBox="0 0 16 16">
@@ -309,7 +309,7 @@
 
         </div>
     </div>
-
+{%endif%}
 
 
     <div class="navbar-end">

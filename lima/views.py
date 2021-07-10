@@ -1401,7 +1401,7 @@ def estatisticas(request):
                     fecha_fin= form.cleaned_data['fecha_fin']
                     centro= form.cleaned_data['centro']
                     tecnicas=form.cleaned_data['tecnicas']
-                    messages.success(request,f'El response devuelve esto Fecha inicio: {fecha_inico}, fecha_fin :{fecha_fin}, centro: {centro}, tecnicas : {tecnicas}')
+                    #messages.success(request,f'El response devuelve esto Fecha inicio: {fecha_inico}, fecha_fin :{fecha_fin}, centro: {centro}, tecnicas : {tecnicas}')
                     clientes = Paciente.objects.raw(f'SELECT lima_paciente.id_paciente, COUNT(*) AS count, MONTH(lima_paciente.fecha_alta) FROM 	lima_paciente WHERE lima_paciente.fecha_alta BETWEEN  "{fecha_inico}" AND  "{fecha_fin}" AND centro_id = {centro.pk}  GROUP BY MONTH(lima_paciente.fecha_alta)')
                     tratamientos=Tratamientos.objects.raw(f'SELECT lima_tratamientos.id_tratamiento, COUNT(*) AS count, MONTH(lima_tratamientos.fecha) FROM 	lima_tratamientos WHERE lima_tratamientos.fecha BETWEEN  "{fecha_inico}" AND "{fecha_fin}" AND lima_tratamientos.tecnica_id = {tecnicas.pk} GROUP BY MONTH(lima_tratamientos.fecha)')
                     facturacion = Cajas.objects.raw(f'SELECT lima_cajas.id_caja, SUM(cantidad_total) AS count, MONTH(lima_cajas.fecha) FROM 	lima_cajas WHERE lima_cajas.fecha BETWEEN "{fecha_inico}" AND "{fecha_fin}" AND centro_id = {centro.pk} AND tecnica_id = {tecnicas.pk} GROUP BY MONTH(lima_cajas.fecha)')
