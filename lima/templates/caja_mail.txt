@@ -1,0 +1,20 @@
+
+Se ha creado la caja del día {{caja.fecha}}
+
+
+Centro: {{caja.centro}}
+Técnica: {{caja.tecnica}}
+Porcentaje : {{caja.porcentaje}}
+Cantidad en Efectivo: {{caja.cantidad_efectivo}}
+Cantidad en Tarjeta {{caja.cantidad_tarjeta}}
+
+-----------------------------------------------
+Total: {{caja.cantidad_total}}
+Total del centro: {{caja.cantidad_total_centro}}
+Total del sistema: {{caja.cantidad_total_sistema}}
+
+
+
+--------------------------------------------------
+
+Comentario:{{caja.comentario}}

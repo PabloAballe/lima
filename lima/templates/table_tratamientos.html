@@ -7,6 +7,7 @@
         <th><abbr title="Zona">J/S</abbr></th>
         <th><abbr title="Hertz">J/L</abbr></th>
         <th><abbr title="Fecha">Fecha</abbr></th>
+        <th><abbr title="Fecha">Observaciones</abbr></th>
         <th><abbr title="Acción">Acción</abbr></th>
 
       </tr>
@@ -23,6 +24,7 @@
         <td>{{tratamiento.js}}</td>
         <td>{{tratamiento.jl}}</td>
         <td>{{tratamiento.fecha}}</td>
+        <td>{{tratamiento.comentario}}</td>
         <td>
             {% if perms.lima.change_tratamientos %}
               <a href="{% url 'edit_tratamiento' pk=tratamiento.id_tratamiento %}">

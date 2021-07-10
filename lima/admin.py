@@ -12,9 +12,9 @@ class CentroAdmin(ImportExportModelAdmin):
     list_filter =  ['nombre_centro', 'propietaria', 'localizacion']
 
 class PacienteAdmin(ImportExportModelAdmin):
-    list_display= ['nombre_paciente', 'apellidos_paciente', 'telefono_paciente', 'email', 'autorizacion', 'protec_datos','poblacion', 'direccion' ]
-    search_fields =['nombre_paciente', 'apellidos_paciente', 'telefono_paciente', 'email', 'autorizacion', 'protec_datos','poblacion', 'direccion' ]
-    list_filter =  ['nombre_paciente', 'apellidos_paciente', 'telefono_paciente', 'email', 'autorizacion', 'protec_datos','poblacion', 'direccion' ]
+    list_display= ['nombre_paciente', 'apellidos_paciente', 'telefono_paciente', 'email', 'documento_de_autorizacion', 'documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion', 'direccion' ]
+    search_fields =['nombre_paciente', 'apellidos_paciente', 'telefono_paciente', 'email', 'documento_de_autorizacion', 'documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion', 'direccion' ]
+    list_filter = ['centro__nombre_centro','fecha_alta','documento_de_autorizacion', 'documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion' ]
 
 class TecnicaAdmin(ImportExportModelAdmin):
     list_display= ['id_tecnica','nombre_tecnica', 'apellidos_tecnica']
@@ -47,19 +47,51 @@ class ConfiguracionAdmin(ImportExportModelAdmin):
 
 class TurnosAdmin(ImportExportModelAdmin):
     list_display= ['tecnica','centro', 'turno']
-    search_fields =  ['tecnica','centro', 'turno']
-    list_filter =   ['tecnica','centro', 'turno']
+    search_fields =  ['tecnica__nombre_tecnica','centro__nombre_centro', 'turno']
+    list_filter =   ['tecnica__nombre_tecnica','centro__nombre_centro', 'turno']
 
 class TratamientosAdmin(ImportExportModelAdmin):
     list_display= ['fecha', 'cliente','js', 'jl', 'tecnica','comentario']
     search_fields =  ['fecha','tecnica', 'cliente']
     list_filter =   ['fecha','tecnica', 'cliente']
 
-admin.site.site_header = "Lima y Neon"
-admin.site.site_title = "Portal Lima y Neon"
-admin.site.index_title = "Portal Lima y Neon"
+class ServiciosAdmin(ImportExportModelAdmin):
+    list_display= ['nombre_servicio', 'duracion_sevicio']
+    search_fields = ['nombre_servicio', 'duracion_sevicio']
+    list_filter =   ['nombre_servicio', 'duracion_sevicio']
+
+class StockAdmin(ImportExportModelAdmin):
+    list_display= ['nombre_stock', 'cantidad']
+    search_fields = ['nombre_stock', 'cantidad']
+    list_filter =   ['nombre_stock', 'cantidad']
+
+class ListaAdmin(ImportExportModelAdmin):
+    list_display= ['centro', 'cliente', 'tecnica', 'hora_inicio', 'hora_fin' ]
+    search_fields = [ 'cliente', 'tecnica', 'hora_inicio', 'hora_fin']
+    list_filter =   ['centro__nombre_centro', 'cliente', 'tecnica', 'hora_inicio', 'hora_fin']
+
+class EmailTemplatesAdmin(ImportExportModelAdmin):
+    list_display= ['nombre', 'plantilla']
+    search_fields =['nombre', 'plantilla']
+    list_filter =   ['nombre', 'plantilla']
+
+class CajasAdmin(ImportExportModelAdmin):
+    list_display= ['centro', 'tecnica','porcentaje', 'cantidad_total', 'cantidad_total_centro']
+    search_fields = ['centro__nombre_centro','tecnica','porcentaje', 'cantidad_total', 'cantidad_total_centro']
+    list_filter =   ['centro__nombre_centro', 'tecnica','porcentaje', 'cantidad_total', 'cantidad_total_centro']
 
 
+
+
+admin.site.site_header = "My Manager"
+admin.site.site_title = "My Manager"
+admin.site.index_title = "My Manager"
+
+admin.site.register(EmailTemplates, EmailTemplatesAdmin)
+admin.site.register(Lista, ListaAdmin)
+admin.site.register(Cajas, CajasAdmin)
+admin.site.register(Servicios, ServiciosAdmin)
+admin.site.register(Stock, StockAdmin)
 admin.site.register(Centro, CentroAdmin)
 admin.site.register(Configuracion, ConfiguracionAdmin)
 admin.site.register(Tratamientos, TratamientosAdmin)

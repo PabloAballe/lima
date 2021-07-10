@@ -18,14 +18,38 @@
   <br>
   <h2>Enviar Emails de Marketing</h2>
   <br>
-
-  <form method="post" >
+<form method="get">
+    {{ filter.form|crispy }}
+    <button type="submit" class="button is-link">Buscar</button>
+ </form>
+ <p>Listado de clientes encontrados</p>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre Cliente</th>
+        <th>Email</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+         {% for cliente in filter.qs %}
+        <td>{{ cliente.nombre_paciente }}</td>
+        <td>{{ cliente.email }}</td>
+      </tr>
+        {% endfor %}
+    </tbody>
+  </table>
+  <hr>
+  <br>
+  <form method="post" enctype="multipart/form-data" >
     {% csrf_token %}
     {{ form|crispy }}
     <button type="submit" class="button is-warning">Enviar</button>
 
   </form>
   <input type="button" value="Cancelar" class="button is-danger cancel" onClick="javascript:history.go(-1);">
+
+
 </div>
 <script>
 

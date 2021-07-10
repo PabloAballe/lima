@@ -30,11 +30,12 @@ urlpatterns = [
     path('ver_horario_visual/<int:pk>/', views.ver_horario_visual, name="ver_horario_visual"),
     path('ver_visual_tecnica/<int:pk>/', views.ver_visual_tecnica, name="ver_visual_tecnica"),
     path('view_perfiles', views.view_perfiles, name="view_perfiles"),
-    path('send_emails', views.send_emails, name="send_emails"),
     path('new_tratamiento/<int:pk>/', views.new_tratamiento, name="new_tratamiento"),
     path('edit_tratamiento/<int:pk>/', views.edit_tratamiento, name="edit_tratamiento"),
     path('delete_tratamiento/<int:pk>/', views.delete_tratamiento, name='delete_tratamiento'),
     path('edit_turno/<int:pk>/', views.edit_turno, name="edit_turno"),
+    #emails
+    path('send_emails', views.send_emails, name="send_emails"),
     path('emails_template/<int:pk>/', views.emails_template, name="emails_template"),
     path('emails_templates', views.emails_templates, name="emails_templates"),
     path('delete_email/<int:pk>/', views.delete_email, name="delete_email"),
@@ -50,4 +51,17 @@ urlpatterns = [
     path('sing/<int:pk>/', views.sing, name="sing"),
     path('suscripcion', views.suscripcion, name="suscripcion"),
     path('doc_email/<int:pk>/', views.doc_email, name="doc_email"),
+    #stock
+    path('stock_list', views.stock_list, name="stock_list"),
+    path('stock/<int:pk>/', views.stock, name="stock"),
+    #caja
+    path('caja_list', views.caja_list, name="caja_list"),
+    path('caja/<int:pk>/', views.caja, name="caja"),
+    #estadisticas
+    path('estatisticas', views.estatisticas, name="estatisticas"),
+    path('estadisticas_horario_tecnica/<int:pk>/', views.estadisticas_horario_tecnica, name="estadisticas_horario_tecnica"),
+    #listas
+    path('listas/<int:centro>/<int:pk>/', views.listas, name="listas"),
+    path('edit_lista/<int:pk>/<int:paciente>/', views.edit_lista, name="edit_lista"),
+    path('delete_lista/<int:pk>/', views.delete_lista, name="delete_lista"),
 ]

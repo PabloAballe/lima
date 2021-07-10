@@ -1,0 +1,63 @@
+
+{% ifequal  notfound True %}
+{% include 'notfound.html'%}
+{% else %}
+<div class="table" id="table">
+  <table class="table">
+    <thead>
+      <tr>
+        <th title="ID"><abbr title="ID">ID</abbr></th>
+        <th title="Nombre">Centro</th>
+        <th title="Nombre">Fecha</th>
+        <th><abbr title="Acción">Tecnica</abbr></th>
+        <th><abbr title="Acción">Porcentaje</abbr></th>
+        <th><abbr title="Acción">Total Centro</abbr></th>
+        <th><abbr title="Acción">Total Sistema</abbr></th>
+        <th><abbr title="Acción">Total Facturado</abbr></th>
+        <th><abbr title="Acción">Acción</abbr></th>
+      </tr>
+    </thead>
+    <tfoot>
+
+    </tfoot>
+    <tbody>
+      {%for caja in cajas %}
+      <tr>
+        <th>{{ forloop.counter }}</th>
+        <td>
+    {% if perms.lima.change_cajas %}
+
+    <a href="{% url 'caja' pk=caja.pk %}"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cash-stack" viewBox="0 0 16 16">
+  <path d="M1 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1H1zm7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+  <path d="M0 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V5zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V7a2 2 0 0 1-2-2H3z"/>
+</svg> &nbsp; {{caja.centro}}</a>
+{%else %} {{caja.centro}}{%endif%}
+        </td>
+
+            <td> {{caja.fecha}}</td>
+            <td> {{caja.tecnica}}</td>
+            <td> {{caja.porcentaje}} % </td>
+            <td> {{caja.cantidad_total_centro}}</td>
+            <td> {{caja.cantidad_total_sistema}}</td>
+            <td> {{caja.cantidad_total}}</td>
+
+ <td>
+    {% if perms.lima.change_cajas %}
+   <a href="{% url 'caja' pk=caja.pk %}">
+            <button class="button is-warning"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cash-stack" viewBox="0 0 16 16">
+  <path d="M1 3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1H1zm7 8a2 2 0 1 0 0-4 2 2 0 0 0 0 4z"/>
+  <path d="M0 5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v8a1 1 0 0 1-1 1H1a1 1 0 0 1-1-1V5zm3 0a2 2 0 0 1-2 2v4a2 2 0 0 1 2 2h10a2 2 0 0 1 2-2V7a2 2 0 0 1-2-2H3z"/>
+</svg> &nbsp; Ver Caja</button>
+          </a>
+ {%endif%}
+
+   </td>
+</tr>
+      {%endfor%}
+
+
+    </tbody>
+  </table>
+
+</div>
+{% endifequal %}

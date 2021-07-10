@@ -8,7 +8,6 @@
         <th><abbr title="Hertz">Hertz</abbr></th>
         <th><abbr title="Milisegundos">Milisegundos</abbr></th>
         <th><abbr title="Julios">Julios</abbr></th>
-        <th><abbr title="Fecha">Fecha</abbr></th>
         <th><abbr title="Acción">Acción</abbr></th>
 
       </tr>
@@ -27,7 +26,7 @@
         <td>{{cita.hertz}}</td>
         <td>{{cita.milisegundos}}</td>
         <td>{{cita.julios}}</td>
-        <td>{{cita.fecha}}</td>
+
         <td>
             {% if perms.lima.change_cita %}
          <a href="{% url 'edit_cita' pk=cita.id_cita %}">

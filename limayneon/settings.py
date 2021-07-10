@@ -51,6 +51,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'jsignature',
     'django.contrib.contenttypes',
+     'django_filters',
 ]
 
 MIDDLEWARE = [
