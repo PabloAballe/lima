@@ -17,9 +17,9 @@ class PacienteAdmin(ImportExportModelAdmin):
     list_filter = ['centro__nombre_centro','fecha_alta','documento_de_autorizacion', 'documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion' ]
 
 class TecnicaAdmin(ImportExportModelAdmin):
-    list_display= ['id_tecnica','nombre_tecnica', 'apellidos_tecnica']
-    search_fields = ['id_tecnica','nombre_tecnica', 'apellidos_tecnica']
-    list_filter =  ['id_tecnica','nombre_tecnica', 'apellidos_tecnica']
+    list_display= ['nombre_tecnica', 'apellidos_tecnica']
+    search_fields = ['nombre_tecnica', 'apellidos_tecnica']
+    list_filter =  ['nombre_tecnica', 'apellidos_tecnica']
 
 
 class CitaAdmin(ImportExportModelAdmin):

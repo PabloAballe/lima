@@ -13,13 +13,14 @@ from jsignature.fields import JSignatureField
 from jsignature.mixins import JSignatureFieldsMixin
 from django_base64field.fields import Base64Field
 from django.utils.timezone import now
-
+from faicon.fields import FAIconField
 # Create your models here.
 
 class Servicios(models.Model):
     id_servicio=models.AutoField(primary_key=True, auto_created = True)
     nombre_servicio=models.CharField(max_length=100,help_text="Ingrese el nombre del servicio" )
     duracion_sevicio=models.IntegerField(default="15")
+    icon = FAIconField(default="", blank=True)
 
     class Meta:
         verbose_name_plural = "Servicios"
@@ -34,7 +35,7 @@ class Centro(models.Model):
     localizacion=models.CharField(max_length=100,help_text="Ingrese la hubicación del centro")
     habilitado=models.BooleanField(default=True)
     history = HistoricalRecords()
-
+    icon = FAIconField(default="", blank=True)
 
     class Meta:
         verbose_name_plural = "Centros"
@@ -59,6 +60,7 @@ class Paciente(models.Model):
     autorizacion_envio_informacion_comercial=models.BooleanField(default=False)
     fecha_alta=models.DateTimeField(null=False, default=now)
     history = HistoricalRecords()
+    icon = FAIconField(default="", blank=True)
 
     class Meta:
         verbose_name_plural = "Clientes"
@@ -76,6 +78,7 @@ class Tecnica(models.Model):
     habilitado=models.BooleanField(default=True)
     history = HistoricalRecords()
     user = models.OneToOneField(User, on_delete=models.RESTRICT)
+    icon = FAIconField(default="", blank=True)
 
     class Meta:
         verbose_name_plural = "Técnicas | Técnicos"
@@ -100,6 +103,7 @@ class Cita(models.Model):
     milisegundos=models.IntegerField(help_text="Ingrese la potencia en milisegundos",  default=0, null=False)
     julios=models.IntegerField( help_text="Ingrese la potencia en julios",  default=0, null=False)
     history = HistoricalRecords()
+    icon = FAIconField(default="", blank=True)
 
     def save(self):
         entrada = dt.datetime.strptime(str(self.zona.duracion_sevicio), '%M')
@@ -121,6 +125,7 @@ class ControlHorario(models.Model):
     salida=models.TimeField(default=None, blank=True, null=True)
     history = HistoricalRecords()
     trabajado=models.TimeField(default="00:00")
+    icon = FAIconField(default="", blank=True)
 
     def save(self):
         if self.salida:
@@ -143,6 +148,7 @@ class Turnos(models.Model):
     centro=models.ForeignKey(Centro, on_delete=models.RESTRICT)
     turno=models.DateTimeField(null=False)
     history = HistoricalRecords()
+    icon = FAIconField(default="", blank=True)
 
     class Meta:
         verbose_name_plural = "Turnos de trabajo"
@@ -155,6 +161,7 @@ class EmailTemplates(models.Model):
     nombre=models.CharField(max_length=100,help_text="Ingrese el nombre de la plantilla" )
     plantilla=models.TextField(help_text="Confifure su plantilla")
     history = HistoricalRecords()
+    icon = FAIconField(default="", blank=True)
 
     class Meta:
         verbose_name_plural = "Plantillas de email"
@@ -168,6 +175,7 @@ class DocTemplate(models.Model):
     plantilla_doc=models.TextField(help_text="Confifure su plantilla")
     creado_el=models.DateTimeField(null=False, auto_now_add=True,)
     history = HistoricalRecords()
+    icon = FAIconField(default="", blank=True)
 
     class Meta:
         verbose_name_plural = "Plantillas de documentos"
@@ -183,6 +191,7 @@ class DocSings(models.Model):
     firmado_el=models.DateTimeField(null=False, auto_now_add=True)
     firma=JSignatureField(null=True , blank=True)
     firma_imagen=models.CharField(max_length=100,help_text="Ingrese la url de la firma" )
+    icon = FAIconField(default="", blank=True)
 
     class Meta:
         verbose_name_plural = "Documentos firmados"
@@ -207,6 +216,7 @@ class Configuracion(models.Model):
     enviar_email_nuevo_fichaje=models.BooleanField(default=True)
     plantilla_email=models.ForeignKey(EmailTemplates, on_delete=models.RESTRICT , blank=True, default="1")
     history = HistoricalRecords()
+    icon = FAIconField(default="", blank=True)
 
     class Meta:
         verbose_name_plural = "Configuración del sistema"
@@ -224,6 +234,7 @@ class Tratamientos(models.Model):
     jl=models.IntegerField(help_text="Ingrese los J/L" )
     tecnica=models.ForeignKey(Tecnica, on_delete=models.RESTRICT)
     comentario=models.CharField(max_length=100,help_text="Ingrese el comentario del tratamiento" )
+    icon = FAIconField(default="", blank=True)
 
     class Meta:
         verbose_name_plural = "Sesiones de Tratamientos agendados"
@@ -256,6 +267,7 @@ class Stock(models.Model):
     tecnica=models.ForeignKey(Tecnica, on_delete=models.RESTRICT, default="1")
     cantidad=models.IntegerField(help_text="Ingrese la cantidad de stock del producto")
     creado_el=models.DateTimeField(null=False, auto_now_add=True,)
+    icon = FAIconField(default="", blank=True)
 
     class Meta:
         verbose_name_plural = "Stock de productos"
@@ -275,6 +287,7 @@ class Cajas(models.Model):
     cantidad_total_sistema=models.DecimalField(help_text="Total Sistema", default=0,max_digits=20, decimal_places=2,)
     comentario=models.CharField(max_length=100,help_text="Ingrese el comentario de la caja", default="" )
     fecha=models.DateTimeField(null=False, auto_now_add=True)
+    icon = FAIconField(default="", blank=True)
 
     def save(self):
         self.cantidad_total=self.cantidad_efectivo+self.cantidad_tarjeta
@@ -296,6 +309,7 @@ class Lista(models.Model):
     servicios=models.ForeignKey(Servicios, on_delete=models.RESTRICT, default="1")
     hora_inicio=models.DateTimeField(null=False,default=now)
     hora_fin=models.DateTimeField(null=False,default=now)
+    icon = FAIconField(default="", blank=True)
 
     def clean_date(self):
         date = self.cleaned_data['hora_inicio']

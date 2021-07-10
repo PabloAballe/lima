@@ -131,8 +131,8 @@ class EmailForm(forms.Form):
 class EstadisticasAdminForm(forms.Form):
     fecha_inico=forms.DateTimeField(label='Fecha de inicio')
     fecha_fin=forms.DateTimeField(label='Fecha de fin')
-    centro=forms.ModelMultipleChoiceField(queryset=Centro.objects.exclude(habilitado=False), label='Selecciona las clínicas:')
-    tecnicas=forms.ModelMultipleChoiceField(queryset=Tecnica.objects.exclude(habilitado=False), label='Selecciona las técnicas:')
+    centro=forms.ModelChoiceField(queryset=Centro.objects.exclude(habilitado=False), label='Selecciona las clínicas:')
+    tecnicas=forms.ModelChoiceField(queryset=Tecnica.objects.exclude(habilitado=False), label='Selecciona las técnicas:')
 
 class EstadisticasTecnicaForm(forms.Form):
     fecha_inico=forms.DateTimeField(label='Fecha de inicio')

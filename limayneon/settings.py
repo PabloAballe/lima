@@ -33,7 +33,8 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
-
+    'admin_interface',
+    'colorfield',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.sessions',
@@ -43,8 +44,6 @@ INSTALLED_APPS = [
     'material',
     'crispy_forms',
     #custom admin
-    'admin_interface',
-    'colorfield',
     'simple_history',
     'import_export',
     'django_summernote',
@@ -52,6 +51,7 @@ INSTALLED_APPS = [
     'jsignature',
     'django.contrib.contenttypes',
      'django_filters',
+     'faicon'
 ]
 
 MIDDLEWARE = [

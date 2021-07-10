@@ -7,6 +7,7 @@ urlpatterns = [
     path('', include('lima.urls')),
     path('summernote/', include('django_summernote.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
+    path('faicon/', include('faicon.urls')),
 ]
 
 from django.conf import settings

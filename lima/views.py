@@ -303,7 +303,6 @@ def new_cliente(request, pk):
 @login_required(login_url='login')
 def new_cita(request, pk):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
         return redirect("suscripcion")
@@ -345,7 +344,6 @@ def new_cita(request, pk):
 @login_required(login_url='login')
 def edit_cita(request, pk):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
         return redirect("suscripcion")
@@ -386,7 +384,6 @@ def edit_cita(request, pk):
 @login_required(login_url='login')
 def new_tratamiento(request, pk):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
         return redirect("suscripcion")
@@ -426,7 +423,6 @@ def new_tratamiento(request, pk):
 
 @login_required(login_url='login')
 def edit_tratamiento(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
@@ -469,7 +465,6 @@ def edit_tratamiento(request, pk):
 
 @login_required(login_url='login')
 def edit_centro(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
@@ -514,7 +509,6 @@ def edit_cliente(request, pk):
 @login_required(login_url='login')
 def edit_cita(request, pk):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
         return redirect("suscripcion")
@@ -535,7 +529,6 @@ def edit_cita(request, pk):
     return render(request, 'edit_cita.html', {'form': form, 'footer': footer})
 @login_required(login_url='login')
 def historial(request):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
@@ -564,7 +557,6 @@ def historial(request):
     return render(request, 'history.html', {'historial_centro': cen , 'cen': cen , 'footer': footer})
 @login_required(login_url='login')
 def delete_centro(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
@@ -615,7 +607,6 @@ def delete_tratamiento(request, pk):
 @login_required(login_url='login')
 def entrada(request):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
         return redirect("suscripcion")
@@ -624,13 +615,12 @@ def entrada(request):
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     user=request.user
-    entrada=ControlHorario(tecnica=request.user.tecnica, fecha=datetime.now(), entrada=timezone.now().time())
+    entrada=ControlHorario(tecnica=request.user.tecnica, fecha=dt.datetime.now(), entrada=timezone.now().time())
     entrada.save()
     messages.success(request,f'Has fichado la entrada como {user.tecnica.nombre_tecnica}')
     return redirect("index")
 @login_required(login_url='login')
 def salida(request):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
@@ -692,7 +682,6 @@ def perfil(request):
 @login_required(login_url='login')
 def view_perfiles(request):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
         return redirect("suscripcion")
@@ -731,7 +720,6 @@ def view_perfiles(request):
 @login_required(login_url='login')
 def ver_horario(request, pk):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
         return redirect("suscripcion")
@@ -756,7 +744,6 @@ def ver_horario(request, pk):
 @login_required(login_url='login')
 def ver_horario_visual(request, pk):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
         return redirect("suscripcion")
@@ -764,7 +751,7 @@ def ver_horario_visual(request, pk):
         messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
-    today = datetime.now()
+    today = dt.datetime.now()
     salida=False
     #checkea si ha enytrado o salido
     tecnica=get_object_or_404(Tecnica, pk=pk)
@@ -780,7 +767,6 @@ def ver_horario_visual(request, pk):
 @login_required(login_url='login')
 def ver_visual_tecnica(request, pk):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
         return redirect("suscripcion")
@@ -788,7 +774,7 @@ def ver_visual_tecnica(request, pk):
         messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
-    today = datetime.now()
+    today = dt.datetime.now()
     salida=False
     tecnica=request.user.tecnica
     #checkea si ha enytrado o salido
@@ -860,7 +846,6 @@ def send_emails(request):
 @login_required(login_url='login')
 def edit_turno(request, pk):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
         return redirect("suscripcion")
@@ -868,7 +853,7 @@ def edit_turno(request, pk):
         messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
-    today = datetime.now()
+    today = dt.datetime.now()
     salida=False
     if pk !=0:
         tecnica=get_object_or_404(Tecnica, pk=pk)
@@ -960,7 +945,6 @@ def new_emails_template(request):
 @login_required(login_url='login')
 def delete_email(request, pk):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
         return redirect("suscripcion")
@@ -975,7 +959,6 @@ def delete_email(request, pk):
 #documentos firmables
 @login_required(login_url='login')
 def docs_list(request):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
@@ -1005,7 +988,6 @@ def docs_list(request):
 @login_required(login_url='login')
 def docs_template(request, pk):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
         return redirect("suscripcion")
@@ -1030,7 +1012,6 @@ def docs_template(request, pk):
 @login_required(login_url='login')
 def delete_doc(request, pk):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
         return redirect("suscripcion")
@@ -1043,7 +1024,6 @@ def delete_doc(request, pk):
     return redirect("docs_list")
 @login_required(login_url='login')
 def new_doc_template(request):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
@@ -1065,7 +1045,6 @@ def new_doc_template(request):
 
 @login_required(login_url='login')
 def sing(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
@@ -1100,7 +1079,6 @@ def sing(request, pk):
     return render(request, 'sing.html', {'footer': footer, 'form': form})
 @login_required(login_url='login')
 def doc_prerender(request, user,doc):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
@@ -1424,10 +1402,10 @@ def estatisticas(request):
                     centro= form.cleaned_data['centro']
                     tecnicas=form.cleaned_data['tecnicas']
                     messages.success(request,f'El response devuelve esto Fecha inicio: {fecha_inico}, fecha_fin :{fecha_fin}, centro: {centro}, tecnicas : {tecnicas}')
-                    clientes = Paciente.objects.raw('SELECT lima_paciente.id_paciente,COUNT(*) AS count, 	MONTH(lima_paciente.fecha_alta) FROM 	lima_paciente WHERE 	YEAR(lima_paciente.fecha_alta)=YEAR(CURDATE()) GROUP BY MONTH(lima_paciente.fecha_alta)')
-                    tratamientos=Tratamientos.objects.raw('SELECT  lima_tratamientos.id_tratamiento, 	COUNT(*) AS count, 	MONTH(lima_tratamientos.fecha) FROM 	lima_tratamientos WHERE 	YEAR(lima_tratamientos.fecha)=YEAR(CURDATE()) GROUP BY MONTH(lima_tratamientos.fecha)')
-                    facturacion = Cajas.objects.raw('SELECT lima_cajas.id_caja, 	SUM(cantidad_total) AS count, 	MONTH(lima_cajas.fecha) FROM 	lima_cajas WHERE 	YEAR(lima_cajas.fecha)=YEAR(CURDATE()) GROUP BY MONTH(lima_cajas.fecha)')
-                    tecnicas_horarios=ControlHorario.objects.raw(f'SELECT id, SUBSTRING_INDEX(CONCAT(SEC_TO_TIME(SUM(TIME_TO_SEC(trabajado)))), ":",1) AS count_tecnica, lima_tecnica.nombre_tecnica as nombre FROM lima_controlhorario INNER JOIN lima_tecnica ON lima_tecnica.id_tecnica=lima_controlhorario.tecnica_id WHERE MONTH(fecha)= MONTH(CURDATE()) AND YEAR(fecha)=YEAR(CURDATE())GROUP BY tecnica_id')
+                    clientes = Paciente.objects.raw(f'SELECT lima_paciente.id_paciente, COUNT(*) AS count, MONTH(lima_paciente.fecha_alta) FROM 	lima_paciente WHERE lima_paciente.fecha_alta BETWEEN  "{fecha_inico}" AND  "{fecha_fin}" AND centro_id = {centro.pk}  GROUP BY MONTH(lima_paciente.fecha_alta)')
+                    tratamientos=Tratamientos.objects.raw(f'SELECT lima_tratamientos.id_tratamiento, COUNT(*) AS count, MONTH(lima_tratamientos.fecha) FROM 	lima_tratamientos WHERE lima_tratamientos.fecha BETWEEN  "{fecha_inico}" AND "{fecha_fin}" AND lima_tratamientos.tecnica_id = {tecnicas.pk} GROUP BY MONTH(lima_tratamientos.fecha)')
+                    facturacion = Cajas.objects.raw(f'SELECT lima_cajas.id_caja, SUM(cantidad_total) AS count, MONTH(lima_cajas.fecha) FROM 	lima_cajas WHERE lima_cajas.fecha BETWEEN "{fecha_inico}" AND "{fecha_fin}" AND centro_id = {centro.pk} AND tecnica_id = {tecnicas.pk} GROUP BY MONTH(lima_cajas.fecha)')
+                    tecnicas_horarios=ControlHorario.objects.raw(f'SELECT id, SUBSTRING_INDEX(CONCAT(SEC_TO_TIME(SUM(TIME_TO_SEC(trabajado)))), ":",1) AS count_tecnica, lima_tecnica.nombre_tecnica AS nombre FROM lima_controlhorario INNER JOIN lima_tecnica ON id_tecnica=lima_controlhorario.tecnica_id WHERE fecha  BETWEEN "{fecha_inico}" AND "{fecha_fin}"  AND tecnica_id = {tecnicas.pk} GROUP BY tecnica_id')
             else:
                 form = EstadisticasAdminForm()
     else:
@@ -1460,8 +1438,19 @@ def estadisticas_horario_tecnica(request, pk=0):
     footer=Configuracion.objects.all().last()
     timeMonth=ControlHorario.objects.raw(f'SELECT id, CONCAT(SEC_TO_TIME( SUM(time_to_sec(trabajado))))  As count FROM lima_controlhorario WHERE tecnica_id ={pk} AND YEAR(fecha)=YEAR(CURDATE()) AND MONTH(fecha)=MONTH(CURDATE())   GROUP BY MONTH(fecha)')
     tiempo = ControlHorario.objects.raw(f'SELECT id, SUBSTRING_INDEX(CONCAT(SEC_TO_TIME(SUM(TIME_TO_SEC(trabajado)))), ":",1)  As count_time, MONTH(fecha) AS fecha FROM lima_controlhorario WHERE tecnica_id ={pk} AND YEAR(fecha)=YEAR(CURDATE())   GROUP BY MONTH(fecha)')
+    if request.method == "GET":
+            form = EstadisticasTecnicaForm(request.GET)
 
-    return render(request, 'estadistica_horario.html', {'footer': footer,'tiempo': tiempo,'timeMonth': timeMonth})
+            if form.is_valid():
+                    fecha_inico= form.cleaned_data['fecha_inico']
+                    fecha_fin= form.cleaned_data['fecha_fin']
+                    timeMonth=ControlHorario.objects.raw(f'SELECT id, CONCAT(SEC_TO_TIME( SUM(time_to_sec(trabajado))))  As count FROM lima_controlhorario WHERE tecnica_id ={pk} AND fecha BETWEEN "{fecha_inico}" AND "{fecha_fin}"    GROUP BY MONTH(fecha)')
+                    tiempo = ControlHorario.objects.raw(f'SELECT id, SUBSTRING_INDEX(CONCAT(SEC_TO_TIME(SUM(TIME_TO_SEC(trabajado)))), ":",1)  As count_time, MONTH(fecha) AS fecha FROM lima_controlhorario WHERE tecnica_id ={pk} AND fecha BETWEEN "{fecha_inico}" AND "{fecha_fin}"   GROUP BY MONTH(fecha)')
+
+            else:
+                form = EstadisticasTecnicaForm()
+
+    return render(request, 'estadistica_horario.html', {'footer': footer,'tiempo': tiempo,'timeMonth': timeMonth, 'form': form})
 
 @login_required(login_url='login')
 def listas(request, centro=0, pk=0):
@@ -1515,7 +1504,7 @@ def edit_lista(request, paciente=0,pk=0):
             form = ListaForm(request.POST)
             if form.is_valid():
                 date = form.cleaned_data['hora_inicio']
-                if date < datetime.now():
+                if date < dt.datetime.now():
                     messages.error(request,f'Debe ingresar una fecha a futuro para la cita')
                     return redirect("cliente_details", pk=cliente.pk)
                 lista=form.save(commit=False)
