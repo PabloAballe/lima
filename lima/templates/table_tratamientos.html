@@ -2,7 +2,8 @@
   <table class="table">
     <thead>
       <tr>
-        <th><abbr title="ID">ID</abbr></th>
+        <th><abbr title="ID">Número de sesión</abbr></th>
+        <th><abbr title="ID">Zona</abbr></th>
         <th><abbr title="Tecnica">Tecnica</abbr></th>
         <th><abbr title="Zona">J/S</abbr></th>
         <th><abbr title="Hertz">J/L</abbr></th>
@@ -18,8 +19,8 @@
     <tbody>
       {%for tratamiento in tratamientos %}
       <tr>
-        <th>{{ forloop.counter }}</th>
-
+        <th>{{ tratamiento.numero_de_sesion }}</th>
+        <th>{{ tratamiento.zona }}</th>
         <td>{{tratamiento.tecnica}}</td>
         <td>{{tratamiento.js}}</td>
         <td>{{tratamiento.jl}}</td>

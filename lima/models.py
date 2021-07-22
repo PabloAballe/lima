@@ -14,6 +14,11 @@ from jsignature.mixins import JSignatureFieldsMixin
 from django_base64field.fields import Base64Field
 from django.utils.timezone import now
 from faicon.fields import FAIconField
+from PIL import Image
+from io import BytesIO
+from django.core.files.uploadedfile import InMemoryUploadedFile
+from django_resized import ResizedImageField
+import sys
 # Create your models here.
 
 class Servicios(models.Model):
@@ -48,10 +53,10 @@ class Centro(models.Model):
 class Paciente(models.Model):
     id_paciente=models.AutoField(primary_key=True, auto_created = True, null=False)
     nombre_paciente=models.CharField(max_length=50,help_text="Ingrese el nombre de la/el paciente", null=False)
-    apellidos_paciente=models.CharField(max_length=50,help_text="Ingrese los apellidos de la/el paciente", null=False)
-    telefono_paciente=models.IntegerField(help_text="Ingrese el teléfono de la/el paciente")
-    email=models.EmailField(help_text="Ingrese el correo electronico de la/el paciente")
-    dni=models.CharField(max_length=50,help_text="Ingrese el DNI del cliente", default="")
+    apellidos_paciente=models.CharField(max_length=50,help_text="Ingrese los apellidos de la/el paciente", blank=True, default="")
+    telefono_paciente=models.IntegerField(help_text="Ingrese el teléfono de la/el paciente", null=True, default=0, blank=True)
+    email=models.EmailField(help_text="Ingrese el correo electronico de la/el paciente", blank=True, default="")
+    dni=models.CharField(max_length=50,help_text="Ingrese el DNI del cliente", default="", blank=True)
     documento_de_autorizacion=models.BooleanField(default=False)
     documento_proteccion_de_datos=models.BooleanField(default=False)
     centro=models.ForeignKey(Centro, on_delete=models.RESTRICT)
@@ -70,7 +75,7 @@ class Paciente(models.Model):
 
 class Tecnica(models.Model):
     id_tecnica=models.AutoField(primary_key=True, auto_created = True)
-    imagen=models.ImageField(upload_to='images/', default='img/porfile.png')
+    imagen=ResizedImageField(size=[500, 500],upload_to='images/', default='img/porfile.png')
     nombre_tecnica=models.CharField(max_length=50,help_text="Ingrese el nombre de la/el tecnic@")
     apellidos_tecnica=models.CharField(max_length=50,help_text="Ingrese los apellidos de la/el técnic@")
     centros=models.ManyToManyField(Centro, default="1")
@@ -207,7 +212,7 @@ class Configuracion(models.Model):
     email_sistema=models.EmailField(max_length=100,help_text="Ingrese el Email del negocio", default="hola@minegocio.com" )
     email_nueva_caja=models.EmailField(max_length=100,help_text="Ingrese el Email donde se enviarán los correos de nueva caja", default="hola@me.com" )
     email_nuevo_fichaje=models.EmailField(max_length=100,help_text="Ingrese el Email donde se enviarán los correos de nuevos fichajes", default="hola@me.com" )
-    logo=models.ImageField(upload_to='images/', default='img/login.png')
+    logo=ResizedImageField(size=[500, 500],upload_to='images/', default='img/login.png')
     slots=models.IntegerField(default='15', help_text="Ingrese el tamaño de los slots")
     tiempo_expira_caja=models.IntegerField(default='15', help_text="Ingrese el tamaño de los slots")
     politica=models.TextField(help_text="Ingrese la política  de la empresa que aparecera en la parte inferior de los textos")
@@ -228,13 +233,20 @@ class Configuracion(models.Model):
 
 class Tratamientos(models.Model):
     id_tratamiento=models.AutoField(primary_key=True, auto_created = True)
+    numero_de_sesion=models.IntegerField(help_text="Ingrese el número de sesión del tratamiento" , default=1)
+    zona=models.ForeignKey(Servicios, on_delete=models.RESTRICT, default="1")
+    hora_fin=models.DateTimeField(null=False,default=now)
     cliente=models.ForeignKey(Paciente, on_delete=models.RESTRICT)
-    fecha=models.DateTimeField(default="2000-01-01 00:00:00.0000 ")
+    fecha=models.DateTimeField(default="2000-01-01")
     js=models.IntegerField(help_text="Ingrese los J/S" )
     jl=models.IntegerField(help_text="Ingrese los J/L" )
     tecnica=models.ForeignKey(Tecnica, on_delete=models.RESTRICT)
-    comentario=models.CharField(max_length=100,help_text="Ingrese el comentario del tratamiento" )
+    comentario=models.CharField(max_length=100,help_text="Ingrese el comentario del tratamiento", blank=True, default="" )
     icon = FAIconField(default="", blank=True)
+
+    def save(self):
+        self.hora_fin = (self.fecha +  dt.timedelta(minutes=self.zona.duracion_sevicio))
+        return super(Tratamientos, self).save()
 
     class Meta:
         verbose_name_plural = "Sesiones de Tratamientos agendados"
@@ -285,7 +297,7 @@ class Cajas(models.Model):
     cantidad_total=models.DecimalField(help_text="Cantidad total", default=0,max_digits=20, decimal_places=2,)
     cantidad_total_centro=models.DecimalField(help_text="Total Centro", default=0,max_digits=20, decimal_places=2,)
     cantidad_total_sistema=models.DecimalField(help_text="Total Sistema", default=0,max_digits=20, decimal_places=2,)
-    comentario=models.CharField(max_length=100,help_text="Ingrese el comentario de la caja", default="" )
+    comentario=models.CharField(max_length=100,help_text="Ingrese el comentario de la caja", default="", blank=True )
     fecha=models.DateTimeField(null=False, auto_now_add=True)
     icon = FAIconField(default="", blank=True)
 
@@ -323,3 +335,20 @@ class Lista(models.Model):
     def __str__(self):
         return f"Lista de cliente  : {self.centro.nombre_centro}"
 
+class ImagenesClientes(models.Model):
+    id_image_cliente=models.AutoField(primary_key=True, auto_created = True)
+    #imagen=models.ImageField(upload_to='images/clientes/')
+    imagen=ResizedImageField(size=[500, 500], upload_to='images/clientes/')
+    cliente=models.ForeignKey(Paciente, on_delete=models.RESTRICT , null=False)
+    comentario=models.CharField(max_length=100,help_text="Ingrese el comentario de la imágen", default="", blank=True )
+    tecnica=models.ForeignKey(Tecnica, on_delete=models.RESTRICT, default="1")
+    fecha=models.DateTimeField(null=False, auto_now_add=True)
+    icon = FAIconField(default="", blank=True)
+
+
+
+    class Meta:
+        verbose_name_plural = "Listas de imágenes de clientes"
+
+    def __str__(self):
+        return f"Imágen del cliente  : {self.cliente.nombre_paciente}"

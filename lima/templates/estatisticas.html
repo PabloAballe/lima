@@ -9,6 +9,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 <div class="index">
 {%include 'estadisticas_form.html'%}
+
 <h1>Estadísticas del sistema </h1>
 
 
@@ -45,7 +46,7 @@ var ctx = document.getElementById('clientes');
      {%for cliente in clientes %}
         {% if not forloop.first %},{% endif %}
 
-            "{{cliente.fecha_alta__month}}"
+            "{{cliente.fecha_alta |date:'F'}}"
 
     {% endfor %}
     ];
@@ -120,7 +121,7 @@ var ctx = document.getElementById('tratamiento');
      {%for tratamiento in tratamientos %}
         {% if not forloop.first %},{% endif %}
 
-            "{{tratamiento.fecha__month}}"
+            "{{tratamiento.fecha|date:'F'}}"
 
     {% endfor %}
     ];
@@ -191,7 +192,7 @@ var ctx = document.getElementById('facturacion');
      {%for facturacion in facturacion %}
         {% if not forloop.first %},{% endif %}
 
-            "{{facturacion.fecha__month}}"
+            "{{facturacion.fecha |date:'F'}}"
 
     {% endfor %}
     ];

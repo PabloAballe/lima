@@ -34,12 +34,12 @@ class ClienteForm(forms.ModelForm):
 class TratamientoFormAdmin(forms.ModelForm):
     class Meta:
         model=Tratamientos
-        fields=('fecha', 'js', 'jl','tecnica', 'comentario' )
+        fields=('numero_de_sesion', 'zona','fecha', 'js', 'jl','tecnica', 'comentario' )
 
 class TratamientoForm(forms.ModelForm):
     class Meta:
         model=Tratamientos
-        fields=('fecha', 'js', 'jl', 'comentario' )
+        fields=('numero_de_sesion', 'zona','fecha', 'js', 'jl', 'comentario' )
 
 class EmailTemplateEditForm(forms.ModelForm):
     class Meta:
@@ -108,6 +108,10 @@ class ListaForm(forms.ModelForm):
         model=Lista
         fields=('hora_inicio' , 'tecnica','servicios')
 
+class FotoForm(forms.ModelForm):
+    class Meta:
+        model=ImagenesClientes
+        fields=('imagen' , 'comentario')
 
 class SingForm__(forms.Form):
     signature = JSignatureField()

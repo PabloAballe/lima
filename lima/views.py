@@ -270,7 +270,7 @@ def new_cliente(request, pk):
             cliente = form.save(commit=False)
             cliente.centro=centro1
             form.save()
-            if footer.email_nuevos_clientes and footer.plantilla_email:
+            if footer.enviar_email_nuevos_clientes and footer.plantilla_email:
                 mensaje=Template(mensaje)
                 c = Context({'usuario': f'{cliente.nombre_paciente} {cliente.apellidos_paciente}',
                             'centro': cliente.centro.nombre_centro, 'localizacion_centro': cliente.centro.localizacion,
@@ -603,7 +603,7 @@ def delete_tratamiento(request, pk):
     footer=Configuracion.objects.all().last()
     tratamiento=get_object_or_404(Tratamientos, pk=pk).delete()
     messages.error(request,f'Se ha borrado el tratamiento')
-    return redirect("cliente_details", pk=tratamiento.paciente.id_paciente)
+    return redirect("cliente_details", pk=tratamiento.cliente.id_paciente)
 @login_required(login_url='login')
 def entrada(request):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
@@ -1268,13 +1268,15 @@ def stock(request, pk=0):
     return render(request, 'stock.html', {'footer': footer,'form': form})
 
 @login_required(login_url='login')
-def caja_list(request):
+def caja_list(request, centro):
     footer=Configuracion.objects.all().last()
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if request.user.is_staff:
-        cajas=Cajas.objects.raw(F'SELECT * FROM lima_cajas   ORDER BY lima_cajas.fecha DESC LIMIT 50')
+    if request.user.has_perm('lima.view_all_cajas') and centro==0:
+        cajas=Cajas.objects.raw(f'SELECT * FROM lima_cajas   ORDER BY lima_cajas.fecha DESC LIMIT 50')
+    elif centro!=0:
+        cajas=Cajas.objects.raw(f'SELECT * FROM lima_cajas WHERE lima_cajas.centro_id={centro}  ORDER BY lima_cajas.fecha DESC LIMIT 50')
     else:
-        now=datetime.now ()
+        now=dt.datetime.now ()
         dt_string = str(now.strftime("%Y-%m-%d %H:%M:%S"))
         tiempoExpira = footer.tiempo_expira_caja
         cajas=Cajas.objects.raw(F'SELECT * FROM lima_cajas WHERE fecha >= ("{dt_string}" - INTERVAL {tiempoExpira}  MINUTE ) AND tecnica_id = {request.user.tecnica.pk}  ORDER BY lima_cajas.fecha DESC LIMIT 50')
@@ -1327,7 +1329,7 @@ def caja(request, pk):
                 if form.is_valid():
                     caja = form.save()
                     messages.success(request,f'Se ha guardado la caja del día ')
-                    if footer.email_nueva_caja:
+                    if footer.email_nueva_caja==True:
                         plaintext = get_template('caja_mail.txt')
                         html     = get_template('caja_mail.html')
                         mensaje=Template(html)
@@ -1339,7 +1341,7 @@ def caja(request, pk):
                         from_email = f'Enviado desde {footer.nombre_comercial}'
                         to = footer.email_nueva_caja
                         mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
-                    return redirect("caja_list")
+                    return redirect("caja_list" , centro=0)
     else:
         if pk!=0:
             caja=get_object_or_404(Cajas, pk=pk)
@@ -1361,7 +1363,7 @@ def caja(request, pk):
                     caja.tecnica=request.user.tecnica
                     caja = form.save()
                     messages.success(request,f'Se ha guardado la caja del día ')
-                    if footer.email_nueva_caja:
+                    if footer.email_nueva_caja==True:
                         plaintext = get_template('caja_mail.txt')
                         html     = get_template('caja_mail.html')
                         mensaje=Template(html)
@@ -1374,7 +1376,7 @@ def caja(request, pk):
                         to = footer.email_nueva_caja
                         mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
 
-                    return redirect("caja_list")
+                    return redirect("caja_list", centro=0)
     return render(request, 'caja.html', {'footer': footer,'form': form })
 
 @login_required(login_url='login')
@@ -1387,9 +1389,9 @@ def estatisticas(request):
         messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
-    clientes = Paciente.objects.raw('SELECT lima_paciente.id_paciente,COUNT(*) AS count, 	MONTH(lima_paciente.fecha_alta) FROM 	lima_paciente WHERE 	YEAR(lima_paciente.fecha_alta)=YEAR(CURDATE()) GROUP BY MONTH(lima_paciente.fecha_alta)')
-    tratamientos=Tratamientos.objects.raw('SELECT  lima_tratamientos.id_tratamiento, 	COUNT(*) AS count, 	MONTH(lima_tratamientos.fecha) FROM 	lima_tratamientos WHERE 	YEAR(lima_tratamientos.fecha)=YEAR(CURDATE()) GROUP BY MONTH(lima_tratamientos.fecha)')
-    facturacion = Cajas.objects.raw('SELECT lima_cajas.id_caja, 	SUM(cantidad_total) AS count, 	MONTH(lima_cajas.fecha) FROM 	lima_cajas WHERE 	YEAR(lima_cajas.fecha)=YEAR(CURDATE()) GROUP BY MONTH(lima_cajas.fecha)')
+    clientes = Paciente.objects.raw('SELECT lima_paciente.id_paciente,COUNT(*) AS count, 	lima_paciente.fecha_alta as fecha_alta FROM 	lima_paciente WHERE 	YEAR(lima_paciente.fecha_alta)=YEAR(CURDATE()) GROUP BY MONTH(lima_paciente.fecha_alta)')
+    tratamientos=Tratamientos.objects.raw('SELECT  lima_tratamientos.id_tratamiento, 	COUNT(*) AS count, 	lima_tratamientos.fecha as fecha FROM 	lima_tratamientos WHERE 	YEAR(lima_tratamientos.fecha)=YEAR(CURDATE()) GROUP BY MONTH(lima_tratamientos.fecha)')
+    facturacion = Cajas.objects.raw('SELECT lima_cajas.id_caja, ROUND(SUM(cantidad_total),0) AS count, 	lima_cajas.fecha as fecha FROM 	lima_cajas WHERE 	YEAR(lima_cajas.fecha)=YEAR(CURDATE()) GROUP BY MONTH(lima_cajas.fecha)')
     tecnicas_horarios=ControlHorario.objects.raw(f'SELECT id, SUBSTRING_INDEX(CONCAT(SEC_TO_TIME(SUM(TIME_TO_SEC(trabajado)))), ":",1) AS count_tecnica, lima_tecnica.nombre_tecnica as nombre FROM lima_controlhorario INNER JOIN lima_tecnica ON lima_tecnica.id_tecnica=lima_controlhorario.tecnica_id WHERE MONTH(fecha)= MONTH(CURDATE()) AND YEAR(fecha)=YEAR(CURDATE())GROUP BY tecnica_id')
     #shearch form
     if request.user.is_staff:
@@ -1401,10 +1403,9 @@ def estatisticas(request):
                     fecha_fin= form.cleaned_data['fecha_fin']
                     centro= form.cleaned_data['centro']
                     tecnicas=form.cleaned_data['tecnicas']
-                    #messages.success(request,f'El response devuelve esto Fecha inicio: {fecha_inico}, fecha_fin :{fecha_fin}, centro: {centro}, tecnicas : {tecnicas}')
-                    clientes = Paciente.objects.raw(f'SELECT lima_paciente.id_paciente, COUNT(*) AS count, MONTH(lima_paciente.fecha_alta) FROM 	lima_paciente WHERE lima_paciente.fecha_alta BETWEEN  "{fecha_inico}" AND  "{fecha_fin}" AND centro_id = {centro.pk}  GROUP BY MONTH(lima_paciente.fecha_alta)')
-                    tratamientos=Tratamientos.objects.raw(f'SELECT lima_tratamientos.id_tratamiento, COUNT(*) AS count, MONTH(lima_tratamientos.fecha) FROM 	lima_tratamientos WHERE lima_tratamientos.fecha BETWEEN  "{fecha_inico}" AND "{fecha_fin}" AND lima_tratamientos.tecnica_id = {tecnicas.pk} GROUP BY MONTH(lima_tratamientos.fecha)')
-                    facturacion = Cajas.objects.raw(f'SELECT lima_cajas.id_caja, SUM(cantidad_total) AS count, MONTH(lima_cajas.fecha) FROM 	lima_cajas WHERE lima_cajas.fecha BETWEEN "{fecha_inico}" AND "{fecha_fin}" AND centro_id = {centro.pk} AND tecnica_id = {tecnicas.pk} GROUP BY MONTH(lima_cajas.fecha)')
+                    clientes = Paciente.objects.raw(f'SELECT lima_paciente.id_paciente, COUNT(*) AS count, lima_paciente.fecha_alta FROM 	lima_paciente WHERE lima_paciente.fecha_alta BETWEEN  "{fecha_inico}" AND  "{fecha_fin}" AND centro_id = {centro.pk}  GROUP BY MONTH(lima_paciente.fecha_alta)')
+                    tratamientos=Tratamientos.objects.raw(f'SELECT lima_tratamientos.id_tratamiento, COUNT(*) AS count, lima_tratamientos.fecha FROM 	lima_tratamientos WHERE lima_tratamientos.fecha BETWEEN  "{fecha_inico}" AND "{fecha_fin}" AND lima_tratamientos.tecnica_id = {tecnicas.pk} GROUP BY MONTH(lima_tratamientos.fecha)')
+                    facturacion = Cajas.objects.raw(f'SELECT lima_cajas.id_caja, ROUND(SUM(cantidad_total),0) AS count, lima_cajas.fecha FROM 	lima_cajas WHERE lima_cajas.fecha BETWEEN "{fecha_inico}" AND "{fecha_fin}" AND centro_id = {centro.pk} AND tecnica_id = {tecnicas.pk} GROUP BY MONTH(lima_cajas.fecha)')
                     tecnicas_horarios=ControlHorario.objects.raw(f'SELECT id, SUBSTRING_INDEX(CONCAT(SEC_TO_TIME(SUM(TIME_TO_SEC(trabajado)))), ":",1) AS count_tecnica, lima_tecnica.nombre_tecnica AS nombre FROM lima_controlhorario INNER JOIN lima_tecnica ON id_tecnica=lima_controlhorario.tecnica_id WHERE fecha  BETWEEN "{fecha_inico}" AND "{fecha_fin}"  AND tecnica_id = {tecnicas.pk} GROUP BY tecnica_id')
             else:
                 form = EstadisticasAdminForm()
@@ -1437,7 +1438,7 @@ def estadisticas_horario_tecnica(request, pk=0):
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     timeMonth=ControlHorario.objects.raw(f'SELECT id, CONCAT(SEC_TO_TIME( SUM(time_to_sec(trabajado))))  As count FROM lima_controlhorario WHERE tecnica_id ={pk} AND YEAR(fecha)=YEAR(CURDATE()) AND MONTH(fecha)=MONTH(CURDATE())   GROUP BY MONTH(fecha)')
-    tiempo = ControlHorario.objects.raw(f'SELECT id, SUBSTRING_INDEX(CONCAT(SEC_TO_TIME(SUM(TIME_TO_SEC(trabajado)))), ":",1)  As count_time, MONTH(fecha) AS fecha FROM lima_controlhorario WHERE tecnica_id ={pk} AND YEAR(fecha)=YEAR(CURDATE())   GROUP BY MONTH(fecha)')
+    tiempo = ControlHorario.objects.raw(f'SELECT id, SUBSTRING_INDEX(CONCAT(SEC_TO_TIME(SUM(TIME_TO_SEC(trabajado)))), ":",1)  As count_time, fecha AS fecha FROM lima_controlhorario WHERE tecnica_id ={pk} AND YEAR(fecha)=YEAR(CURDATE())   GROUP BY MONTH(fecha)')
     if request.method == "GET":
             form = EstadisticasTecnicaForm(request.GET)
 
@@ -1445,7 +1446,7 @@ def estadisticas_horario_tecnica(request, pk=0):
                     fecha_inico= form.cleaned_data['fecha_inico']
                     fecha_fin= form.cleaned_data['fecha_fin']
                     timeMonth=ControlHorario.objects.raw(f'SELECT id, CONCAT(SEC_TO_TIME( SUM(time_to_sec(trabajado))))  As count FROM lima_controlhorario WHERE tecnica_id ={pk} AND fecha BETWEEN "{fecha_inico}" AND "{fecha_fin}"    GROUP BY MONTH(fecha)')
-                    tiempo = ControlHorario.objects.raw(f'SELECT id, SUBSTRING_INDEX(CONCAT(SEC_TO_TIME(SUM(TIME_TO_SEC(trabajado)))), ":",1)  As count_time, MONTH(fecha) AS fecha FROM lima_controlhorario WHERE tecnica_id ={pk} AND fecha BETWEEN "{fecha_inico}" AND "{fecha_fin}"   GROUP BY MONTH(fecha)')
+                    tiempo = ControlHorario.objects.raw(f'SELECT id, SUBSTRING_INDEX(CONCAT(SEC_TO_TIME(SUM(TIME_TO_SEC(trabajado)))), ":",1)  As count_time, fecha AS fecha FROM lima_controlhorario WHERE tecnica_id ={pk} AND fecha BETWEEN "{fecha_inico}" AND "{fecha_fin}"   GROUP BY MONTH(fecha)')
 
             else:
                 form = EstadisticasTecnicaForm()
@@ -1523,6 +1524,46 @@ def delete_lista(request, pk=0):
     lista=get_object_or_404(Lista, pk=pk).delete()
     return redirect("index")
 
+@login_required(login_url='login')
+def lista_fotos(request, client):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<dt.datetime.now():
+        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
+    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
+        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
+        return redirect("suscripcion")
+    footer=Configuracion.objects.all().last()
+    cls=get_object_or_404(Paciente, pk=client)
+    fotos=ImagenesClientes.objects.all().filter(cliente=client).order_by('-fecha')
+    return render(request, 'lista_fotos.html', {'footer': footer, 'cliente': cls, 'fotos': fotos })
 
+@login_required(login_url='login')
+def new_fotos(request, cliente):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<dt.datetime.now():
+        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
+    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
+        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
+        return redirect("suscripcion")
+    footer=Configuracion.objects.all().last()
+    cls=get_object_or_404(Paciente, pk=cliente)
+    form=FotoForm()
+    if request.method == 'POST':
+        form = FotoForm(request.POST, request.FILES)
+        if form.is_valid():
+            photo=form.save(commit=False)
+            photo.cliente=cls
+            photo.tecnica=request.user.tecnica
+            photo.save()
+            messages.success(request,f'Se ha guardado la fotografia ')
+            return redirect("lista_fotos", client=cls.pk)
+    return render(request, 'new_fotos.html', {'footer': footer, 'form': form })
 
+@login_required(login_url='login')
+def delete_fotos(request,cliente, pk):
+    foto=get_object_or_404(ImagenesClientes, pk=pk).delete()
+    cls=get_object_or_404(Paciente, pk=cliente)
+    return redirect("lista_fotos", client=cls.pk)
 

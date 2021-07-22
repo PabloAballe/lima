@@ -55,7 +55,7 @@ urlpatterns = [
     path('stock_list', views.stock_list, name="stock_list"),
     path('stock/<int:pk>/', views.stock, name="stock"),
     #caja
-    path('caja_list', views.caja_list, name="caja_list"),
+    path('caja_list/<int:centro>/', views.caja_list, name="caja_list"),
     path('caja/<int:pk>/', views.caja, name="caja"),
     #estadisticas
     path('estatisticas', views.estatisticas, name="estatisticas"),
@@ -64,4 +64,8 @@ urlpatterns = [
     path('listas/<int:centro>/<int:pk>/', views.listas, name="listas"),
     path('edit_lista/<int:pk>/<int:paciente>/', views.edit_lista, name="edit_lista"),
     path('delete_lista/<int:pk>/', views.delete_lista, name="delete_lista"),
+    #fotografias de clientes
+    path('lista_fotos/<int:client>', views.lista_fotos, name="lista_fotos"),
+    path('new_fotos/<int:cliente>/', views.new_fotos, name="new_fotos"),
+    path('delete_fotos/<int:cliente>/<int:pk>/', views.delete_fotos, name="delete_fotos"),
 ]

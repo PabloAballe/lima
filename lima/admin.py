@@ -75,6 +75,11 @@ class EmailTemplatesAdmin(ImportExportModelAdmin):
     search_fields =['nombre', 'plantilla']
     list_filter =   ['nombre', 'plantilla']
 
+class ImagenesClientesAdmin(ImportExportModelAdmin):
+    list_display= ['cliente', 'tecnica', 'comentario', 'fecha']
+    search_fields = ['cliente__nombre_paciente', 'tecnica__nombre_tecnica', 'comentario', 'fecha']
+    list_filter =  ['cliente__nombre_paciente', 'tecnica__nombre_tecnica', 'comentario', 'fecha']
+
 class CajasAdmin(ImportExportModelAdmin):
     list_display= ['centro', 'tecnica','porcentaje', 'cantidad_total', 'cantidad_total_centro']
     search_fields = ['centro__nombre_centro','tecnica','porcentaje', 'cantidad_total', 'cantidad_total_centro']
@@ -87,6 +92,7 @@ admin.site.site_header = "My Manager"
 admin.site.site_title = "My Manager"
 admin.site.index_title = "My Manager"
 
+admin.site.register(ImagenesClientes, ImagenesClientesAdmin)
 admin.site.register(EmailTemplates, EmailTemplatesAdmin)
 admin.site.register(Lista, ListaAdmin)
 admin.site.register(Cajas, CajasAdmin)

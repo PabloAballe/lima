@@ -29,9 +29,9 @@ document.addEventListener('DOMContentLoaded', function() {
      {%for mes in meses %}
         {% if not forloop.first %},{% endif %}
         {
-            title: "Sesión de tratamiento de  {{mes.tecnica.nombre_tecnica}}  {{mes.tecnica.apellidos_tecnica}} // Centro {{mes.cliente.centro}}",
+            title: "Cliente  {{mes.cliente.nombre_paciente}} {{mes.cliente.apellidos_paciente}} // Sesión {{mes.numero_de_sesion}} de  {{mes.zona.nombre_servicio}} // Tecnica {{mes.tecnica.nombre_tecnica}}  {{mes.tecnica.apellidos_tecnica}} // Centro {{mes.cliente.centro}}",
             start: "{{mes.fecha |date:'Y-m-d H:i:s'  }}",
-            end: "{{mes.fecha |date:'Y-m-d H:i:s' }}",
+            end: "{{mes.hora_fin |date:'Y-m-d H:i:s' }}",
             color: "{{mes.tecnica.color}}",
             resourceId: "{{mes.tecnica.id_tecnica}}",
         }

@@ -44,7 +44,7 @@ var ctx = document.getElementById('tiempos');
  var clientes_labels = [
      {%for tiempo in tiempo %}
         {% if not forloop.first %},{% endif %}
-             "{{tiempo.fecha}}"
+             "{{tiempo.fecha |date:'F'}}"
     {% endfor %}
     ];
 
