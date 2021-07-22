@@ -1319,7 +1319,7 @@ def caja(request, pk):
                     form.save()
                     messages.success(request,f'Se ha guardado la caja del día ')
 
-                    return redirect("caja_list")
+                    return redirect("caja_list", centro=0)
             else:
                 pass
         else:
@@ -1351,7 +1351,7 @@ def caja(request, pk):
                 if form.is_valid():
                     form.save()
                     messages.success(request,f'Se ha guardado la caja del día ')
-
+                    return redirect("caja_list", centro=pk)
             else:
                 pass
         else:
@@ -1376,7 +1376,7 @@ def caja(request, pk):
                         to = footer.email_nueva_caja
                         mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
 
-                    return redirect("caja_list", centro=0)
+                    return redirect("caja_list", centro=pk)
     return render(request, 'caja.html', {'footer': footer,'form': form })
 
 @login_required(login_url='login')
