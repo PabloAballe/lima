@@ -13,7 +13,7 @@ class SheachForm(forms.Form):
 class CentroForm(ModelForm):
     class Meta:
         model = Centro
-        fields = ('nombre_centro', 'propietaria','localizacion')
+        fields = ('nombre_centro','telefono_centro' ,'propietaria','localizacion')
 
 
 class CitaFormAdmin(forms.ModelForm):
@@ -85,6 +85,11 @@ class CajaFormAdmin(forms.ModelForm):
     class Meta:
         model=Cajas
         fields=('centro','tecnica','porcentaje','cantidad_efectivo', 'comentario')
+
+class ConfigAdmin(forms.ModelForm):
+    class Meta:
+        model=Configuracion
+        fields = '__all__'
 
 class CajaForm(forms.ModelForm):
     class Meta:

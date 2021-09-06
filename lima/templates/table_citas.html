@@ -1,3 +1,4 @@
+
 <div class="table" id="table">
   <table class="table">
     <thead>
@@ -28,9 +29,10 @@
         <td>{{cita.julios}}</td>
 
         <td>
+            <div class="buttons">
             {% if perms.lima.change_cita %}
          <a href="{% url 'edit_cita' pk=cita.id_cita %}">
-            <button class="button is-warning"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+            <button class="button is-warning is-rounded"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
   <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
 </svg> &nbsp; Ver</button>
 
@@ -38,10 +40,12 @@
  {% endif %}
 {% if perms.lima.delete_cita %}
           <a href="{%url 'delete_cita' pk=cita.id_cita %}" style="margin-right:30px;">
-            <button class="button is-danger">Borrar</button>
+            <button class="button is-danger is-rounded">Borrar</button>
 
           </a>
+          <!--<button class="button is-danger is-rounded" id="myBtn">Borrar</button>-->
  {% endif %}
+ </div>
         </td>
 
       </tr>

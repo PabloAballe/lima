@@ -1,7 +1,7 @@
 {%load static%}
 
 <!DOCTYPE html>
-<html>
+<html lang="es">
 
 <head>
   <meta charset="utf-8">
@@ -17,7 +17,7 @@
   <link rel="stylesheet" href="{% static 'css/mobile.css' %}">
 </head>
 
-<body style=" margin-bottom:50px;">
+<body style=" margin-bottom:50px;backdrop-filter: blur(5px);">
     <style>
     #loading {
   width: 100%;
@@ -38,6 +38,67 @@
   left: 50%;;
   z-index: 100;
 }
+body:before {
+  content: '';
+  z-index: -1;
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 0;
+  bottom: 0;
+  -webkit-filter: blur(10px);
+ // background: url(https://flevix.com/wp-content/uploads/2019/12/Live-Wave-Background.svg) no-repeat;
+background-color: #D9AFD9;
+background-image: linear-gradient(0deg, #D9AFD9 0%, #97D9E1 100%);
+
+
+
+}
+body {
+  background-color: #f5f5f7;
+  font-family: "SF Pro Display","SF Pro Icons","Helvetica Neue","Helvetica","Arial",sans-serif;
+}
+
+
+ nav {
+  background:rgba(255, 255, 255, 0.5) !important;
+  color:#012D54;
+
+  border-bottom:1px solid rgba(255, 255, 255, 0.5);
+ -webkit-backdrop-filter:saturate(180%) blur(20px);
+backdrop-filter: saturate(180%) blur(20px);
+}
+ .navbar-dropdown{
+  background:rgba(255, 255, 255, 0.7) !important;
+  color:#012D54;
+
+  border-bottom:1px solid rgba(255, 255, 255, 0.5);
+ -webkit-backdrop-filter:saturate(100%) blur(20px);
+backdrop-filter: saturate(100%) blur(20px);
+}
+.table{
+    overflow-x:auto !important;
+
+}
+.table{
+  background: rgba(255,255,255,0.7) !important ;
+ color:#012D54  !important;
+ backdrop-filter: saturate(100%) blur(20px)  !important;
+ box-shadow: 0px 15px 20px rgba(25, 25, 25, 0.5) !important;
+
+}
+.button {
+   //background-color: rgba(255,255,255,0.9) !important;
+   border: 1px solid rgba(255,255,255,0.7) !important;
+   backdrop-filter: blur(30px) !important;
+ color: rgba(255,255,255,0.8) !important;
+ }
+
+.button:hover {
+    border: 1px solid rgba(25,25,25,25,0.1) !important;
+    box-shadow: 0px 15px 20px rgba(25, 25, 25, 0.2) !important;
+    transform: translateY(-1px) !important;
+ }
 </style>
 <div id="loading">
           <div class="d-flex justify-content-center" id="loading-spinner">
@@ -80,10 +141,9 @@ function(){
   {%block content%}
 
   {%endblock%}
-
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
  {% include 'message.html'%}
-
+{% include 'animation_tables.html'%}
   <script src="https://use.fontawesome.com/339a78d04c.js"></script>
   <script src="sweetalert2.all.min.js"></script>
   <!-- Optional: include a polyfill for ES6 Promises for IE11 -->

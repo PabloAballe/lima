@@ -17,6 +17,9 @@
 body{
   font-size: 14px !important;
 }
+.table{
+    overflow-x:auto !important;
+}
 button {
   font-size: 14px !important;
 }

@@ -42,6 +42,11 @@ from django.contrib import messages
 from .filters import *
 
 
+#mailchimp
+from django.conf import settings
+from mailchimp_marketing import Client
+from mailchimp_marketing.api_client import ApiClientError
+
 @login_required(login_url='login')
 def admin(request):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
@@ -216,7 +221,6 @@ def clientes(request):
 @login_required(login_url='login')
 def cliente_details(request, pk):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
         return redirect("suscripcion")
@@ -227,7 +231,8 @@ def cliente_details(request, pk):
     cliente1=get_object_or_404(Paciente, pk=pk)
     cita=Cita.objects.all().order_by("fecha").filter(paciente=cliente1)
     tratamientos=Tratamientos.objects.all().order_by("fecha").filter(cliente=cliente1)
-    return render(request, "cliente_details.html", {'cliente': cliente1, 'cita': cita, 'footer': footer, 'tratamientos': tratamientos})
+    lista=Lista.objects.all().order_by("-hora_inicio").filter(cliente=cliente1)
+    return render(request, "cliente_details.html", {'cliente': cliente1, 'cita': cita, 'footer': footer, 'tratamientos': tratamientos, 'lista': lista})
 @login_required(login_url='login')
 def new_centro(request):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
@@ -601,9 +606,10 @@ def delete_tratamiento(request, pk):
         messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
-    tratamiento=get_object_or_404(Tratamientos, pk=pk).delete()
+    tratamiento=get_object_or_404(Tratamientos, pk=pk)
     messages.error(request,f'Se ha borrado el tratamiento')
     return redirect("cliente_details", pk=tratamiento.cliente.id_paciente)
+    tratamiento=get_object_or_404(Tratamientos, pk=pk).delete()
 @login_required(login_url='login')
 def entrada(request):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
@@ -817,27 +823,26 @@ def send_emails(request):
             asunto=form.cleaned_data["asunto"]
             destinatario=form.cleaned_data["destinatario"]
             mensaje=form.cleaned_data["plantilla"].plantilla
-            for users in user_filter.qs:
-                mensaje=Template(mensaje)
-                c = Context({'usuario': f'{users.nombre_paciente} {users.apellidos_paciente}',
-                            'centro': users.centro.nombre_centro, 'localizacion_centro': users.centro.localizacion,
+            for usuario in user_filter.qs:
+                msj=Template(mensaje)
+                c = Context({'usuario': f'{usuario.nombre_paciente} {usuario.apellidos_paciente}',
+                            'centro': usuario.centro.nombre_centro, 'localizacion_centro': usuario.centro.localizacion,
                             'nombre_comercial': footer.nombre_comercial, 'propietario': footer.propietario,
                             'telefono': footer.telefono,
-                            'TelefonoUsuario':  users.telefono_paciente,
-                            'EmailUsuario': users.email,
-                            'dni': users.dni,
-                            'poblacion': users.poblacion,
-                            'direccion': users.direccion,
+                            'TelefonoUsuario':  usuario.telefono_paciente,
+                            'EmailUsuario': usuario.email,
+                            'dni': usuario.dni,
+                            'poblacion': usuario.poblacion,
+                            'direccion': usuario.direccion,
                             'FechaActual' : timezone.now(),})
-                mensaje=mensaje.render(c)
+                msj=msj.render(c)
                 subject = asunto
-                html_message = render_to_string('blanc.html', {'mensaje': mensaje, 'footer': footer})
+                html_message = render_to_string('blanc.html', {'mensaje': msj, 'footer': footer})
                 plain_message = strip_tags(html_message)
                 from_email = f'Enviado por {destinatario}'
-                to = users.email
+                to = usuario.email
                 mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
-                print(f"Email Enviado a {users.email}")
-            messages.success(request,f'Se han enviado los Emails')
+            messages.success(request,f'Se han enviado los Emails ')
             return redirect("index")
         else:
            pass
@@ -1465,7 +1470,7 @@ def listas(request, centro=0, pk=0):
     footer=Configuracion.objects.all().last()
     if centro==0 and pk==0:
         lista=Lista.objects.all().order_by("-hora_inicio")
-        lista_future=Lista.objects.raw('SELECT  	* FROM 	lima_lista  WHERE 	lima_lista.hora_inicio>=CURDATE()')
+        lista_future=Lista.objects.raw('SELECT * FROM 	lima_lista  WHERE 	lima_lista.hora_inicio>=CURDATE()')
     elif centro!=0:
         lista=Lista.objects.raw(f'SELECT  	* FROM 	lima_lista  WHERE  lima_lista.centro_id={centro}')
         lista_future=Lista.objects.raw(f'SELECT  * FROM 	lima_lista  WHERE 	lima_lista.hora_inicio>=CURDATE() 	AND lima_lista.centro_id={centro}')
@@ -1567,3 +1572,41 @@ def delete_fotos(request,cliente, pk):
     cls=get_object_or_404(Paciente, pk=cliente)
     return redirect("lista_fotos", client=cls.pk)
 
+
+@login_required(login_url='login')
+# Subscription Logic
+def configuracion(request):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<dt.datetime.now():
+        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
+    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
+        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
+        return redirect("suscripcion")
+    footer=Configuracion.objects.all().last()
+    form=ConfigAdmin(instance=footer)
+    if request.method == 'POST':
+             form=ConfigAdmin(request.POST,instance=footer)
+             if form.is_valid():
+                 config = form.save(commit=False)
+                 form.save()
+                 messages.success(request,f'Se ha guardado la configuración')
+                 return redirect("configuracion")
+             else:
+                 #messages.error(request,f'Ha sucedido el siguiente error {form.errors }')
+                 pass
+    return render(request, "configuración.html", {'form': form,'footer': footer,})
+
+@login_required(login_url='login')
+def map(request, centro):
+    # Subscription Logic
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<dt.datetime.now():
+        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
+    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
+        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
+        return redirect("suscripcion")
+    footer=Configuracion.objects.all().last()
+    cen_=get_object_or_404(Centro, pk=centro)
+    return render(request, "centro_map.html", {'centro': cen_,'footer': footer})

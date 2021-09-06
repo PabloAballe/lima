@@ -13,13 +13,14 @@
   <form method="post">
     {% csrf_token %}
       {{ form|crispy }}
-    <button type="submit" class="button is-link" >Guardar</button>
+      <div class="buttons">
+    <button type="submit" class="button is-link is-rounded" >Guardar</button>
 
   </form>
-<button class="button is-danger cancel" onClick="javascript:history.go(-1);">Cancelar</button>
+<button class="button is-danger is-rounded" onClick="javascript:history.go(-1);">Cancelar</button>
 
 
-</div>
+</div></div>
 
 
 

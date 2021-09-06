@@ -37,6 +37,7 @@ class Centro(models.Model):
     id_centro=models.AutoField(primary_key=True, auto_created = True)
     nombre_centro=models.CharField(max_length=50,help_text="Ingrese el nombre del centro", null=False)
     propietaria=models.CharField(max_length=50,help_text="Ingrese el nombre de la/el propietari@")
+    telefono_centro=models.IntegerField(help_text="Ingrese el teléfono del centro", null=True, default=0, blank=True)
     localizacion=models.CharField(max_length=100,help_text="Ingrese la hubicación del centro")
     habilitado=models.BooleanField(default=True)
     history = HistoricalRecords()

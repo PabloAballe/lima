@@ -68,4 +68,8 @@ urlpatterns = [
     path('lista_fotos/<int:client>', views.lista_fotos, name="lista_fotos"),
     path('new_fotos/<int:cliente>/', views.new_fotos, name="new_fotos"),
     path('delete_fotos/<int:cliente>/<int:pk>/', views.delete_fotos, name="delete_fotos"),
+    #configuración del sistema
+    path('configuracion', views.configuracion, name="configuracion"),
+    ### mapa
+    path('map/<int:centro>/', views.map, name="map"),
 ]

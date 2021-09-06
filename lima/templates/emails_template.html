@@ -13,7 +13,7 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <script src="{%static 'js/summernote-ext-checkbox.js'%}"></script>
 {% include 'summernoteprint.html'%}
-<div class="login ">
+<div class="login " style="width: 80%; margin:auto">
 
 <img src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" style="height: 300px;" />
   <br>
@@ -23,11 +23,12 @@
   <form method="post" >
     {% csrf_token %}
     {{ form|crispy }}
-    <button type="submit" class="button is-warning">Guardar</button>
+    <div class="buttons">
+    <button type="submit" class="button is-warning is-rounded">Guardar</button>
 
   </form>
-  <button class="button is-danger cancel" onClick="javascript:history.go(-1);">Cancelar</button>
-</div>
+  <button class="button is-danger is-rounded" onClick="javascript:history.go(-1);">Cancelar</button>
+</div></div>
 <script>
 
  $(document).ready(function() {

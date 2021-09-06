@@ -12,11 +12,12 @@
   <form method="post">
     {% csrf_token %}
    {% form form=form %}{% endform %}
-    <button type="submit" class="button is-warning">Guardar</button>
+    <div class="buttons">
+    <button type="submit" class="button is-warning is-rounded">Guardar</button>
 
   </form>
-  <a href="/" class="cancel"> <button class="button is-danger cancel">Cancelar</button></a>
-</div>
+  <a href="/" class="cancel"> <button class="button is-danger is-rounded">Cancelar</button></a>
+</div></div>
 
 
 

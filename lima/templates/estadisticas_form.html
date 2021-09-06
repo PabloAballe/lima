@@ -1,3 +1,4 @@
+
 {% load crispy_forms_tags %}
 {%load static%}
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -10,20 +11,21 @@
      <form class="form-inline my-2 my-lg-0" method="get">
       {% csrf_token %}
        {{ form|crispy }}
-      <button class="button is-primary" type="submit">
+       <div class="buttons">
+      <button class="button is-primary is-rounded" type="submit">
 
             Buscar
 
       </button>
       <br/>
-      <button class="button is-danger" type="reset" >
+      <button class="button is-danger is-rounded" type="reset" >
 
         Limpiar
 
        </button>
 
 
-
+</div>
     </form>
 
 </div>
@@ -31,8 +33,31 @@
     <script>
 
   $(function () {
-    //jQuery.datetimepicker.setLocale('es');
-    $("#id_fecha_fin").datetimepicker({ format:'Y-m-d'});
-    $("#id_fecha_inico").datetimepicker({ format:'Y-m-d'});
+
+    $("#id_fecha_inico").datetimepicker({
+
+        timepicker:false,
+        format:'Y-m-d',
+        onShow:function( ct ){
+       this.setOptions({
+        maxDate:jQuery('#id_fecha_fin').val()?jQuery('#id_fecha_fin').val():false
+       })
+
+      },
+    });
+    $("#id_fecha_fin").datetimepicker({
+
+        timepicker:false,
+        format:'Y-m-d',
+        onShow:function( ct ){
+       this.setOptions({
+        minDate:jQuery('#id_fecha_inico').val()?jQuery('#id_fecha_inico').val():false
+       })
+      },
+
+    });
+
+
+
   });
 </script>
