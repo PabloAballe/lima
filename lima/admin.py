@@ -12,9 +12,9 @@ class CentroAdmin(ImportExportModelAdmin):
     list_filter =  ['nombre_centro', 'propietaria', 'localizacion']
 
 class PacienteAdmin(ImportExportModelAdmin):
-    list_display= ['nombre_paciente', 'apellidos_paciente', 'telefono_paciente', 'email', 'documento_de_autorizacion', 'documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion', 'direccion' ]
-    search_fields =['nombre_paciente', 'apellidos_paciente', 'telefono_paciente', 'email', 'documento_de_autorizacion', 'documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion', 'direccion' ]
-    list_filter = ['centro__nombre_centro','fecha_alta','documento_de_autorizacion', 'documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion' ]
+    list_display= ['nombre_paciente', 'apellidos_paciente', 'telefono_paciente', 'email', 'documento_de_autorizacion','estado','documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion', 'direccion' ]
+    search_fields =['nombre_paciente', 'apellidos_paciente', 'telefono_paciente', 'email', 'documento_de_autorizacion','estado', 'documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion', 'direccion' ]
+    list_filter = ['centro__nombre_centro','fecha_alta','estado__nombre_estado','documento_de_autorizacion', 'documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion' ]
 
 class TecnicaAdmin(ImportExportModelAdmin):
     list_display= ['nombre_tecnica', 'apellidos_tecnica']
@@ -100,8 +100,8 @@ class PanelesAdmin(ImportExportModelAdmin):
     list_filter = ['nombre_panel', 'descripcion_panel']
 
 class EstadosAdmin(ImportExportModelAdmin):
-    list_display= ['nombre_estado', 'panel','centro']
-    search_fields = ['nombre_estado', 'panel__nombre_panel','centro__nombre_centro']
+    list_display= ['nombre_estado', 'orden_del_estado','panel','centro']
+    search_fields = ['nombre_estado','orden_del_estado', 'panel__nombre_panel','centro__nombre_centro']
     list_filter =  ['nombre_estado', 'panel__nombre_panel','centro__nombre_centro']
 
 class TareasAdmin(ImportExportModelAdmin):

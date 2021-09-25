@@ -18,7 +18,7 @@
     <tbody>
       {%for mes in meses %}
       <tr>
-        <th>{{ forloop.revcounter }}</th>
+        <th>{{ mes.pk }}</th>
 
         <td>{{mes.tecnica.nombre_tecnica}} &nbsp;{{mes.tecnica.apellidos_tecnica}}</td>
         <td>{{mes.fecha }}</td>

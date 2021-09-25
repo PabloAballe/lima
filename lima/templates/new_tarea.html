@@ -5,7 +5,7 @@
 {%block content%}
 {%include 'nav.html'%}
 <div class="login ">
-
+<img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
   <br>
   <h2>Añade una nueva tarea</h2>
   <br>
@@ -13,10 +13,10 @@
     {% csrf_token %}
       {{ form|crispy }}
        <div class="buttons">
-    <button type="submit" class="button is-warning is-rounded" >Guardar</button>
+    <button type="submit" class="btn" >Guardar</button>
 
   </form>
-<button class="button is-danger is-rounded" onClick="javascript:history.go(-1);">Cancelar</button>
+<button class="btn" onClick="javascript:history.go(-1);">Cancelar</button>
 </div>
 
 

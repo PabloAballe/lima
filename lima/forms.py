@@ -52,7 +52,7 @@ class CitaForm(forms.ModelForm):
 class ClienteForm(forms.ModelForm):
     class Meta:
         model = Paciente
-        fields = ('nombre_paciente','apellidos_paciente','telefono_paciente','dni','email','fecha_nacimiento','estado','etiqueta', 'notas_paciente', 'documento_de_autorizacion','documento_proteccion_de_datos', 'autorizacion_envio_informacion_comercial','poblacion', 'direccion', )
+        fields = ('nombre_paciente','apellidos_paciente','telefono_paciente','dni','email','fecha_nacimiento','estado','etiqueta','notas_paciente', 'documento_de_autorizacion','documento_proteccion_de_datos', 'autorizacion_envio_informacion_comercial','poblacion', 'direccion', )
 
 class TratamientoFormAdmin(forms.ModelForm):
     class Meta:

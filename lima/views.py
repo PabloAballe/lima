@@ -193,6 +193,7 @@ def clientes(request):
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     cliente=Paciente.objects.all().order_by('nombre_paciente')
+    user_filter = ClientFilter(request.GET, queryset=cliente)
     notfound=False
     #shearch cliente
     if request.method == "GET":
@@ -208,16 +209,8 @@ def clientes(request):
                 print("no hay resultados")
     else:
         form = SheachForm()
-    #pagination
-    page = request.GET.get('page', 1)
-    paginator = Paginator(cliente, 10)
-    try:
-        cen = paginator.page(page)
-    except PageNotAnInteger:
-        cen = paginator.page(1)
-    except EmptyPage:
-        cen = paginator.page(paginator.num_pages)
-    context={'cliente': cen, 'cen': cen, 'form': form, 'notfound': notfound,'footer':footer}
+
+    context={ 'form': form, 'notfound': notfound,'footer':footer,'filter': user_filter}
     return render (request, 'table_clientes_total.html', context)
 @login_required(login_url='login')
 def cliente_details_citas(request, pk):
@@ -244,7 +237,7 @@ def cliente_details_tratamientos(request, pk):
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     cliente1=get_object_or_404(Paciente, pk=pk)
-    tratamientos=Tratamientos.objects.all().order_by("fecha").filter(cliente=cliente1)
+    tratamientos=Tratamientos.objects.all().order_by("-fecha").filter(cliente=cliente1)
     return render(request, "cliente_details_tratamientos.html", {'cliente': cliente1, 'footer': footer, 'tratamientos': tratamientos})
 
 @login_required(login_url='login')
@@ -316,6 +309,8 @@ def new_cliente(request, pk):
         if form.is_valid():
             cliente = form.save(commit=False)
             cliente.centro=centro1
+            if cliente.estado is None:
+                cliente.estado=1
             form.save()
             if footer.enviar_email_nuevos_clientes and footer.plantilla_email:
                 mensaje=Template(mensaje)

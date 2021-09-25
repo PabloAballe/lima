@@ -12,7 +12,7 @@
 
 
 <div class="login ">
-<img src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
+<img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
   <h2>Cita </h2>
   <hr>
   <p><i>Unicamente debemos añadir citas a futuro de lo contrario contácte con el administrador</i></p>
@@ -22,10 +22,10 @@
     {% csrf_token %}
     {{ form|crispy }}
      <div class="buttons">
-    <button type="submit" class="button is-warning is-rounded">Guardar</button>
+    <button type="submit" class="btn">Guardar</button>
 
   </form>
-<button class="button is-danger is-rounded" onClick="javascript:history.go(-1);">Cancelar</button>
+<button class="btn" onClick="javascript:history.go(-1);">Cancelar</button>
 </div></div>
 <script>
 

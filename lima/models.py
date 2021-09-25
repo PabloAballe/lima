@@ -57,7 +57,7 @@ class Centro(models.Model):
 
 class EstadosClientes(models.Model):
     id_estado=models.AutoField(primary_key=True, auto_created = True)
-    nombre_estado=models.CharField(max_length=50,help_text="Ingrese el nombre del estado", null=False)
+    nombre_estado=models.CharField(max_length=50,help_text="Ingrese el nombre del estado", null=False, default="Nuevo")
     color = ColorField(default='#FF0000',help_text="Color del estado")
     icon = FAIconField(default="", blank=True)
 
@@ -191,7 +191,9 @@ class Anuncios(models.Model):
 
 
 
-
+def allEstados():
+    estados = EstadosClientes.objects.all()
+    return estados
 
 class Paciente(models.Model):
     id_paciente=models.AutoField(primary_key=True, auto_created = True, null=False)
@@ -207,7 +209,7 @@ class Paciente(models.Model):
     direccion=models.CharField(max_length=50,help_text="Ingrese la dirección del/la paciente",  default='Valencia')
     notas_paciente=models.TextField(help_text="Ingrese notas sobre el cliente aquí", default="", blank=True)
     fecha_nacimiento=models.DateTimeField(null=False, default='2000-01-01')
-    estado=models.ManyToManyField(EstadosClientes, default="Nuevo")
+    estado=models.ForeignKey(EstadosClientes, default=1,  on_delete=models.RESTRICT)
     etiqueta=models.ManyToManyField(Tags, default="1", blank=True)
     autorizacion_envio_informacion_comercial=models.BooleanField(default=False)
     fecha_alta=models.DateTimeField(null=False, default=now)

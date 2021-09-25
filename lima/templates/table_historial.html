@@ -17,7 +17,7 @@
   <tbody>
     {%for hist in historial_centro%}
     <tr>
-      <th>{{ forloop.revcounter }}</th>
+      <th>{{ hist.pk }}</th>
       <td>{{hist.history_user}}</td>
     {% if hist.history_type == "~" %}
       <td>
