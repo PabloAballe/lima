@@ -9,6 +9,9 @@ DATABASES = {
             'PASSWORD': 't73@ZeN89B5mt75',
             'HOST': 'wavecompany.mysql.pythonanywhere-services.com',
             'PORT': '3306',
+                'OPTIONS': {
+                'sql_mode': 'traditional',
+            }
         }
 
 

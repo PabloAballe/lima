@@ -33,6 +33,7 @@ ALLOWED_HOSTS = [
 # Application definition
 
 INSTALLED_APPS = [
+    'corsheaders',
     'admin_interface',
     'colorfield',
     'django.contrib.admin',
@@ -41,7 +42,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'lima',
-    'material',
+    'crispy_tailwind',
     'crispy_forms',
     #custom admin
     'simple_history',
@@ -52,9 +53,11 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
      'django_filters',
      'faicon',
+
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -101,6 +104,9 @@ DATABASES = {
             'PASSWORD': 't73@ZeN89B5mt75',
             'HOST': 'wavecompany.mysql.pythonanywhere-services.com',
             'PORT': '3306',
+                'OPTIONS': {
+                'sql_mode': 'traditional',
+            }
         }
 
 }
@@ -173,6 +179,8 @@ EMAIL_USE_TLS = True
 JSIGNATURE_WIDTH = 500
 JSIGNATURE_HEIGHT = 200
 
+CRISPY_ALLOWED_TEMPLATE_PACKS = "tailwind"
+CRISPY_TEMPLATE_PACK = "tailwind"
 
 DJANGORESIZED_DEFAULT_SIZE = [500, 500]
 DJANGORESIZED_DEFAULT_QUALITY = 75
@@ -180,3 +188,8 @@ DJANGORESIZED_DEFAULT_KEEP_META = True
 DJANGORESIZED_DEFAULT_FORCE_FORMAT = 'PNG'
 DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS = {'PNG': ".png"}
 DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True
+
+
+JET_PROJECT = 'wavesense'
+JET_TOKEN = '66d5a748-0a11-4f0b-8957-41efe10114fd'
+CORS_ORIGIN_ALLOW_ALL = True

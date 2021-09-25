@@ -1,11 +1,25 @@
+
+
 {% if messages %}
     {% for message in messages %}
-    
+
         <script>
         //const Swal = require('sweetalert2')
-        Swal.fire({
-          text: '{{ message }} ',
+      const Toast = Swal.mixin({
+          toast: true,
+          position: 'top-end',
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener('mouseenter', Swal.stopTimer)
+            toast.addEventListener('mouseleave', Swal.resumeTimer)
+          }
+        })
+
+        Toast.fire({
           icon: '{{ message.tags }}',
+          title: '{{ message }}'
         })
         </script>
     {% endfor %}

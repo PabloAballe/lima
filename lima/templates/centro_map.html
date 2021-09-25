@@ -1,6 +1,20 @@
 {%extends 'base.html'%}
 
 {%block content%}
+
 {%include 'nav.html'%}
+
+<div class="map-centro">
 {%include 'maps.html'%}
+</div>
+
+<style>
+    .map-centro{
+        position:absolute;
+        top: 5rem;
+        left: 20rem;
+    }
+</style>
+
+
 {%endblock%}

@@ -27,6 +27,10 @@ class CitaAdmin(ImportExportModelAdmin):
     search_fields =  ['tecnica__nombre_tecnica','fecha', 'zona']
     list_filter =   ['tecnica__nombre_tecnica','fecha', 'zona']
 
+class AnuncioAdmin(ImportExportModelAdmin):
+    list_display= ['cuerpo_anuncio','centro']
+    search_fields = ['cuerpo_anuncio','centro__nombre_centro']
+    list_filter =  ['cuerpo_anuncio','centro__nombre_centro']
 
 class HorariosAdmin(ImportExportModelAdmin):
     list_display= ['tecnica','fecha', 'entrada', 'salida','trabajado']
@@ -85,13 +89,43 @@ class CajasAdmin(ImportExportModelAdmin):
     search_fields = ['centro__nombre_centro','tecnica','porcentaje', 'cantidad_total', 'cantidad_total_centro']
     list_filter =   ['centro__nombre_centro', 'tecnica','porcentaje', 'cantidad_total', 'cantidad_total_centro']
 
+class EstadosClientesAdmin(ImportExportModelAdmin):
+    list_display= ['nombre_estado', 'color']
+    search_fields = ['nombre_estado', 'color']
+    list_filter = ['nombre_estado', 'color']
 
+class PanelesAdmin(ImportExportModelAdmin):
+    list_display= ['nombre_panel', 'descripcion_panel']
+    search_fields = ['nombre_panel', 'descripcion_panel']
+    list_filter = ['nombre_panel', 'descripcion_panel']
 
+class EstadosAdmin(ImportExportModelAdmin):
+    list_display= ['nombre_estado', 'panel','centro']
+    search_fields = ['nombre_estado', 'panel__nombre_panel','centro__nombre_centro']
+    list_filter =  ['nombre_estado', 'panel__nombre_panel','centro__nombre_centro']
+
+class TareasAdmin(ImportExportModelAdmin):
+    list_display= ['nombre_tarea', 'fecha_creacion','estado', 'propietario']
+    search_fields = ['nombre_tarea', 'fecha_creacion','estado__nombre_estado', 'propietario__nombre_tecnica']
+    list_filter =  ['nombre_tarea', 'fecha_creacion','estado__nombre_estado', 'propietario__nombre_tecnica']
+
+class TagsAdmin(ImportExportModelAdmin):
+    list_display= ['nombre_etiqueta']
+    search_fields = ['nombre_etiqueta']
+    list_filter =  ['nombre_etiqueta']
 
 admin.site.site_header = "My Manager"
 admin.site.site_title = "My Manager"
 admin.site.index_title = "My Manager"
 
+
+
+admin.site.register(EstadosClientes, EstadosClientesAdmin)
+admin.site.register(Paneles, PanelesAdmin)
+admin.site.register(Anuncios, AnuncioAdmin)
+admin.site.register(Estados, EstadosAdmin)
+admin.site.register(Tareas, TareasAdmin)
+admin.site.register(Tags, TagsAdmin)
 admin.site.register(ImagenesClientes, ImagenesClientesAdmin)
 admin.site.register(EmailTemplates, EmailTemplatesAdmin)
 admin.site.register(Lista, ListaAdmin)

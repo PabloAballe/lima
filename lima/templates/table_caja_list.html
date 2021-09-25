@@ -3,7 +3,7 @@
 {% include 'notfound.html'%}
 {% else %}
 <div class="table" id="table">
-  <table class="table">
+ <table class="table overflow-auto">
     <thead>
       <tr>
         <th title="ID"><abbr title="ID">ID</abbr></th>
@@ -22,7 +22,7 @@
     </tfoot>
     <tbody>
       {%for caja in cajas %}
-      <tr>
+      <tr onclick="window.location='{% url 'caja' pk=caja.pk %}';">
         <th>{{ forloop.counter }}</th>
         <td>
     {% if perms.lima.change_cajas %}

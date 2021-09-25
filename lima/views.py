@@ -36,7 +36,6 @@ from PIL import Image
 import PIL
 from django.conf import settings
 from datetime import datetime
-from django.core.mail import EmailMultiAlternatives
 from django.template.loader import get_template
 from django.contrib import messages
 from .filters import *
@@ -86,9 +85,8 @@ def index(request):
     else:
         form = SheachForm()
 
-    #pagination
     page = request.GET.get('page', 1)
-    paginator = Paginator(centro, 10)
+    paginator = Paginator(centro, 5)
     try:
         cen = paginator.page(page)
     except PageNotAnInteger:
@@ -108,7 +106,9 @@ def index(request):
 
 
     #fin del bloque
-    return render(request, 'index.html',{'cen': cen, 'form': form ,'notfound': notfound ,'salida': salida, 'footer': footer})
+     # determino si el centro está trabajando o no
+    now=dt.datetime.now()
+    return render(request, 'index.html',{'cen': cen, 'form': form ,'notfound': notfound ,'salida': salida, 'footer': footer,'cTime':now})
 
 def login(request):
     footer=Configuracion.objects.all().last()
@@ -144,7 +144,6 @@ def logout(request):
 @login_required(login_url='login')
 def centro_details(request, pk):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
         return redirect("suscripcion")
@@ -153,6 +152,7 @@ def centro_details(request, pk):
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     centro=get_object_or_404(Centro, id_centro=pk)
+    anuncio=Anuncios.objects.filter(centro=centro).order_by("-fecha_creacion")
     notfound=False
     cliente=Paciente.objects.all().order_by("nombre_paciente").filter(centro=centro)
     #shearch cliente
@@ -180,7 +180,8 @@ def centro_details(request, pk):
     except EmptyPage:
         cen = paginator.page(paginator.num_pages)
 
-    return render(request, "centro_details.html", {'centro': centro, 'cliente': cen, 'cen': cen, 'form': form, 'notfound': notfound, 'footer': footer})
+
+    return render(request, "centro_details.html", {'centro': centro, 'cliente': cen, 'cen': cen, 'form': form, 'notfound': notfound, 'footer': footer,'anuncio': anuncio})
 @login_required(login_url='login')
 def clientes(request):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
@@ -218,6 +219,48 @@ def clientes(request):
         cen = paginator.page(paginator.num_pages)
     context={'cliente': cen, 'cen': cen, 'form': form, 'notfound': notfound,'footer':footer}
     return render (request, 'table_clientes_total.html', context)
+@login_required(login_url='login')
+def cliente_details_citas(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<dt.datetime.now():
+        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
+    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
+        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
+        return redirect("suscripcion")
+    footer=Configuracion.objects.all().last()
+    cliente1=get_object_or_404(Paciente, pk=pk)
+    lista=Lista.objects.all().order_by("-hora_inicio").filter(cliente=cliente1)
+    return render(request, "cliente_details_cita.html", {'cliente': cliente1, 'footer': footer, 'lista': lista})
+
+@login_required(login_url='login')
+def cliente_details_tratamientos(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<dt.datetime.now():
+        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
+    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
+        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
+        return redirect("suscripcion")
+    footer=Configuracion.objects.all().last()
+    cliente1=get_object_or_404(Paciente, pk=pk)
+    tratamientos=Tratamientos.objects.all().order_by("fecha").filter(cliente=cliente1)
+    return render(request, "cliente_details_tratamientos.html", {'cliente': cliente1, 'footer': footer, 'tratamientos': tratamientos})
+
+@login_required(login_url='login')
+def cliente_details_zonas(request, pk):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<dt.datetime.now():
+        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
+    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
+        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
+        return redirect("suscripcion")
+    footer=Configuracion.objects.all().last()
+    cliente1=get_object_or_404(Paciente, pk=pk)
+    cita=Cita.objects.all().order_by("fecha").filter(paciente=cliente1)
+    return render(request, "cliente_details_zonas.html", {'cliente': cliente1, 'cita': cita, 'footer': footer})
+
 @login_required(login_url='login')
 def cliente_details(request, pk):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
@@ -257,7 +300,6 @@ def new_centro(request):
     return render(request, "new_centro.html", {'form': form, 'footer': footer})
 @login_required(login_url='login')
 def new_cliente(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
@@ -325,7 +367,7 @@ def new_cita(request, pk):
                  cita.paciente=cliente1
                  form.save()
                  messages.success(request,f'Se ha guardado la cita del cliente {cita.paciente.nombre_paciente}')
-                 return redirect("cliente_details", pk=cliente1.id_paciente)
+                 return redirect("cliente_details_zonas", pk=cliente1.id_paciente)
              else:
                  messages.error(request,f'Ha sucedido el siguiente error {form.errors }')
                  form = CitaFormAdmin()
@@ -339,7 +381,7 @@ def new_cita(request, pk):
                  cita.tecnica=request.user.tecnica
                  form.save()
                  messages.success(request,f'Se ha creado el cliente {cita.paciente.nombre_paciente}')
-                 return redirect("cliente_details", pk=cliente1.id_paciente)
+                 return redirect("cliente_details_zonas", pk=cliente1.id_paciente)
              else:
                 #messages.error(request,f'Ha sucedido el siguiennte error {form.errors }')
                 form = CitaForm()
@@ -366,7 +408,7 @@ def edit_cita(request, pk):
                  cita.paciente=cliente1
                  form.save()
                  messages.success(request,f'Se ha guardado la cita')
-                 return redirect("cliente_details", pk=cliente1.id_paciente)
+                 return redirect("cliente_details_zonas", pk=cliente1.id_paciente)
              else:
                  #messages.error(request,f'Ha sucedido el siguiente error {form.errors }')
                  form = CitaFormAdmin()
@@ -380,7 +422,7 @@ def edit_cita(request, pk):
                  cita.tecnica=request.user.tecnica
                  form.save()
                  messages.success(request,f'Se ha guardado la cita')
-                 return redirect("cliente_details", pk=cliente1.id_paciente)
+                 return redirect("cliente_details_zonas", pk=cliente1.id_paciente)
              else:
                 #messages.error(request,f'Ha sucedido el siguiente error {form.errors }')
                 form = CitaForm()
@@ -406,7 +448,7 @@ def new_tratamiento(request, pk):
                  cita.cliente=cliente1
                  form.save()
                  messages.success(request,f'Se ha guardado el tratamiento')
-                 return redirect("cliente_details", pk=cliente1.id_paciente)
+                 return redirect("cliente_details_tratamientos", pk=cliente1.id_paciente)
              else:
                  pass
 
@@ -420,7 +462,7 @@ def new_tratamiento(request, pk):
                  cita.tecnica=request.user.tecnica
                  form.save()
                  messages.success(request,f'Se ha guardado el tratamiento')
-                 return redirect("cliente_details", pk=cliente1.id_paciente)
+                 return redirect("cliente_details_tratamientos", pk=cliente1.id_paciente)
              else:
                 pass
 
@@ -447,7 +489,7 @@ def edit_tratamiento(request, pk):
                  cita.cliente=cliente1
                  form.save()
                  messages.success(request,f'Se ha guardado el tratamiento')
-                 return redirect("cliente_details", pk=cliente1.id_paciente)
+                 return redirect("cliente_details_tratamientos", pk=cliente1.id_paciente)
              else:
                  #messages.error(request,f'Ha sucedido el siguiente error {form.errors }')
                  form = CitaFormAdmin()
@@ -461,7 +503,7 @@ def edit_tratamiento(request, pk):
                  cita.tecnica=request.user.tecnica
                  form.save()
                  messages.success(request,f'Se ha guardado el tratamiento')
-                 return redirect("cliente_details", pk=cliente1.id_paciente)
+                 return redirect("cliente_details_tratamientos", pk=cliente1.id_paciente)
              else:
                 pass
 
@@ -507,7 +549,7 @@ def edit_cliente(request, pk):
             post = form.save(commit=False)
             post.save()
             messages.success(request,f'Se han guardado los datos del cliente {cliente.nombre_paciente}')
-            return redirect("cliente_details", pk=cliente.id_paciente)
+            return redirect("cliente_details_citas", pk=cliente.id_paciente)
     else:
         form = ClienteForm(instance=cliente)
     return render(request, 'edit_cliente.html', {'form': form, 'footer': footer})
@@ -528,7 +570,7 @@ def edit_cita(request, pk):
             post = form.save(commit=False)
             post.save()
             messages.success(request,f'Se ha guardado la cita')
-            return redirect("cliente_details", pk=cita.paciente.id_paciente)
+            return redirect("cliente_details_citas", pk=cita.paciente.id_paciente)
     else:
         form = CitaForm(instance=cita)
     return render(request, 'edit_cita.html', {'form': form, 'footer': footer})
@@ -594,10 +636,9 @@ def delete_cita(request, pk):
     cita1=get_object_or_404(Cita, pk=pk)
     cita=get_object_or_404(Cita, pk=pk).delete()
     messages.error(request,f'Se ha borrado la cita')
-    return redirect("cliente_details", pk=cita1.paciente.id_paciente)
+    return redirect("cliente_details_citas", pk=cita1.paciente.id_paciente)
 @login_required(login_url='login')
 def delete_tratamiento(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if suscription.enddate<dt.datetime.now():
         messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
@@ -607,9 +648,9 @@ def delete_tratamiento(request, pk):
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     tratamiento=get_object_or_404(Tratamientos, pk=pk)
+    tr=get_object_or_404(Tratamientos, pk=pk).delete()
     messages.error(request,f'Se ha borrado el tratamiento')
-    return redirect("cliente_details", pk=tratamiento.cliente.id_paciente)
-    tratamiento=get_object_or_404(Tratamientos, pk=pk).delete()
+    return redirect("cliente_details_tratamientos", pk=tratamiento.cliente.id_paciente)
 @login_required(login_url='login')
 def entrada(request):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
@@ -1078,7 +1119,7 @@ def sing(request, pk):
                     return HttpResponse(f"Error {e}")
                 form.save()
             messages.success(request,f'Se ha guardado la firma')
-            return redirect("cliente_details", pk=sign_.cliente.pk)
+            return redirect("cliente_details_citas", pk=sign_.cliente.pk)
         else:
            pass
     return render(request, 'sing.html', {'footer': footer, 'form': form})
@@ -1207,7 +1248,7 @@ def doc_email(request, pk):
     mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
     mail.send_mail(subject, plain_message, from_email, [footer.email_sistema], html_message=html_message)
     messages.success(request,f"Email Enviado a {cliente.email}")
-    return redirect("cliente_details", pk=doc.cliente.pk)
+    return redirect("cliente_details_citas", pk=doc.cliente.pk)
 
 @login_required(login_url='login')
 def stock_list(request):
@@ -1394,9 +1435,10 @@ def estatisticas(request):
         messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
-    clientes = Paciente.objects.raw('SELECT lima_paciente.id_paciente,COUNT(*) AS count, 	lima_paciente.fecha_alta as fecha_alta FROM 	lima_paciente WHERE 	YEAR(lima_paciente.fecha_alta)=YEAR(CURDATE()) GROUP BY MONTH(lima_paciente.fecha_alta)')
-    tratamientos=Tratamientos.objects.raw('SELECT  lima_tratamientos.id_tratamiento, 	COUNT(*) AS count, 	lima_tratamientos.fecha as fecha FROM 	lima_tratamientos WHERE 	YEAR(lima_tratamientos.fecha)=YEAR(CURDATE()) GROUP BY MONTH(lima_tratamientos.fecha)')
-    facturacion = Cajas.objects.raw('SELECT lima_cajas.id_caja, ROUND(SUM(cantidad_total),0) AS count, 	lima_cajas.fecha as fecha FROM 	lima_cajas WHERE 	YEAR(lima_cajas.fecha)=YEAR(CURDATE()) GROUP BY MONTH(lima_cajas.fecha)')
+    clientes = Paciente.objects.raw('SELECT lima_paciente.id_paciente,COUNT(*) AS count, 	lima_paciente.fecha_alta as fecha_alta FROM 	lima_paciente WHERE 	YEAR(lima_paciente.fecha_alta)=YEAR(CURDATE()) GROUP BY WEEK(lima_paciente.fecha_alta)')
+    tratamientos=Tratamientos.objects.raw('SELECT  lima_tratamientos.id_tratamiento, 	COUNT(*) AS count, 	lima_tratamientos.fecha as fecha FROM 	lima_tratamientos WHERE 	YEAR(lima_tratamientos.fecha)=YEAR(CURDATE()) GROUP BY WEEK(lima_tratamientos.fecha)')
+    facturacion = Cajas.objects.raw('SELECT lima_cajas.id_caja, ROUND(SUM(cantidad_total),0) AS count, 	lima_cajas.fecha as fecha FROM 	lima_cajas WHERE 	YEAR(lima_cajas.fecha)=YEAR(CURDATE()) GROUP BY WEEK(lima_cajas.fecha)')
+    citas = Lista.objects.raw('SELECT lima_lista.id_lista, COUNT(*) AS count, DATE(lima_lista.hora_inicio) FROM lima_lista WHERE YEAR(lima_lista.hora_inicio)=YEAR(CURDATE()) GROUP BY WEEK(lima_lista.hora_inicio)')
     tecnicas_horarios=ControlHorario.objects.raw(f'SELECT id, SUBSTRING_INDEX(CONCAT(SEC_TO_TIME(SUM(TIME_TO_SEC(trabajado)))), ":",1) AS count_tecnica, lima_tecnica.nombre_tecnica as nombre FROM lima_controlhorario INNER JOIN lima_tecnica ON lima_tecnica.id_tecnica=lima_controlhorario.tecnica_id WHERE MONTH(fecha)= MONTH(CURDATE()) AND YEAR(fecha)=YEAR(CURDATE())GROUP BY tecnica_id')
     #shearch form
     if request.user.is_staff:
@@ -1408,9 +1450,10 @@ def estatisticas(request):
                     fecha_fin= form.cleaned_data['fecha_fin']
                     centro= form.cleaned_data['centro']
                     tecnicas=form.cleaned_data['tecnicas']
-                    clientes = Paciente.objects.raw(f'SELECT lima_paciente.id_paciente, COUNT(*) AS count, lima_paciente.fecha_alta FROM 	lima_paciente WHERE lima_paciente.fecha_alta BETWEEN  "{fecha_inico}" AND  "{fecha_fin}" AND centro_id = {centro.pk}  GROUP BY MONTH(lima_paciente.fecha_alta)')
-                    tratamientos=Tratamientos.objects.raw(f'SELECT lima_tratamientos.id_tratamiento, COUNT(*) AS count, lima_tratamientos.fecha FROM 	lima_tratamientos WHERE lima_tratamientos.fecha BETWEEN  "{fecha_inico}" AND "{fecha_fin}" AND lima_tratamientos.tecnica_id = {tecnicas.pk} GROUP BY MONTH(lima_tratamientos.fecha)')
-                    facturacion = Cajas.objects.raw(f'SELECT lima_cajas.id_caja, ROUND(SUM(cantidad_total),0) AS count, lima_cajas.fecha FROM 	lima_cajas WHERE lima_cajas.fecha BETWEEN "{fecha_inico}" AND "{fecha_fin}" AND centro_id = {centro.pk} AND tecnica_id = {tecnicas.pk} GROUP BY MONTH(lima_cajas.fecha)')
+                    clientes = Paciente.objects.raw(f'SELECT lima_paciente.id_paciente, COUNT(*) AS count, lima_paciente.fecha_alta FROM 	lima_paciente WHERE lima_paciente.fecha_alta BETWEEN  "{fecha_inico}" AND  "{fecha_fin}" AND centro_id = {centro.pk}  GROUP BY WEEK(lima_paciente.fecha_alta)')
+                    tratamientos=Tratamientos.objects.raw(f'SELECT lima_tratamientos.id_tratamiento, COUNT(*) AS count, lima_tratamientos.fecha FROM 	lima_tratamientos WHERE lima_tratamientos.fecha BETWEEN  "{fecha_inico}" AND "{fecha_fin}" AND lima_tratamientos.tecnica_id = {tecnicas.pk} GROUP BY WEEK(lima_tratamientos.fecha)')
+                    facturacion = Cajas.objects.raw(f'SELECT lima_cajas.id_caja, ROUND(SUM(cantidad_total),0) AS count, lima_cajas.fecha FROM 	lima_cajas WHERE lima_cajas.fecha BETWEEN "{fecha_inico}" AND "{fecha_fin}" AND centro_id = {centro.pk} AND tecnica_id = {tecnicas.pk} GROUP BY WEEK(lima_cajas.fecha)')
+                    citas = Lista.objects.raw(f'SELECT lima_lista.id_lista, COUNT(*) AS count, DATE(lima_lista.hora_inicio) FROM lima_lista WHERE lima_lista.hora_inicio BETWEEN "{fecha_inico}" AND "{fecha_fin}" AND lima_lista.centro_id = {centro.pk} AND tecnica_id = {tecnicas.pk} GROUP BY WEEK(lima_lista.hora_inicio)')
                     tecnicas_horarios=ControlHorario.objects.raw(f'SELECT id, SUBSTRING_INDEX(CONCAT(SEC_TO_TIME(SUM(TIME_TO_SEC(trabajado)))), ":",1) AS count_tecnica, lima_tecnica.nombre_tecnica AS nombre FROM lima_controlhorario INNER JOIN lima_tecnica ON id_tecnica=lima_controlhorario.tecnica_id WHERE fecha  BETWEEN "{fecha_inico}" AND "{fecha_fin}"  AND tecnica_id = {tecnicas.pk} GROUP BY tecnica_id')
             else:
                 form = EstadisticasAdminForm()
@@ -1430,7 +1473,7 @@ def estatisticas(request):
                 form = EstadisticasTecnicaForm()
 
 
-    return render(request, 'estatisticas.html', {'footer': footer,'clientes': clientes, 'tratamientos': tratamientos,'facturacion': facturacion,'tecnicas_horarios':tecnicas_horarios,'form': form})
+    return render(request, 'estatisticas.html', {'footer': footer,'clientes': clientes, 'tratamientos': tratamientos,'facturacion': facturacion,'tecnicas_horarios':tecnicas_horarios,'form': form, 'citas': citas})
 
 @login_required(login_url='login')
 def estadisticas_horario_tecnica(request, pk=0):
@@ -1442,16 +1485,16 @@ def estadisticas_horario_tecnica(request, pk=0):
         messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
-    timeMonth=ControlHorario.objects.raw(f'SELECT id, CONCAT(SEC_TO_TIME( SUM(time_to_sec(trabajado))))  As count FROM lima_controlhorario WHERE tecnica_id ={pk} AND YEAR(fecha)=YEAR(CURDATE()) AND MONTH(fecha)=MONTH(CURDATE())   GROUP BY MONTH(fecha)')
-    tiempo = ControlHorario.objects.raw(f'SELECT id, SUBSTRING_INDEX(CONCAT(SEC_TO_TIME(SUM(TIME_TO_SEC(trabajado)))), ":",1)  As count_time, fecha AS fecha FROM lima_controlhorario WHERE tecnica_id ={pk} AND YEAR(fecha)=YEAR(CURDATE())   GROUP BY MONTH(fecha)')
+    timeMonth=ControlHorario.objects.raw(f'SELECT id, CONCAT(SEC_TO_TIME( SUM(time_to_sec(trabajado))))  As count FROM lima_controlhorario WHERE tecnica_id ={pk} AND YEAR(fecha)=YEAR(CURDATE()) AND MONTH(fecha)=MONTH(CURDATE())   GROUP BY WEEK(fecha)')
+    tiempo = ControlHorario.objects.raw(f'SELECT id, SUBSTRING_INDEX(CONCAT(SEC_TO_TIME(SUM(TIME_TO_SEC(trabajado)))), ":",1)  As count_time, fecha AS fecha FROM lima_controlhorario WHERE tecnica_id ={pk} AND YEAR(fecha)=YEAR(CURDATE())   GROUP BY WEEK(fecha)')
     if request.method == "GET":
             form = EstadisticasTecnicaForm(request.GET)
 
             if form.is_valid():
                     fecha_inico= form.cleaned_data['fecha_inico']
                     fecha_fin= form.cleaned_data['fecha_fin']
-                    timeMonth=ControlHorario.objects.raw(f'SELECT id, CONCAT(SEC_TO_TIME( SUM(time_to_sec(trabajado))))  As count FROM lima_controlhorario WHERE tecnica_id ={pk} AND fecha BETWEEN "{fecha_inico}" AND "{fecha_fin}"    GROUP BY MONTH(fecha)')
-                    tiempo = ControlHorario.objects.raw(f'SELECT id, SUBSTRING_INDEX(CONCAT(SEC_TO_TIME(SUM(TIME_TO_SEC(trabajado)))), ":",1)  As count_time, fecha AS fecha FROM lima_controlhorario WHERE tecnica_id ={pk} AND fecha BETWEEN "{fecha_inico}" AND "{fecha_fin}"   GROUP BY MONTH(fecha)')
+                    timeMonth=ControlHorario.objects.raw(f'SELECT id, CONCAT(SEC_TO_TIME( SUM(time_to_sec(trabajado))))  As count FROM lima_controlhorario WHERE tecnica_id ={pk} AND fecha BETWEEN "{fecha_inico}" AND "{fecha_fin}"    GROUP BY WEEK(fecha)')
+                    tiempo = ControlHorario.objects.raw(f'SELECT id, SUBSTRING_INDEX(CONCAT(SEC_TO_TIME(SUM(TIME_TO_SEC(trabajado)))), ":",1)  As count_time, fecha AS fecha FROM lima_controlhorario WHERE tecnica_id ={pk} AND fecha BETWEEN "{fecha_inico}" AND "{fecha_fin}"   GROUP BY WEEK(fecha)')
 
             else:
                 form = EstadisticasTecnicaForm()
@@ -1489,8 +1532,10 @@ def edit_lista(request, paciente=0,pk=0):
         messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
+    msg=footer.plantilla_email.plantilla
     if pk!=0:
         lista=get_object_or_404(Lista, pk=pk)
+        mensaje=footer.plantilla_email.plantilla
         form=ListaForm(instance=lista)
         if request.method == 'POST':
             form = ListaForm(request.POST ,instance=lista)
@@ -1498,9 +1543,41 @@ def edit_lista(request, paciente=0,pk=0):
                 lista=form.save(commit=False)
                 fecha = (lista.hora_inicio +  dt.timedelta(minutes=lista.servicios.duracion_sevicio))
                 lista.hora_fin=fecha
-                lista.save()
-                messages.success(request,f'Se ha guardado la cita ')
-                return redirect("cliente_details", pk=lista.cliente.pk)
+                flag=Lista.objects.raw(f"SELECT lima_lista.id_lista,COUNT(lima_lista.id_lista) AS flag FROM 	lima_lista WHERE lima_lista.hora_inicio BETWEEN '{lista.hora_inicio}' AND '{lista.hora_fin}' AND lima_lista.tecnica_id={lista.tecnica.id_tecnica}")
+                if flag[0].flag>0:
+                    messages.error(request,f'No se ha podido guardar la cita porque no se encuentra este espacio y técnica disponible actualmente de {lista.hora_inicio} a {lista.hora_fin}')
+                    return redirect("cliente_details_citas", pk=lista.cliente.pk)
+                else:
+                    lista.save()
+                    messages.success(request,f'Se ha guardado la cita ')
+                    cliente=lista.cliente
+                    if footer.enviar_email_nuevas_listas and footer.plantilla_lista :
+                        mensaje=Template(msg)
+                        c = Context({'usuario': f'{cliente.nombre_paciente} {cliente.apellidos_paciente}',
+                                    'centro': cliente.centro.nombre_centro, 'localizacion_centro': cliente.centro.localizacion,
+                                    'nombre_comercial': footer.nombre_comercial, 'propietario': footer.propietario,
+                                    'telefono': footer.telefono,
+                                    'TelefonoUsuario':  cliente.telefono_paciente,
+                                    'EmailUsuario': cliente.email,
+                                    'dni': cliente.dni,
+                                    'poblacion': cliente.poblacion,
+                                    'direccion': cliente.direccion,
+                                    'FechaActual' : timezone.now(),
+                                    'HoraInicioCita': lista.hora_inicio,
+                                    'HoraFinCita': lista.hora_fin,
+                                    'Servicio': lista.servicios.nombre_servicio
+                        })
+                        mensaje=mensaje.render(c)
+                        subject = f'Resguardo de cita con {footer.nombre_comercial}'
+                        template=mensaje
+                        html_message = render_to_string('blanc.html', {'mensaje': template, 'footer': footer})
+                        plain_message = strip_tags(html_message)
+                        from_email = f'Enviado por {footer.propietario}'
+                        to = cliente.email
+                        mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+                        print(f"Email Enviado a {cliente.email} ")
+                        messages.success(request,f'Email Enviado a {cliente.email} ')
+                    return redirect("cliente_details_citas", pk=lista.cliente.pk)
         else:
             pass
     else:
@@ -1518,16 +1595,48 @@ def edit_lista(request, paciente=0,pk=0):
                 lista.cliente=cliente
                 fecha = (lista.hora_inicio +  dt.timedelta(minutes=lista.servicios.duracion_sevicio))
                 lista.hora_fin=fecha
-                lista.save()
-                messages.success(request,f'Se ha creado la cita ')
-                return redirect("cliente_details", pk=cliente.pk)
+                flag=Lista.objects.raw(f"SELECT lima_lista.id_lista, COUNT(*) AS flag FROM 	lima_lista WHERE lima_lista.hora_inicio BETWEEN '{lista.hora_inicio}' AND '{lista.hora_fin}' AND lima_lista.tecnica_id={lista.tecnica.id_tecnica}")
+                if flag[0].flag>0:
+                    messages.error(request,f'No se ha podido guardar la cita porque no se encuentra este espacio y técnica disponible actualmente de {lista.hora_inicio} a {lista.hora_fin}')
+                    return redirect("cliente_details_citas", pk=lista.cliente.pk)
+                else:
+                    lista.save()
+                    messages.success(request,f'Se ha guardado la cita ')
+                    if footer.enviar_email_nuevas_listas and footer.plantilla_lista :
+                        mensaje=Template(msg)
+                        c = Context({'usuario': f'{cliente.nombre_paciente} {cliente.apellidos_paciente}',
+                                    'centro': cliente.centro.nombre_centro, 'localizacion_centro': cliente.centro.localizacion,
+                                    'nombre_comercial': footer.nombre_comercial, 'propietario': footer.propietario,
+                                    'telefono': footer.telefono,
+                                    'TelefonoUsuario':  cliente.telefono_paciente,
+                                    'EmailUsuario': cliente.email,
+                                    'dni': cliente.dni,
+                                    'poblacion': cliente.poblacion,
+                                    'direccion': cliente.direccion,
+                                    'FechaActual' : timezone.now(),
+                                    'HoraInicioCita': lista.hora_inicio,
+                                    'HoraFinCita': lista.hora_fin,
+                                    'Servicio': lista.servicios.nombre_servicio
+                        })
+                        mensaje=mensaje.render(c)
+                        subject = f'Resguardo de cita con {footer.nombre_comercial}'
+                        template=mensaje
+                        html_message = render_to_string('blanc.html', {'mensaje': template, 'footer': footer})
+                        plain_message = strip_tags(html_message)
+                        from_email = f'Enviado por {footer.propietario}'
+                        to = cliente.email
+                        mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+                        print(f"Email Enviado a {cliente.email} ")
+                        messages.success(request,f'Email Enviado a {cliente.email} ')
+                    return redirect("cliente_details_citas", pk=lista.cliente.pk)
 
     return render(request, 'edit_lista.html', {'footer': footer, 'form': form })
 
 @login_required(login_url='login')
 def delete_lista(request, pk=0):
+    list=get_object_or_404(Lista, pk=pk)
     lista=get_object_or_404(Lista, pk=pk).delete()
-    return redirect("index")
+    return redirect("cliente_details_citas", pk=list.cliente.pk)
 
 @login_required(login_url='login')
 def lista_fotos(request, client):
@@ -1610,3 +1719,106 @@ def map(request, centro):
     footer=Configuracion.objects.all().last()
     cen_=get_object_or_404(Centro, pk=centro)
     return render(request, "centro_map.html", {'centro': cen_,'footer': footer})
+
+@login_required(login_url='login')
+def portales(request):
+    # Subscription Logic
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<dt.datetime.now():
+        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
+    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
+        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
+        return redirect("suscripcion")
+    footer=Configuracion.objects.all().last()
+    paneles=Paneles.objects.all().order_by('nombre_panel').filter(portales__id_tecnica=request.user.tecnica.id_tecnica)
+    return render(request, "portales.html", {'footer': footer,'paneles':paneles})
+
+@login_required(login_url='login')
+def portales_details(request,pk):
+    # Subscription Logic
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<dt.datetime.now():
+        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
+    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
+        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
+        return redirect("suscripcion")
+    footer=Configuracion.objects.all().last()
+    panel=get_object_or_404(Paneles, pk=pk)
+    estados=Estados.objects.all().order_by('orden_del_estado').filter(panel=panel)
+    return render(request, "portal_details.html", {'footer': footer,'panel':panel, 'estados': estados})
+
+@login_required(login_url='login')
+def estados(request):
+    # Subscription Logic
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<dt.datetime.now():
+        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
+    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
+        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
+        return redirect("suscripcion")
+    footer=Configuracion.objects.all().last()
+    paneles=Paneles.objects.all().order_by('nombre_panel').filter(portales__id_tecnica=request.user.tecnica.id_tecnica)
+    return render(request, "portales.html", {'footer': footer,'paneles':paneles})
+
+@login_required(login_url='login')
+def tarea_details(request, pk):
+    # Subscription Logic
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<dt.datetime.now():
+        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
+    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
+        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
+        return redirect("suscripcion")
+    footer=Configuracion.objects.all().last()
+    mensajes=Mensajes.objects.filter(tarea=pk)
+    tarea=get_object_or_404(Tareas, id_tarea=pk)
+    form=TareaForm(instance=tarea)
+    formMensaje=MensajeForm()
+    if request.method == 'POST':
+        form = TareaForm(request.POST, instance=tarea)
+        formMensaje=MensajeForm(request.POST)
+        if form.is_valid():
+            form.save()
+            messages.success(request,f'Se ha guardado la tarea')
+            return redirect("tarea_details", pk=tarea.id_tarea)
+        else:
+            form = TareaForm()
+        if formMensaje.is_valid():
+            mensaje = formMensaje.save(commit=False)
+            mensaje.enviado_por=request.user.tecnica
+            mensaje.tarea=tarea
+            formMensaje.save()
+            messages.success(request,f'Se ha guardado el mensaje')
+            return redirect("tarea_details", pk=tarea.id_tarea)
+        else:
+            formMensaje = MensajeForm()
+    return render(request, "tarea_details.html", {'footer': footer,'mensajes':mensajes, 'tarea': tarea,'form': form,'formMensaje': formMensaje})
+
+@login_required(login_url='login')
+def new_tarea(request, pk):
+    # Subscription Logic
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+    if suscription.enddate<dt.datetime.now():
+        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
+        return redirect("suscripcion")
+    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
+        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
+        return redirect("suscripcion")
+    footer=Configuracion.objects.all().last()
+    form=TareaForm()
+    portal=get_object_or_404(Paneles, pk=pk)
+    if request.method == 'POST':
+        form = TareaForm(request.POST)
+        if form.is_valid():
+            tarea = form.save(commit=False)
+            tarea.portal=portal
+            form.save()
+            messages.success(request,f'Se ha guardado la tarea')
+            return redirect("portales_details", pk=portal.id_panel)
+        else:
+            form = TareaForm()
+    return render(request, "new_tarea.html", {'footer': footer,'form': form})

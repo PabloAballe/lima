@@ -1,6 +1,7 @@
 {%extends 'base.html'%}
 {%load static%}
 {% load crispy_forms_tags %}
+{% load tailwind_filters %}
 {%block content%}
 {%include 'nav.html'%}
 <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
@@ -11,8 +12,6 @@
 
 
 <div class="login ">
-
-<img src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" style="height: 300px;" />
   <br>
   <h2>Editando el tratamiento</h2>
   <br>

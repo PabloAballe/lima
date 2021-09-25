@@ -12,7 +12,6 @@
 
 <div class="login ">
 
-<img src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" style="height: 300px;" />
   <br>
   <h2>Editando el tratamiento</h2>
   <br>
@@ -22,9 +21,9 @@
     {{ form|crispy }}
      <div class="buttons">
     <button type="submit" class="button is-warning is-rounded">Guardar</button>
-
+    <button class="button is-danger is-rounded" onClick="javascript:history.go(-1);">Cancelar</button>
   </form>
-<button class="button is-danger is-rounded" onClick="javascript:history.go(-1);">Cancelar</button>
+
 </div></div>
 <script>
 

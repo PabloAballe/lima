@@ -1,0 +1,29 @@
+{%extends 'base.html'%}
+{%load static%}
+{% load crispy_forms_tags %}
+{% load tailwind_filters %}
+{%block content%}
+{%include 'nav.html'%}
+<div class="login ">
+
+  <br>
+  <h2>Añade una nueva tarea</h2>
+  <br>
+  <form method="post">
+    {% csrf_token %}
+      {{ form|crispy }}
+       <div class="buttons">
+    <button type="submit" class="button is-warning is-rounded" >Guardar</button>
+
+  </form>
+<button class="button is-danger is-rounded" onClick="javascript:history.go(-1);">Cancelar</button>
+</div>
+
+
+
+
+</div>
+
+
+
+{%endblock%}

@@ -1,23 +1,33 @@
 {%extends 'base.html'%}
-{% load material_form %}
+{% load tailwind_filters %}
 {% load crispy_forms_tags %}
 {%block content%}
 
 <div class="login ">
 
+  <h1>Iniciar sesión</h1>
 
-<img async src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" style="height: 300px;" />
-<h1>Bienvenido a Lima y Neon</h1>
-<br>
-  <h2>Iniciar sesión</h2>
-<br>
-  <form method="POST">
-    {% csrf_token %}
-    {{ form|crispy }}
-    <button type="submit" class="button is-warning is-rounded">Inicia Sesión</button>
-  </form>
 </div>
 
 
+<div class="hero min-h-screen" style="background-image: url(&quot;https://picsum.photos/id/381/1600/1400&quot;);">
+  <div class="hero-overlay bg-opacity-60"></div>
+  <div class="text-center hero-content text-neutral-content">
+    <div class="max-w-md">
+        <img async src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" style="height: 300px;" />
+      <h1 class="mb-5 text-5xl font-bold">
+       {{footer.nombre_comercial}}
+          </h1>
+      <p class="mb-5">
+            Bienvenido
+          </p>
+          <form method="POST">
+    {% csrf_token %}
+    {{ form|crispy }}
+    <button type="submit" class="btn btn-warning">Inicia Sesión</button>
+  </form>
+    </div>
+  </div>
+</div>
 
 {%endblock%}

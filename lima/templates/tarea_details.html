@@ -1,0 +1,97 @@
+{%extends 'base.html'%}
+{%load static%}
+{% load crispy_forms_tags %}
+{% load tailwind_filters %}
+{%block content%}
+{%include 'nav.html'%}
+
+
+<!-- include summernote css/js -->
+<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
+<div class="index">
+
+<h1> {{tarea.nombre_tarea | title }} </h1>
+<BR><BR>
+<div style="display:flex;">
+    <div>
+    <br>
+  <form method="post">
+    {% csrf_token %}
+      {{ form|crispy }}
+       <div class="buttons">
+    <button type="submit" class="button is-warning is-rounded" >Guardar</button>
+
+  </form>
+<button class="button is-danger is-rounded" onClick="javascript:history.go(-1);">Cancelar</button>
+</div>
+</div>
+<div style="width: 50rem; margin-left: 5rem">
+    <!--mensajes-->
+
+{% include 'mensajes.html'%}
+
+<!--mensaje-->
+<br>
+  <form method="post" style="    position: absolute; bottom: 20rem; width: 50rem; ">
+
+    {% csrf_token %}
+      {{ formMensaje|crispy }}
+       <div class="buttons">
+    <button type="submit" class="button is-warning is-rounded" >Guardar</button>
+
+  </form>
+<button class="button is-danger is-rounded" onClick="javascript:history.go(-1);">Cancelar</button>
+</div>
+
+</div>
+</div>
+
+
+
+</div>
+<script>
+
+ $(document).ready(function() {
+  $('#summernote').summernote({
+    toolbar: [
+        // [groupName, [list of button]]
+        ['img', ['picture']],
+        ['style', ['style', 'clear' ]],
+        ['fontstyle', ['bold', 'italic', 'ul', 'ol', 'link', 'paragraph']],
+        ['fontstyleextra', ['strikethrough', 'underline', 'hr', 'color', 'superscript', 'subscript']],
+        ['extra', ['video', 'table', 'height']],
+        ['misc', ['undo', 'redo', 'codeview', 'fullscreen','help']],
+        ['customOptions', ['AddCheckList',]],
+
+
+    ],
+    buttons: {
+                    AddCheckList: addCheckList
+                },
+      placeholder: 'Escribe aquí...',
+      height: 100,
+
+  });
+});
+ function addCheckList(context) {
+            var ui = $.summernote.ui;
+            var button = ui.button({
+                contents: '☑︁',
+                tooltip: 'Insert a Checklist',
+                click: function() {
+                    context.invoke('editor.pasteHTML', '<div class="checkbox-field col s12" id="id_autorizacion_container"><label></label><label><input class="filled-in " id="id_autorizacion" name="autorizacion" type="checkbox"><span for="id_autorizacion">&nbsp;</span></label></div>');
+
+                }
+            });
+            return button.render();
+        }
+$('#summernote').validate({
+  ignore: ".ql-container *"
+  // continue validation
+});
+</script>
+
+{%endblock%}

@@ -15,6 +15,7 @@
 
 <!--boostrap-->
 
+<!--clientes nuevos -->
 <div id="accordion">
   <div class="card">
     <div class="card-header" id="headingOne">
@@ -28,8 +29,89 @@
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
 
 
-
+ <center style="height: 30vw;">
+     <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
   <canvas id="clientes" width="10%" height="10%"></canvas>
+  </div>
+  </center>
+    </div>
+  </div>
+
+<!--citas agendadas-->
+<div id="accordion">
+  <div class="card">
+    <div class="card-header" id="headingsSix">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+          Historial de citas agendadas
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseSix" class="collapse" aria-labelledby="headingsSix" data-parent="#accordion">
+
+
+ <center style="height: 30vw;">
+      <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
+  <canvas id="citas" width="10%" height="10%"></canvas>
+  </div>
+  </center>
+    </div>
+  </div>
+
+<!--tratatamintos-->
+  <div class="card">
+    <div class="card-header" id="headingThree">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+          Historial de sesiones de tratamientos agendados
+        </button>
+      </h5>
+    </div>
+    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+
+ <center style="height: 30vw;">
+     <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
+  <canvas id="tratamiento" width="10%" height="10%"></canvas>
+  </div>
+  </center>
+    </div>
+  </div>
+  <div class="card">
+    <div class="card-header" id="headingFour">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+          Historial de Facturación
+        </button>
+      </h5>
+    </div>
+    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+      <!--facturación-->
+    <center style="height: 30vw;">
+           <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
+  <canvas id="facturacion" width="10%" height="10%"></canvas>
+  </center>
+  </div>
+    </div>
+  </div>
+
+  <!--horarios-->
+<div class="card">
+    <div class="card-header" id="headingFive">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+          Historial de Horas trabajadas
+        </button>
+      </h5>
+    </div>
+    <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+      <!--facturación-->
+      <center style="height: 30vw;">
+           <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
+  <canvas id="tiempo" width="10%" height="10%"></canvas>
+  </div>
+  </center>
+
 <script>
 
 var ctx = document.getElementById('clientes');
@@ -46,7 +128,7 @@ var ctx = document.getElementById('clientes');
      {%for cliente in clientes %}
         {% if not forloop.first %},{% endif %}
 
-            "{{cliente.fecha_alta |date:'F'}}"
+            "{{cliente.fecha_alta |date:'Y-F-W'}}"
 
     {% endfor %}
     ];
@@ -86,26 +168,59 @@ var myChart = new Chart(ctx, {
     }
 });
 
+var ctx = document.getElementById('citas');
+ var citas = [
+     {%for cita in citas %}
+        {% if not forloop.first %},{% endif %}
 
-</script>
-    </div>
-  </div>
+            "{{cita.count}}"
 
+    {% endfor %}
+    ];
 
-<!--tratatamintos-->
-  <div class="card">
-    <div class="card-header" id="headingThree">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-          Historial de sesiones de tratamientos agendados
-        </button>
-      </h5>
-    </div>
-    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+ var citas_labels = [
+     {%for cita in citas %}
+        {% if not forloop.first %},{% endif %}
 
+            "{{cita.hora_inicio |date:'Y-F-W'}}"
 
-  <canvas id="tratamiento" width="10%" height="10%"></canvas>
-<script>
+    {% endfor %}
+    ];
+
+var myChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels:  citas_labels,
+        datasets: [{
+            label: 'Historial de citas agendadas',
+            data: citas,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
 
 var ctx = document.getElementById('tratamiento');
  var clientes = [
@@ -121,7 +236,7 @@ var ctx = document.getElementById('tratamiento');
      {%for tratamiento in tratamientos %}
         {% if not forloop.first %},{% endif %}
 
-            "{{tratamiento.fecha|date:'F'}}"
+            "{{tratamiento.fecha|date:'Y-F-W'}}"
 
     {% endfor %}
     ];
@@ -160,24 +275,6 @@ var myChart = new Chart(ctx, {
         }
     }
 });
-
-
-</script>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header" id="headingFour">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-          Historial de Facturación
-        </button>
-      </h5>
-    </div>
-    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
-      <!--facturación-->
-  <canvas id="facturacion" width="10%" height="10%"></canvas>
-<script>
-
 var ctx = document.getElementById('facturacion');
  var clientes = [
      {%for facturacion in facturacion %}
@@ -192,7 +289,7 @@ var ctx = document.getElementById('facturacion');
      {%for facturacion in facturacion %}
         {% if not forloop.first %},{% endif %}
 
-            "{{facturacion.fecha |date:'F'}}"
+            "{{facturacion.fecha |date:'Y-F-W'}}"
 
     {% endfor %}
     ];
@@ -231,25 +328,6 @@ var myChart = new Chart(ctx, {
         }
     }
 });
-
-
-</script>
-    </div>
-  </div>
-
-  <!--horarios-->
-<div class="card">
-    <div class="card-header" id="headingFive">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-          Historial de Horas trabajadas
-        </button>
-      </h5>
-    </div>
-    <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
-      <!--facturación-->
-  <canvas id="tiempo" width="10%" height="10%"></canvas>
-<script>
 
 var ctx = document.getElementById('tiempo');
  var tiempo = [

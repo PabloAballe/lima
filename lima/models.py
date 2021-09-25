@@ -37,6 +37,8 @@ class Centro(models.Model):
     id_centro=models.AutoField(primary_key=True, auto_created = True)
     nombre_centro=models.CharField(max_length=50,help_text="Ingrese el nombre del centro", null=False)
     propietaria=models.CharField(max_length=50,help_text="Ingrese el nombre de la/el propietari@")
+    horario_apertura=models.TimeField(auto_now=False, auto_now_add=False,help_text="Ingrese la hora de apertura de la clínica entre semana",default="09:00:00")
+    horario_cierre=models.TimeField(auto_now=False, auto_now_add=False,help_text="Ingrese la hora de cierre de la clínica entre semana",default="21:00:00")
     telefono_centro=models.IntegerField(help_text="Ingrese el teléfono del centro", null=True, default=0, blank=True)
     localizacion=models.CharField(max_length=100,help_text="Ingrese la hubicación del centro")
     habilitado=models.BooleanField(default=True)
@@ -48,6 +50,146 @@ class Centro(models.Model):
 
     def __str__(self):
         return self.nombre_centro
+
+
+
+
+
+class EstadosClientes(models.Model):
+    id_estado=models.AutoField(primary_key=True, auto_created = True)
+    nombre_estado=models.CharField(max_length=50,help_text="Ingrese el nombre del estado", null=False)
+    color = ColorField(default='#FF0000',help_text="Color del estado")
+    icon = FAIconField(default="", blank=True)
+
+    class Meta:
+        verbose_name_plural = "Estados de clientes"
+
+    def __str__(self):
+        return self.nombre_estado
+
+
+
+
+
+
+
+
+def create_user_profile(sender, instance, created, **kwargs):
+    if created:
+       profile, created = Tecnica.objects.get_or_create(user=instance, nombre_tecnica=instance.username)
+
+post_save.connect(create_user_profile, sender=User)
+
+class Paneles(models.Model):
+    id_panel=models.AutoField(primary_key=True, auto_created = True)
+    nombre_panel=models.CharField(max_length=50,help_text="Ingrese el nombre del estado", null=False)
+    descripcion_panel=models.TextField(help_text="Ingrese la descripción del panel")
+    icon = FAIconField(default="", blank=True)
+
+    class Meta:
+        verbose_name_plural = "Paneles del sistema"
+
+    def __str__(self):
+        return self.nombre_panel
+
+
+
+
+
+class Estados(models.Model):
+    id_estado=models.AutoField(primary_key=True, auto_created = True)
+    nombre_estado=models.CharField(max_length=50,help_text="Ingrese el nombre del estado", null=False)
+    color = ColorField(default='#FF0000',help_text="Color del estado")
+    panel=models.ForeignKey(Paneles, on_delete=models.RESTRICT, null=False, default="1")
+    orden_del_estado=models.IntegerField(help_text="Ingrese el orden a aplicar", default=0 , null=False)
+    centro=models.ForeignKey(Centro, on_delete=models.RESTRICT, null=False, default="1")
+    icon = FAIconField(default="", blank=True)
+
+    class Meta:
+        verbose_name_plural = "Estados del sistema"
+
+    def __str__(self):
+        return self.nombre_estado
+
+
+
+THEMES = [
+    ('light', 'light'),
+    ('dark', 'dark'),
+    ('retro', 'retro'),
+    ('cyberpunk', 'cyberpunk'),
+    ('valentine', 'valentine'),
+    ('garden', 'garden'),
+    ('lofi', 'lofi')
+]
+
+class Tecnica(models.Model):
+    id_tecnica=models.AutoField(primary_key=True, auto_created = True)
+    imagen=ResizedImageField(size=[500, 500],upload_to='images/', default='img/porfile.png')
+    nombre_tecnica=models.CharField(max_length=50,help_text="Ingrese el nombre de la/el tecnic@")
+    apellidos_tecnica=models.CharField(max_length=50,help_text="Ingrese los apellidos de la/el técnic@")
+    centros=models.ManyToManyField(Centro, default="1")
+    portales=models.ManyToManyField(Paneles, default="1",blank=True,related_name="portales")
+    color = ColorField(default='#FF0000')
+    tema=models.CharField(max_length=20, choices=THEMES, default='light')
+    habilitado=models.BooleanField(default=True)
+    history = HistoricalRecords()
+    user = models.OneToOneField(User, on_delete=models.RESTRICT)
+    icon = FAIconField(default="", blank=True)
+
+    class Meta:
+        verbose_name_plural = "Técnicas | Técnicos"
+
+    def __str__(self):
+        return self.nombre_tecnica
+
+
+class Tags(models.Model):
+    id_tag=models.AutoField(primary_key=True, auto_created = True)
+    nombre_etiqueta=models.CharField(max_length=50,help_text="Ingrese el nombre de la etiqueta", null=False)
+    color = ColorField(default='#FF0000',help_text="Color de la etiqueta")
+    history = HistoricalRecords()
+    icon = FAIconField(default="", blank=True)
+
+    class Meta:
+        verbose_name_plural = "Etiquetas del sistema"
+
+    def __str__(self):
+        return self.nombre_etiqueta
+
+class Tareas(models.Model):
+    id_tarea=models.AutoField(primary_key=True, auto_created = True)
+    nombre_tarea=models.CharField(max_length=50,help_text="Ingrese el nombre del estado", null=False)
+    color = ColorField(default='#FF0000',help_text="Color del estado")
+    descripcion_tarea=models.TextField(help_text="Ingrese la descripción de la tarea", blank=True, default="")
+    fecha_creacion=models.DateTimeField(null=False, default=now)
+    estado=models.ForeignKey(Estados, on_delete=models.RESTRICT, null=False, default="1")
+    etiquetas=models.ManyToManyField(Tags, default="1", blank=True)
+    propietario=models.ForeignKey(Tecnica, on_delete=models.RESTRICT, null=False, default="1")
+    icon = FAIconField(default="", blank=True)
+
+    class Meta:
+        verbose_name_plural = "Tareas del sistema"
+
+    def __str__(self):
+        return self.nombre_tarea
+
+
+class Anuncios(models.Model):
+    id_anuncio=models.AutoField(primary_key=True, auto_created = True)
+    cuerpo_anuncio=models.CharField(max_length=100,help_text="Ingrese el anuncio", null=False)
+    link_anuncio=models.CharField(help_text="Ingrese el link del anuncio",  default="", blank=True,max_length=10000)
+    centro=models.ForeignKey(Centro, on_delete=models.RESTRICT, default="1")
+    imagen=ResizedImageField(size=[500, 500],upload_to='images/')
+    fecha_creacion=models.DateTimeField(null=False, default=now)
+
+    class Meta:
+        verbose_name_plural = "Anúncios del sistema"
+
+    def __str__(self):
+        return self.cuerpo_anuncio
+
+
 
 
 
@@ -63,6 +205,10 @@ class Paciente(models.Model):
     centro=models.ForeignKey(Centro, on_delete=models.RESTRICT)
     poblacion=models.CharField(max_length=50,help_text="Ingrese la población del/la paciente",  default='Valencia')
     direccion=models.CharField(max_length=50,help_text="Ingrese la dirección del/la paciente",  default='Valencia')
+    notas_paciente=models.TextField(help_text="Ingrese notas sobre el cliente aquí", default="", blank=True)
+    fecha_nacimiento=models.DateTimeField(null=False, default='2000-01-01')
+    estado=models.ManyToManyField(EstadosClientes, default="Nuevo")
+    etiqueta=models.ManyToManyField(Tags, default="1", blank=True)
     autorizacion_envio_informacion_comercial=models.BooleanField(default=False)
     fecha_alta=models.DateTimeField(null=False, default=now)
     history = HistoricalRecords()
@@ -74,29 +220,19 @@ class Paciente(models.Model):
     def __str__(self):
         return self.nombre_paciente
 
-class Tecnica(models.Model):
-    id_tecnica=models.AutoField(primary_key=True, auto_created = True)
-    imagen=ResizedImageField(size=[500, 500],upload_to='images/', default='img/porfile.png')
-    nombre_tecnica=models.CharField(max_length=50,help_text="Ingrese el nombre de la/el tecnic@")
-    apellidos_tecnica=models.CharField(max_length=50,help_text="Ingrese los apellidos de la/el técnic@")
-    centros=models.ManyToManyField(Centro, default="1")
-    color = ColorField(default='#FF0000')
-    habilitado=models.BooleanField(default=True)
+class Mensajes(models.Model):
+    id_mensaje=models.AutoField(primary_key=True, auto_created = True)
+    enviado_por=models.ForeignKey(Tecnica, on_delete=models.RESTRICT, null=False)
+    tarea=models.ForeignKey(Tareas, on_delete=models.RESTRICT, null=False, default="1")
+    cuerpo_mensaje=models.TextField(help_text="Ingrese la descripción aquí")
+    fecha_creacion=models.DateTimeField(null=False, default=now)
     history = HistoricalRecords()
-    user = models.OneToOneField(User, on_delete=models.RESTRICT)
-    icon = FAIconField(default="", blank=True)
 
     class Meta:
-        verbose_name_plural = "Técnicas | Técnicos"
+        verbose_name_plural = "Paneles del sistema"
 
     def __str__(self):
-        return self.nombre_tecnica
-
-def create_user_profile(sender, instance, created, **kwargs):
-    if created:
-       profile, created = Tecnica.objects.get_or_create(user=instance, nombre_tecnica=instance.username)
-
-post_save.connect(create_user_profile, sender=User)
+        return self.nombre_panel
 
 class Cita(models.Model):
     id_cita=models.AutoField(primary_key=True, auto_created = True)
@@ -220,7 +356,9 @@ class Configuracion(models.Model):
     enviar_email_nuevos_clientes=models.BooleanField(default=True)
     enviar_email_nueva_caja=models.BooleanField(default=True)
     enviar_email_nuevo_fichaje=models.BooleanField(default=True)
-    plantilla_email=models.ForeignKey(EmailTemplates, on_delete=models.RESTRICT , blank=True, default="1")
+    enviar_email_nuevas_listas=models.BooleanField(default=True)
+    plantilla_email=models.ForeignKey(EmailTemplates, on_delete=models.RESTRICT , blank=True, default="1",related_name ="plantilla_email" )
+    plantilla_lista=models.ForeignKey(EmailTemplates, on_delete=models.RESTRICT , blank=True, default="1",related_name ="plantilla_lista")
     history = HistoricalRecords()
     icon = FAIconField(default="", blank=True)
 

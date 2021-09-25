@@ -1,0 +1,98 @@
+{%extends 'base.html'%}
+
+{%block content%}
+{%include 'nav.html'%}
+
+<div class="index">
+
+<h1><svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-textarea" viewBox="0 0 16 16">
+  <path d="M1.5 2.5A1.5 1.5 0 0 1 3 1h10a1.5 1.5 0 0 1 1.5 1.5v3.563a2 2 0 0 1 0 3.874V13.5A1.5 1.5 0 0 1 13 15H3a1.5 1.5 0 0 1-1.5-1.5V9.937a2 2 0 0 1 0-3.874V2.5zm1 3.563a2 2 0 0 1 0 3.874V13.5a.5.5 0 0 0 .5.5h10a.5.5 0 0 0 .5-.5V9.937a2 2 0 0 1 0-3.874V2.5A.5.5 0 0 0 13 2H3a.5.5 0 0 0-.5.5v3.563zM2 7a1 1 0 1 0 0 2 1 1 0 0 0 0-2zm12 0a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+</svg> &nbsp; Panel {{panel.nombre_panel | title }} </h1>
+
+{% if perms.lima.add_tareas %}
+<a href="{% url 'new_tarea' pk=panel.id_panel %}" class="top-menu">
+<button class="button is-primary is-rounded" style="margin-left: 5%;"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-card-checklist" viewBox="0 0 16 16">
+  <path d="M14.5 3a.5.5 0 0 1 .5.5v9a.5.5 0 0 1-.5.5h-13a.5.5 0 0 1-.5-.5v-9a.5.5 0 0 1 .5-.5h13zm-13-1A1.5 1.5 0 0 0 0 3.5v9A1.5 1.5 0 0 0 1.5 14h13a1.5 1.5 0 0 0 1.5-1.5v-9A1.5 1.5 0 0 0 14.5 2h-13z"/>
+  <path d="M7 5.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 1 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0zM7 9.5a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5zm-1.496-.854a.5.5 0 0 1 0 .708l-1.5 1.5a.5.5 0 0 1-.708 0l-.5-.5a.5.5 0 0 1 .708-.708l.146.147 1.146-1.147a.5.5 0 0 1 .708 0z"/>
+</svg> &nbsp; Añadir una tarea al panel</button>
+   </a>
+   {%endif%}
+<BR><BR>
+
+<div class="table" id="table" style=" overflow-x:auto;">
+  <table class="table is-bordered is-hoverable is-fullwidth is-striped is-narrow">
+    <thead>
+      <tr>
+          {%for estado in estados %}
+            <th title="ID" ><p style="font-size: 1.2rem;">{{estado.nombre_estado | title}}</p></th>
+         {%endfor%}
+      </tr>
+    </thead>
+    <tfoot>
+
+    </tfoot>
+    <tbody>
+ <tr>
+     {%for estado in estados %}
+         <!-- component -->
+             <td style="background:{{estado.color}}; opacity: 0.9;" class="fondo">
+             {%for tarea in estado.tareas_set.select_related.all %}
+<article style="width:20rem;" class="border w-2/4 mx-auto border-gray-400 rounded-lg md:p-4 bg-white sm:py-3 py-4 px-2 m-10" data-article-path="/hagnerd/setting-up-tailwind-with-create-react-app-4jd" data-content-user-id="112962">
+  <div role="presentation">
+      <div>
+        <div class="m-2">
+          <div class="flex items-center">
+              <div class="mr-2">
+                <a href="/hagnerd">
+                  <img class="rounded-full w-8" src="{{tarea.propietario.imagen.url}}" alt="hagnerd profile" loading="lazy">
+                </a>
+              </div>
+              <div>
+                <p>
+                  <a href="/hagnerd" class="text text-gray-700 text-sm hover:text-black">{{tarea.propietario.nombre_tecnica}}</a>
+                </p>
+                <a href="/hagnerd/setting-up-tailwind-with-create-react-app-4jd" class="text-xs text-gray-600 hover:text-black">
+                  <time datetime="2019-08-02T13:58:42.196Z">{{tarea.fecha_creacion}} </time>
+                </a>
+              </div>
+          </div>
+        </div>
+        <div class="pl-12 md:pl-10 xs:pl-10">
+          <h2 class="text-2xl font-bold mb-2 hover:text-blue-600 leading-7">
+            <a href="{% url 'tarea_details' pk=tarea.pk %}" id="article-link-151230" class="truncate  ">
+            <p class="truncate  ">  {{tarea.nombre_tarea | title}}</p>
+            </a>
+          </h2>
+          <div class="mb-2">
+              {% for tag in tarea.etiquetas.all %}
+
+                 <a href="#" class="text-sm text-gray-600 p-1 hover:text-black truncate">
+                <span class="text-opacity-50">#</span>
+                {{tag.nombre_etiqueta}}
+              </a>
+                {%endfor%}
+
+
+          </div>
+<p class="truncate  ">{{tarea.descripcion_tarea}}</p>
+        </div>
+    </div>
+  </div>
+</article>
+  {%endfor%}
+              </td>
+    {%endfor%}
+
+</tr>
+
+
+    </tbody>
+  </table>
+
+
+
+</div>
+
+
+
+{%endblock%}

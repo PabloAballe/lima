@@ -1,5 +1,5 @@
 <div class="table">
-  <table class="table" id="table">
+  <table class="table overflow-auto">
     <thead>
       <tr>
         <th><abbr title="ID">ID</abbr></th>
@@ -14,7 +14,7 @@
     </tfoot>
     <tbody>
       {%for cita in cita%}
-      <tr>
+      <tr >
         <th>{{ forloop.revcounter }}</th>
         <td><a href="#" </td>
         <td>{{cita.tecnica}}</td>
@@ -31,10 +31,7 @@
           </a> -->
 
 
-          <a href="{%url 'delete_cita' pk=cita.id_cita %}" style="margin-right:30px;">
-            <button class="button is-danger">Borrar</button>
-
-          </a>
+            <button style="margin-right:30px;" class="button is-danger" onclick="confirmSwall('{%url 'delete_cita' pk=cita.id_cita %}')">Borrar</button>
 
         </td>
 

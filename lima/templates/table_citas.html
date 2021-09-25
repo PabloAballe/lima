@@ -1,6 +1,6 @@
 
 <div class="table" id="table">
-  <table class="table">
+  <table class="table overflow-auto">
     <thead>
       <tr>
         <th><abbr title="ID">ID</abbr></th>
@@ -28,7 +28,7 @@
         <td>{{cita.milisegundos}}</td>
         <td>{{cita.julios}}</td>
 
-        <td>
+        <td onclick="window.location='{% url 'edit_cita' pk=cita.id_cita %}';">
             <div class="buttons">
             {% if perms.lima.change_cita %}
          <a href="{% url 'edit_cita' pk=cita.id_cita %}">
@@ -39,11 +39,10 @@
           </a>
  {% endif %}
 {% if perms.lima.delete_cita %}
-          <a href="{%url 'delete_cita' pk=cita.id_cita %}" style="margin-right:30px;">
-            <button class="button is-danger is-rounded">Borrar</button>
+            <button class="button is-danger is-rounded" onclick="confirmSwall('{%url 'delete_cita' pk=cita.id_cita %}')">Borrar</button>
 
-          </a>
-          <!--<button class="button is-danger is-rounded" id="myBtn">Borrar</button>-->
+          <!--</a>-->
+</div>
  {% endif %}
  </div>
         </td>

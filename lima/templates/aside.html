@@ -1,0 +1,348 @@
+{% include 'movile.html' %}
+<!--<div class="min-h-screen flex flex-col flex-auto flex-shrink-0 antialiased bg-gray-50 text-gray-800" style="top:6rem; height: 1000px" >-->
+<!--  <div class="fixed flex flex-col top-0 left-0 w-64 bg-white h-full border-r">-->
+<!--    <div class="flex items-center justify-center h-14 border-b">-->
+<!--      <div></div>-->
+<!--    </div>-->
+<!--    <div class="overflow-y-auto overflow-x-hidden flex-grow">-->
+<!--      <ul class="flex flex-col py-4 space-y-1">-->
+<!--        <li class="px-5">-->
+<!--          <div class="flex flex-row items-center h-8">-->
+<!--            <div class="text-sm font-light tracking-wide text-gray-500">Menu</div>-->
+<!--          </div>-->
+<!--        </li>-->
+<!--         <li>-->
+<!--          <a href="{%url 'index' %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--             <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-house" viewBox="0 0 2rem 2rem">-->
+<!--              <path fill-rule="evenodd" d="M2 13.5V7h1v6.5a.5.5 0 0 0 .5.5h9a.5.5 0 0 0 .5-.5V7h1v6.5a1.5 1.5 0 0 1-1.5 1.5h-9A1.5 1.5 0 0 1 2 13.5zm11-11V6l-2-2V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5z"/>-->
+<!--              <path fill-rule="evenodd" d="M7.293 1.5a1 1 0 0 1 1.414 0l6.647 6.646a.5.5 0 0 1-.708.708L8 2.207 1.354 8.854a.5.5 0 1 1-.708-.708L7.293 1.5z"/>-->
+<!--            </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Inicio</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--         {% if perms.lima.view_historicalconfiguracion %}-->
+<!--        <li>-->
+<!--          <a href="{%url 'historial' %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-clock-history" viewBox="0 0 16 16">-->
+<!--                  <path d="M8.515 1.019A7 7 0 0 0 8 1V0a8 8 0 0 1 .589.022l-.074.997zm2.004.45a7.003 7.003 0 0 0-.985-.299l.219-.976c.383.086.76.2 1.126.342l-.36.933zm1.37.71a7.01 7.01 0 0 0-.439-.27l.493-.87a8.025 8.025 0 0 1 .979.654l-.615.789a6.996 6.996 0 0 0-.418-.302zm1.834 1.79a6.99 6.99 0 0 0-.653-.796l.724-.69c.27.285.52.59.747.91l-.818.576zm.744 1.352a7.08 7.08 0 0 0-.214-.468l.893-.45a7.976 7.976 0 0 1 .45 1.088l-.95.313a7.023 7.023 0 0 0-.179-.483zm.53 2.507a6.991 6.991 0 0 0-.1-1.025l.985-.17c.067.386.106.778.116 1.17l-1 .025zm-.131 1.538c.033-.17.06-.339.081-.51l.993.123a7.957 7.957 0 0 1-.23 1.155l-.964-.267c.046-.165.086-.332.12-.501zm-.952 2.379c.184-.29.346-.594.486-.908l.914.405c-.16.36-.345.706-.555 1.038l-.845-.535zm-.964 1.205c.122-.122.239-.248.35-.378l.758.653a8.073 8.073 0 0 1-.401.432l-.707-.707z"/>-->
+<!--                  <path d="M8 1a7 7 0 1 0 4.95 11.95l.707.707A8.001 8.001 0 1 1 8 0v1z"/>-->
+<!--                  <path d="M7.5 3a.5.5 0 0 1 .5.5v5.21l3.248 1.856a.5.5 0 0 1-.496.868l-3.5-2A.5.5 0 0 1 7 9V3.5a.5.5 0 0 1 .5-.5z"/>-->
+<!--                </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Historial de acciones</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--          {% endif %}-->
+<!--          {% if perms.lima.view_paciente %}-->
+<!--        <li>-->
+<!--          <a href="{%url 'clientes' %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 2rem 2rem">-->
+<!--                  <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>-->
+<!--                  <path fill-rule="evenodd" d="M5.22rem 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.22remz"/>-->
+<!--                  <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>-->
+<!--                </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Buscador de clientes</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        {% endif %}-->
+<!--         <li class="px-5">-->
+<!--          <div class="flex flex-row items-center h-8">-->
+<!--            <div class="text-sm font-light tracking-wide text-gray-500">Mi espacio</div>-->
+<!--          </div>-->
+<!--        </li>-->
+<!--     {% if perms.lima.view_cita %}-->
+<!--        <li>-->
+<!--          <a href="{%url 'ver_visual_tecnica' pk=user.tecnica.pk %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-calendar-day" viewBox="0 0 2rem 2rem">-->
+<!--                  <path d="M4.684 11.523v-2.3h2.261v-.61H4.684V6.801h2.464v-.61H4v5.332h.684zm3.296 0h.676V8.98c0-.554.227-1.007.953-1.007.125 0 .258.004.329.015v-.613a1.806 1.806 0 0 0-.254-.02c-.582 0-.891.32-1.012.567h-.02v-.504H7.98v4.105zm2.805-5.093c0 .238.192.425.43.425a.428.428 0 1 0 0-.855.426.426 0 0 0-.43.43zm.094 5.093h.672V7.418h-.672v4.105z"/>-->
+<!--                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>-->
+<!--                </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Mis tratamientos</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--         {% endif %}-->
+<!--          {% if perms.lima.view_turnos %}-->
+<!--        <li>-->
+<!--          <a href="{%url 'edit_turno' pk=user.tecnica.pk %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--               <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-calendar-day" viewBox="0 0 2rem 2rem">-->
+<!--                  <path d="M4.684 11.523v-2.3h2.261v-.61H4.684V6.801h2.464v-.61H4v5.332h.684zm3.296 0h.676V8.98c0-.554.227-1.007.953-1.007.125 0 .258.004.329.015v-.613a1.806 1.806 0 0 0-.254-.02c-.582 0-.891.32-1.012.567h-.02v-.504H7.98v4.105zm2.805-5.093c0 .238.192.425.43.425a.428.428 0 1 0 0-.855.426.426 0 0 0-.43.43zm.094 5.093h.672V7.418h-.672v4.105z"/>-->
+<!--                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>-->
+<!--                </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Mis turnos de trabajo</span>-->
+<!--          </a>-->
+<!--        </li>-->
+
+<!--        <li>-->
+<!--          <a href="{%url 'estadisticas_horario_tecnica' pk=user.tecnica.pk %}"  class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--             <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-bar-chart-line" viewBox="0 0 2rem 2rem">-->
+<!--              <path d="M11 2a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v12h.5a.5.5 0 0 1 0 1H.5a.5.5 0 0 1 0-1H1v-3a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v3h1V7a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1v7h1V2zm1 12h2V2h-2v12zm-3 0V7H7v7h2zm-5 0v-3H2v3h2z"/>-->
+<!--            </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Mis Estadísticas</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        <li>-->
+<!--          <a href="{% url 'listas' centro=0 pk=request.user.tecnica.pk %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--               <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-list-ol" viewBox="0 0 2rem 2rem">-->
+<!--                  <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z"/>-->
+<!--                  <path d="M1.713 11.865v-.474H2c.217 0 .363-.137.363-.317 0-.185-.158-.31-.361-.31-.223 0-.367.152-.373.31h-.59c.02rem-.467.373-.787.986-.787.588-.002.954.291.957.703a.595.595 0 0 1-.492.594v.033a.615.615 0 0 1 .569.631c.003.533-.502.8-1.051.8-.656 0-1-.37-1.008-.794h.582c.008.178.186.306.422.309.254 0 .424-.145.422-.35-.002-.195-.155-.348-.414-.348h-.3zm-.004-4.699h-.604v-.035c0-.408.295-.844.958-.844.583 0 .96.326.96.756 0 .389-.257.617-.476.848l-.537.572v.03h1.054V9H1.143v-.395l.957-.99c.138-.142.293-.304.293-.508 0-.18-.147-.32-.342-.32a.33.33 0 0 0-.342.338v.041zM2.564 5h-.635V2.924h-.031l-.598.42v-.567l.629-.443h.635V5z"/>-->
+<!--                </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Mis citas</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--          {% endif %}-->
+<!--          <li class="px-5">-->
+<!--          <div class="flex flex-row items-center h-8">-->
+<!--            <div class="text-sm font-light tracking-wide text-gray-500">Panel de control</div>-->
+<!--          </div>-->
+<!--        </li>-->
+<!--         {% if request.user.is_staff %}-->
+<!--         {% if perms.lima.view_tecnica %}-->
+<!--        <li>-->
+<!--          <a href="{% url 'view_perfiles' %}"  class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-people-fill" viewBox="0 0 2rem 2rem">-->
+<!--                  <path d="M7 14s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H7zm4-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6z"/>-->
+<!--                  <path fill-rule="evenodd" d="M5.22rem 14A2.238 2.238 0 0 1 5 13c0-1.355.68-2.75 1.936-3.72A6.325 6.325 0 0 0 5 9c-4 0-5 3-5 4s1 1 1 1h4.22remz"/>-->
+<!--                  <path d="M4.5 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/>-->
+<!--                </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Listado de Tecnicas</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        {% endif %}-->
+<!--        {% if perms.lima.view_lista %}-->
+<!--        <li>-->
+<!--          <a href="{% url 'listas' centro=0 pk=0 %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--               <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-list-ol" viewBox="0 0 2rem 2rem">-->
+<!--                  <path fill-rule="evenodd" d="M5 11.5a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5zm0-4a.5.5 0 0 1 .5-.5h9a.5.5 0 0 1 0 1h-9a.5.5 0 0 1-.5-.5z"/>-->
+<!--                  <path d="M1.713 11.865v-.474H2c.217 0 .363-.137.363-.317 0-.185-.158-.31-.361-.31-.223 0-.367.152-.373.31h-.59c.02rem-.467.373-.787.986-.787.588-.002.954.291.957.703a.595.595 0 0 1-.492.594v.033a.615.615 0 0 1 .569.631c.003.533-.502.8-1.051.8-.656 0-1-.37-1.008-.794h.582c.008.178.186.306.422.309.254 0 .424-.145.422-.35-.002-.195-.155-.348-.414-.348h-.3zm-.004-4.699h-.604v-.035c0-.408.295-.844.958-.844.583 0 .96.326.96.756 0 .389-.257.617-.476.848l-.537.572v.03h1.054V9H1.143v-.395l.957-.99c.138-.142.293-.304.293-.508 0-.18-.147-.32-.342-.32a.33.33 0 0 0-.342.338v.041zM2.564 5h-.635V2.924h-.031l-.598.42v-.567l.629-.443h.635V5z"/>-->
+<!--                </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Citas</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        {% endif %}-->
+<!--        {% if perms.lima.view_cita %}-->
+<!--        <li>-->
+<!--          <a href="{% url 'ver_visual_tecnica' pk=0 %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--               <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-calendar-day" viewBox="0 0 2rem 2rem">-->
+<!--                  <path d="M4.684 11.523v-2.3h2.261v-.61H4.684V6.801h2.464v-.61H4v5.332h.684zm3.296 0h.676V8.98c0-.554.227-1.007.953-1.007.125 0 .258.004.329.015v-.613a1.806 1.806 0 0 0-.254-.02c-.582 0-.891.32-1.012.567h-.02v-.504H7.98v4.105zm2.805-5.093c0 .238.192.425.43.425a.428.428 0 1 0 0-.855.426.426 0 0 0-.43.43zm.094 5.093h.672V7.418h-.672v4.105z"/>-->
+<!--                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>-->
+<!--                </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Sesiones de tratamientos</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        {% endif %}-->
+<!--        {% if perms.lima.view_turnos %}-->
+<!--        <li>-->
+<!--          <a href="{%url 'edit_turno' pk=0 %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-calendar-day" viewBox="0 0 2rem 2rem">-->
+<!--                  <path d="M4.684 11.523v-2.3h2.261v-.61H4.684V6.801h2.464v-.61H4v5.332h.684zm3.296 0h.676V8.98c0-.554.227-1.007.953-1.007.125 0 .258.004.329.015v-.613a1.806 1.806 0 0 0-.254-.02c-.582 0-.891.32-1.012.567h-.02v-.504H7.98v4.105zm2.805-5.093c0 .238.192.425.43.425a.428.428 0 1 0 0-.855.426.426 0 0 0-.43.43zm.094 5.093h.672V7.418h-.672v4.105z"/>-->
+<!--                  <path d="M3.5 0a.5.5 0 0 1 .5.5V1h8V.5a.5.5 0 0 1 1 0V1h1a2 2 0 0 1 2 2v11a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V3a2 2 0 0 1 2-2h1V.5a.5.5 0 0 1 .5-.5zM1 4v10a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V4H1z"/>-->
+<!--                </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Turnos de trabajo</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        {% endif %}-->
+<!--        {% if perms.lima.view_doctemplate %}-->
+<!--          <a href="{%url 'docs_list'%}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-file-earmark-medical" viewBox="0 0 2rem 2rem">-->
+<!--              <path d="M7.5 5.5a.5.5 0 0 0-1 0v.634l-.549-.317a.5.5 0 1 0-.5.866L6 7l-.549.317a.5.5 0 1 0 .5.866l.549-.317V8.5a.5.5 0 1 0 1 0v-.634l.549.317a.5.5 0 1 0 .5-.866L8 7l.549-.317a.5.5 0 1 0-.5-.866l-.549.317V5.5zm-2 4.5a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5zm0 2a.5.5 0 0 0 0 1h5a.5.5 0 0 0 0-1h-5z"/>-->
+<!--              <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>-->
+<!--            </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Plantillas de documentos</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        {% endif %}-->
+<!--        {% if perms.lima.view_suscription %}-->
+<!--        <li>-->
+<!--          <a href="{% url 'suscripcion' %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor" class="bi bi-person-check" viewBox="0 0 2rem 2rem">-->
+<!--                  <path d="M6 8a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm2-3a2 2 0 1 1-4 0 2 2 0 0 1 4 0zm4 8c0 1-1 1-1 1H1s-1 0-1-1 1-4 6-4 6 3 6 4zm-1-.004c-.001-.246-.154-.986-.832-1.664C9.52rem 10.68 8.289 10 6 10c-2.29 0-3.52rem.68-4.2rem8 1.332-.678.678-.83 1.418-.832 1.664h10z"/>-->
+<!--                  <path fill-rule="evenodd" d="M15.854 5.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.708 0l-1.5-1.5a.5.5 0 0 1 .708-.708L12.5 7.793l2.646-2.647a.5.5 0 0 1 .708 0z"/>-->
+<!--                </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Mi Suscripción</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        {% endif %}-->
+<!--        {% if perms.lima.view_configuracion %}-->
+<!--        <li>-->
+<!--          <a href="{% url 'configuracion' %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">-->
+<!--                  <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>-->
+<!--                  <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>-->
+<!--                </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Ajustes</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        <li>-->
+<!--          <a href="{% url 'admin' %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">-->
+<!--                  <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>-->
+<!--                  <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>-->
+<!--                </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Configuración</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!-- {% endif %}-->
+<!-- {% endif %}-->
+<!--         <li class="px-5">-->
+<!--          <div class="flex flex-row items-center h-8">-->
+<!--            <div class="text-sm font-light tracking-wide text-gray-500">Marketing</div>-->
+<!--          </div>-->
+<!--        </li>-->
+<!--        <li>-->
+<!--          <a href="{% url 'emails_templates' %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-envelope" viewBox="0 0 2rem 2rem">-->
+<!--                  <path d="M0 4a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V4zm2-1a1 1 0 0 0-1 1v.217l7 4.2 7-4.2V4a1 1 0 0 0-1-1H2zm13 2.383-4.758 2.855L15 11.114v-5.73zm-.034 6.878L9.271 8.82 8 9.583 6.728 8.82l-5.694 3.44A1 1 0 0 0 2 13h12a1 1 0 0 0 .966-.739zM1 11.114l4.758-2.876L1 5.383v5.73z"/>-->
+<!--                </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Plantillas de Email</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        <li>-->
+<!--          <a href="{% url 'send_emails' %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-arrow-up-right-square" viewBox="0 0 2rem 2rem">-->
+<!--                  <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm5.854 8.803a.5.5 0 1 1-.708-.707L9.243 6H6.475a.5.5 0 1 1 0-1h3.975a.5.5 0 0 1 .5.5v3.975a.5.5 0 1 1-1 0V6.707l-4.096 4.096z"/>-->
+<!--                </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Envío de Emails</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        <li class="px-5">-->
+<!--          <div class="flex flex-row items-center h-8">-->
+<!--            <div class="text-sm font-light tracking-wide text-gray-500">Estadistícas</div>-->
+<!--          </div>-->
+<!--        </li>-->
+<!--        <li>-->
+<!--          <a href="{% url 'estatisticas' %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-graph-up" viewBox="0 0 2rem 2rem">-->
+<!--                  <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5z"/>-->
+<!--                </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Estadísticas del sistema</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        {% if perms.lima.view_stock %}-->
+<!--        <li class="px-5">-->
+<!--          <div class="flex flex-row items-center h-8">-->
+<!--            <div class="text-sm font-light tracking-wide text-gray-500">Control de productos</div>-->
+<!--          </div>-->
+<!--        </li>-->
+<!--        <li>-->
+<!--          <a href="{% url 'stock_list' %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-box" viewBox="0 0 2rem 2rem">-->
+<!--              <path d="M8.186 1.113a.5.5 0 0 0-.372 0L1.846 3.5 8 5.961 14.154 3.5 8.186 1.113zM15 4.239l-6.5 2.6v7.922l6.5-2.6V4.24zM7.5 14.762V6.838L1 4.239v7.923l6.5 2.6zM7.443.184a1.5 1.5 0 0 1 1.114 0l7.129 2.852A.5.5 0 0 1 2rem 3.5v8.662a1 1 0 0 1-.629.928l-7.185 2.874a.5.5 0 0 1-.372 0L.63 13.09a1 1 0 0 1-.63-.928V3.5a.5.5 0 0 1 .314-.464L7.443.184z"/>-->
+<!--            </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Ver Productos</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        {% endif %}-->
+<!--         {% if perms.lima.view_all_cajas %}-->
+<!--         <li class="px-5">-->
+<!--          <div class="flex flex-row items-center h-8">-->
+<!--            <div class="text-sm font-light tracking-wide text-gray-500">Facturación</div>-->
+<!--          </div>-->
+<!--        </li>-->
+<!--        <li>-->
+<!--          <a href="{% url 'caja_list' centro=0 %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="currentColor" class="bi bi-currency-euro" viewBox="0 0 16 16">-->
+<!--                  <path d="M4 9.42h1.063C5.4 12.323 7.317 14 10.34 14c.622 0 1.167-.068 1.659-.185v-1.3c-.484.119-1.045.17-1.659.17-2.1 0-3.455-1.198-3.775-3.264h4.017v-.928H6.497v-.936c0-.11 0-.219.008-.329h4.078v-.927H6.618c.388-1.898 1.719-2.985 3.723-2.985.614 0 1.175.05 1.659.177V2.194A6.617 6.617 0 0 0 10.341 2c-2.928 0-4.82 1.569-5.244 4.3H4v.928h1.01v1.265H4v.928z"/>-->
+<!--                </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Ver cajas del día</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--         {% endif %}-->
+<!--         {% if perms.lima.view_portal %}-->
+<!--         <li class="px-5">-->
+<!--          <div class="flex flex-row items-center h-8">-->
+<!--            <div class="text-sm font-light tracking-wide text-gray-500">Paneles</div>-->
+<!--          </div>-->
+<!--        </li>-->
+<!--        <li>-->
+<!--          <a href="{% url 'portales' %}" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-bounding-box" viewBox="0 0 2rem 2rem">-->
+<!--              <path d="M5 2V0H0v5h2v6H0v5h5v-2h6v2h5v-5h-2V5h2V0h-5v2H5zm6 1v2h2v6h-2v2H5v-2H3V5h2V3h6zm1-2h3v3h-3V1zm3 11v3h-3v-3h3zM4 15H1v-3h3v3zM1 4V1h3v3H1z"/>-->
+<!--            </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Paneles</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--         {%endif%}-->
+<!--         <li class="px-5">-->
+<!--          <div class="flex flex-row items-center h-8">-->
+<!--            <div class="text-sm font-light tracking-wide text-gray-500">Otros</div>-->
+<!--          </div>-->
+<!--        </li>-->
+<!--        <li>-->
+<!--          <a href="mailto:wavecompany@europe.com?subject=Lima y Neon Portal Ayuda" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-arrow-up-right-square" viewBox="0 0 2rem 2rem">-->
+<!--                  <path fill-rule="evenodd" d="M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm5.854 8.803a.5.5 0 1 1-.708-.707L9.243 6H6.475a.5.5 0 1 1 0-1h3.975a.5.5 0 0 1 .5.5v3.975a.5.5 0 1 1-1 0V6.707l-4.096 4.096z"/>-->
+<!--                </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Envíar email de soporte</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--         {% if request.user.is_staff %}-->
+<!--        <li>-->
+<!--          <a href="#" onclick="download_table_as_csv('table');" id="download-button" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-printer-fill" viewBox="0 0 2rem 2rem">-->
+<!--              <path d="M5 1a2 2 0 0 0-2 2v1h10V3a2 2 0 0 0-2-2H5zm6 8H5a1 1 0 0 0-1 1v3a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1v-3a1 1 0 0 0-1-1z"/>-->
+<!--              <path d="M0 7a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v3a2 2 0 0 1-2 2h-1v-2a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v2H2a2 2 0 0 1-2-2V7zm2.5 1a.5.5 0 1 0 0-1 .5.5 0 0 0 0 1z"/>-->
+<!--            </svg>-->
+<!--            </span>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Exportar</span>-->
+<!--          </a>-->
+<!--        </li>-->
+<!--        {%endif%}-->
+
+<!--        <li>-->
+<!--          <a href="/logout" class="relative flex flex-row items-center h-11 focus:outline-none hover:bg-gray-50 text-gray-600 hover:text-gray-800 border-l-4 border-transparent hover:border-indigo-500 pr-6">-->
+<!--            <span class="inline-flex justify-center items-center ml-4">-->
+<!--              <svg xmlns="http://www.w3.org/2000/svg" width="2rem" height="2rem" fill="currentColor" class="bi bi-person-x-fill" viewBox="0 0 2rem 2rem">-->
+<!--              <path fill-rule="evenodd" d="M1 14s-1 0-1-1 1-4 6-4 6 3 6 4-1 1-1 1H1zm5-6a3 3 0 1 0 0-6 3 3 0 0 0 0 6zm6.146-2.854a.5.5 0 0 1 .708 0L14 6.293l1.146-1.147a.5.5 0 0 1 .708.708L14.707 7l1.147 1.146a.5.5 0 0 1-.708.708L14 7.707l-1.146 1.147a.5.5 0 0 1-.708-.708L13.293 7l-1.147-1.146a.5.5 0 0 1 0-.708z"/>-->
+<!--            </svg>-->
+<!--            <span class="ml-2 text-sm tracking-wide truncate">Cerrar sesión</span>-->
+<!--          </a>-->
+<!--        </li>-->
+
+<!--      </ul>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--</div>-->

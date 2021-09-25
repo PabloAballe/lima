@@ -13,13 +13,36 @@ class SheachForm(forms.Form):
 class CentroForm(ModelForm):
     class Meta:
         model = Centro
-        fields = ('nombre_centro','telefono_centro' ,'propietaria','localizacion')
+        widgets = {
+            'nombre_centro': forms.TextInput(attrs={'class':'input', 'id':''}),
+            'horario_apertura': forms.TextInput(attrs={'class':'some_class', 'id':'datepicker'}),
+            'horario_cierre': forms.TextInput(attrs={'class':'some_class', 'id':'datepicker1'}),
+        }
+        fields = ('nombre_centro','telefono_centro' ,'propietaria','localizacion', 'horario_apertura','horario_cierre')
 
 
 class CitaFormAdmin(forms.ModelForm):
     class Meta:
         model=Cita
         fields=('zona', 'hertz', 'milisegundos','julios', 'fecha', 'tecnica' )
+
+class TareaForm(forms.ModelForm):
+    class Meta:
+        model=Tareas
+        fields=('nombre_tarea', 'descripcion_tarea', 'estado','etiquetas' )
+
+
+
+class MensajeForm(forms.ModelForm):
+    class Meta:
+        model=Mensajes
+        # widgets = {
+        #     'cuerpo_mensaje': SummernoteInplaceWidget(),
+        # }
+        widgets = {
+            'cuerpo_mensaje': forms.TextInput(attrs={'class':'textarea h-24', 'id':''}),
+        }
+        fields=('cuerpo_mensaje',)
 
 class CitaForm(forms.ModelForm):
     class Meta:
@@ -29,7 +52,7 @@ class CitaForm(forms.ModelForm):
 class ClienteForm(forms.ModelForm):
     class Meta:
         model = Paciente
-        fields = ('nombre_paciente','apellidos_paciente','telefono_paciente','dni','email', 'documento_de_autorizacion','documento_proteccion_de_datos', 'autorizacion_envio_informacion_comercial','poblacion', 'direccion', )
+        fields = ('nombre_paciente','apellidos_paciente','telefono_paciente','dni','email','fecha_nacimiento','estado','etiqueta', 'notas_paciente', 'documento_de_autorizacion','documento_proteccion_de_datos', 'autorizacion_envio_informacion_comercial','poblacion', 'direccion', )
 
 class TratamientoFormAdmin(forms.ModelForm):
     class Meta:

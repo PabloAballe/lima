@@ -4,7 +4,6 @@
 {%include 'nav.html'%}
  {% load tz %}
 <div class="index">
-<h1>Listas Agendadas</h1>
 <link href="{% static 'fullcalendar/main.css' %}" rel='stylesheet' />
 <script src="{% static 'fullcalendar/main.js' %}"></script>
 <script src="{% static 'fullcalendar/locales-all.js' %}"></script>
@@ -55,7 +54,8 @@ document.addEventListener('DOMContentLoaded', function() {
 </script>
 
 
-<div id="calendar"></div>
+
+<div id="calendar" ></div>
 <h1>Citas Pendientes</h1>
 {% include 'table_listas.html'%}
 <script>

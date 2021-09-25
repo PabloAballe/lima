@@ -72,4 +72,14 @@ urlpatterns = [
     path('configuracion', views.configuracion, name="configuracion"),
     ### mapa
     path('map/<int:centro>/', views.map, name="map"),
+    ### portales
+    path('portales', views.portales, name="portales"),
+    path('portal/<int:pk>', views.portales_details, name="portales_details"),
+    #clientes
+    path('cliente/<int:pk>/citas', views.cliente_details_citas, name='cliente_details_citas'),
+    path('cliente/<int:pk>/tratamientos', views.cliente_details_tratamientos, name='cliente_details_tratamientos'),
+    path('cliente/<int:pk>/zonas', views.cliente_details_zonas, name='cliente_details_zonas'),
+     ### tareas
+    path('tarea/<int:pk>', views.tarea_details, name="tarea_details"),
+    path('new_tarea/<int:pk>/', views.new_tarea, name="new_tarea"),
 ]

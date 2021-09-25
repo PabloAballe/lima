@@ -1,26 +1,22 @@
+
 {%extends 'base.html'%}
 
 {%block content%}
 {%include 'nav.html'%}
-<!--<script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.3/dist/Chart.min.js"></script>-->
-<div class="index">
-<h1>Estadísticas de horarios </h1>
-
-<!--boostrap-->
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-
-
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<h1>Hoy es {% now "SHORT_DATETIME_FORMAT" %}</h1>
+<div class="index">
+<h1>Estadísticas de horarios </h1>
+<h1 style="color: grey">Hoy es {% now "SHORT_DATETIME_FORMAT" %}</h1>
 <h1>Este mes llevas trabajado
 
- {%for timeMonth in timeMonth %}
+ {%for time in timeMonth %}
 
 
-            {{timeMonth.count}}
+            {{time.count}}
 
     {% endfor %}
 
@@ -28,10 +24,74 @@
 
 {%include 'estadisticas_form.html'%}
 
-  <canvas id="tiempos" width="10%" height="10%"></canvas>
+
+
+<div id="accordion">
+  <div class="card">
+    <div class="card-header" id="headingOne">
+      <h5 class="mb-0">
+        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+         Barra
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion" style="height: 40vw;">
+        <center style="height: 40vw;">
+           <div class="chart-container" style="position: relative; height:30vh; width:60vh;"> 
+       
+  
+        <canvas id="bar" width="50px" height="50px"></canvas>
+         
+     </div>
+     </center>
+    </div>
+  </div>
+  <div id="accordion">
+  <div class="card">
+    <div class="card-header" id="headingsTwo">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" >
+          Circular
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseTwo" class="collapse " aria-labelledby="headingsTwo" data-parent="#accordion"  >
+        <center style="height: 40vw;">
+  <div class="chart-container" style="position: relative; height:20vh; width:40vh;">
+        <canvas id="circle" width="50px" height="50px"></canvas>
+     </div>
+        </center>
+
+ </div>
+  </div>
+   <div id="accordion">
+  <div class="card">
+    <div class="card-header" id="headingsTree">
+      <h5 class="mb-0">
+        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTree" aria-expanded="false" aria-controls="collapseTree" >
+          Lineal
+        </button>
+      </h5>
+    </div>
+
+    <div id="collapseTree" class="collapse " aria-labelledby="headingsTree" data-parent="#accordion"  style="height: 40vw;">
+      <center style="height: 40vw;">
+ <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
+       
+        <canvas id="line" width="50px" height="50px"></canvas>
+     </div>
+  </center>
+ </div>
+
+  </div>
+  </div>
 <script>
 
-var ctx = document.getElementById('tiempos');
+var bar = document.getElementById('bar');
+var circle = document.getElementById('circle');
+var line = document.getElementById('line');
  var clientes = [
      {%for tiempo in tiempo %}
         {% if not forloop.first %},{% endif %}
@@ -48,7 +108,7 @@ var ctx = document.getElementById('tiempos');
     {% endfor %}
     ];
 
-var myChart = new Chart(ctx, {
+var myChart = new Chart(bar, {
     type: 'bar',
     data: {
         labels:  clientes_labels,
@@ -82,7 +142,74 @@ var myChart = new Chart(ctx, {
         }
     }
 });
-
+var myChart1 = new Chart(circle, {
+    type: 'pie',
+    data: {
+        labels:  clientes_labels,
+        datasets: [{
+            label: 'Historial de horas trabajadas',
+            data: clientes,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+var myChart2 = new Chart(line, {
+    type: 'line',
+    data: {
+        labels:  clientes_labels,
+        datasets: [{
+            label: 'Historial de horas trabajadas',
+            data: clientes,
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255, 99, 132, 1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
 
 </script>
     </div>

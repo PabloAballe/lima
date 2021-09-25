@@ -4,7 +4,7 @@
 {% else %}
 
 <div class="table" id="table">
-  <table class="table">
+  <table class="table overflow-auto">
     <thead>
       <tr>
         <th title="ID"><abbr title="ID">ID</abbr></th>
@@ -18,7 +18,7 @@
     </tfoot>
     <tbody>
       {%for stock in stocks %}
-      <tr>
+      <tr onclick="window.location='{% url 'stock' pk=stock.pk %}';">
         <th>{{ forloop.counter }}</th>
         <td>
     {% if perms.lima.change_stock %}

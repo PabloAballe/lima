@@ -1,6 +1,7 @@
 {%extends 'base.html'%}
 {%load static%}
 {% load crispy_forms_tags %}
+{% load tailwind_filters %}
 {%block content%}
 {%include 'nav.html'%}
 <!-- include libraries(jQuery, bootstrap) -->
@@ -13,11 +14,10 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 
 <div class="login " style="width: 80%; margin:auto">
-<img src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" style="height: 300px;" />
   <br>
   <h2>Añade una nueva plantilla</h2>
   <br>
-
+  {% include 'variables_email.html'%}
   <form method="post" >
     {% csrf_token %}
     {{ form|crispy }}
