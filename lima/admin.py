@@ -44,10 +44,7 @@ class HorariosAdmin(ImportExportModelAdmin):
         result = (salida -  datetime.timedelta(hours=entrada.hour , minutes=entrada.minute, seconds=entrada.second)).time()
         return result
 
-class ConfiguracionAdmin(ImportExportModelAdmin):
-    list_display= ['nombre_comercial','propietario']
-    search_fields =  ['nombre_comercial','propietario']
-    list_filter =   ['nombre_comercial','propietario']
+
 
 class TurnosAdmin(ImportExportModelAdmin):
     list_display= ['tecnica','centro', 'turno']
@@ -133,7 +130,6 @@ admin.site.register(Cajas, CajasAdmin)
 admin.site.register(Servicios, ServiciosAdmin)
 admin.site.register(Stock, StockAdmin)
 admin.site.register(Centro, CentroAdmin)
-admin.site.register(Configuracion, ConfiguracionAdmin)
 admin.site.register(Tratamientos, TratamientosAdmin)
 admin.site.register(Turnos, TurnosAdmin)
 admin.site.register(Paciente, PacienteAdmin)

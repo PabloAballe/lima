@@ -3,13 +3,18 @@ from django.contrib import admin
 from django.urls import path, include
 
 urlpatterns = [
-    path('summernote/', include('django_summernote.urls')),
-    path('admin/', admin.site.urls),
+    path('dashboard/', include('dashboard.urls')),
     path('', include('lima.urls')),
-    path('summernote/', include('django_summernote.urls')),
+    # path('website', include('website.urls')),
     path('ckeditor/', include('ckeditor_uploader.urls')),
     path('faicon/', include('faicon.urls')),
+    path('tinymce/', include('tinymce.urls')),
+    path('admin/', admin.site.urls),
+
+
 ]
+
+
 
 from django.conf import settings
 from django.conf.urls.static import static

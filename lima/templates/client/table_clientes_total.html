@@ -1,0 +1,143 @@
+{%extends 'base.html'%}
+{% load crispy_forms_tags %}
+{%block content%}
+{%include 'nav.html'%}
+<div class="index">
+<h1>Buscador de clientes</h1>
+
+{% ifequal  notfound True %}
+{% include 'notfound.html'%}
+{% else %}
+ <div>
+    <form method="get">
+    {{ filter.form|crispy }}
+    <button type="submit" class="btn">Buscar</button>
+ </form>
+    </div>
+<br>
+<br>
+<div class="table" id="table">
+  <table class="table overflow-auto">
+    <thead>
+      <tr>
+        <th><abbr title="ID">ID</abbr></th>
+        <th><abbr title="ID">Centro</abbr></th>
+        <th><abbr title="Propietaria">Nombre</abbr></th>
+        <th><abbr title="Localización">Apellidos</abbr></th>
+        <th><abbr title="Localización">Teléfono</abbr></th>
+        <th><abbr title="Localización">Email</abbr></th>
+        <th><abbr title="Email">Etiquetas</abbr></th>
+        <th><abbr title="Localización">Documento de Autorizacion</abbr></th>
+        <th><abbr title="Localización">Documento de Protección de datos</abbr></th>
+        <th><abbr title="Localización">Autorización envío de información comercial</abbr></th>
+        <th><abbr title="Localización">Población</abbr></th>
+        <th><abbr title="Localización">Dirección</abbr></th>
+        <th><abbr title="Editar">Acción</abbr></th>
+
+      </tr>
+    </thead>
+    <tfoot>
+
+    </tfoot>
+    <tbody>
+
+         {% for cl in filter.qs %}
+      <tr onclick="window.location='{% url 'cliente_details_citas' pk=cl.id_paciente %}';">
+        <th>{{ cl.pk }}</th>
+          <th>{{ cl.centro.nombre_centro }}</th>
+        <td><a href="{% url 'cliente_details_citas' pk=cl.id_paciente %}">{{cl.nombre_paciente}}</a> <strong></strong>
+        </td>
+        <td>{{cl.apellidos_paciente}}</td>
+        <td>{{cl.telefono_paciente}}</td>
+        <td>{{cl.email}}</td>
+        <td>
+            {% for tag in cl.etiqueta.all %}
+
+
+                <div class="badge" style="background-color: {{tag.color}};">{{tag.nombre_etiqueta}} </div>
+            {%endfor%}
+            </td>
+        <td>
+          {%if cl.documento_de_autorizacion%}
+          <svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-check-circle" fill="#00C4A7" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+            <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
+          </svg>
+          {%else%}
+          <svg width="2em" height="2em" viewBox="0 0 17 16" class="bi bi-exclamation-triangle-fill" fill="#F03A5F" xmlns="http://www.w3.org/2000/svg">
+            <path fill-rule="evenodd" d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 5zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+          </svg>
+          {%endif%}
+
+      </td>
+        <td>
+
+{%if cl.documento_proteccion_de_datos%}
+<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-check-circle" fill="#00C4A7" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+  <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
+</svg>
+{%else%}
+<svg width="2em" height="2em" viewBox="0 0 17 16" class="bi bi-exclamation-triangle-fill" fill="#F03A5F" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 5zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+</svg>
+{%endif%}
+ <td>
+{%if cl.autorizacion_envio_informacion_comercial%}
+<svg width="2em" height="2em" viewBox="0 0 16 16" class="bi bi-check-circle" fill="#00C4A7" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M8 15A7 7 0 1 0 8 1a7 7 0 0 0 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z"/>
+  <path fill-rule="evenodd" d="M10.97 4.97a.75.75 0 0 1 1.071 1.05l-3.992 4.99a.75.75 0 0 1-1.08.02L4.324 8.384a.75.75 0 1 1 1.06-1.06l2.094 2.093 3.473-4.425a.236.236 0 0 1 .02-.022z"/>
+</svg>
+{%else%}
+<svg width="2em" height="2em" viewBox="0 0 17 16" class="bi bi-exclamation-triangle-fill" fill="#F03A5F" xmlns="http://www.w3.org/2000/svg">
+  <path fill-rule="evenodd" d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767L8.982 1.566zM8 5a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 5zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z"/>
+</svg>
+{%endif%}
+</td>
+
+      </td>
+        <td>{{cl.poblacion}}</td>
+        <td>{{cl.direccion}}</td>
+
+        <td>
+
+            <div class="buttons">
+ <a href="tel:{{cl.telefono_paciente}}">
+            <button class="btn">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-telephone" viewBox="0 0 16 16">
+  <path d="M3.654 1.328a.678.678 0 0 0-1.015-.063L1.605 2.3c-.483.484-.661 1.169-.45 1.77a17.568 17.568 0 0 0 4.168 6.608 17.569 17.569 0 0 0 6.608 4.168c.601.211 1.286.033 1.77-.45l1.034-1.034a.678.678 0 0 0-.063-1.015l-2.307-1.794a.678.678 0 0 0-.58-.122l-2.19.547a1.745 1.745 0 0 1-1.657-.459L5.482 8.062a1.745 1.745 0 0 1-.46-1.657l.548-2.19a.678.678 0 0 0-.122-.58L3.654 1.328zM1.884.511a1.745 1.745 0 0 1 2.612.163L6.29 2.98c.329.423.445.974.315 1.494l-.547 2.19a.678.678 0 0 0 .178.643l2.457 2.457a.678.678 0 0 0 .644.178l2.189-.547a1.745 1.745 0 0 1 1.494.315l2.306 1.794c.829.645.905 1.87.163 2.611l-1.034 1.034c-.74.74-1.846 1.065-2.877.702a18.634 18.634 0 0 1-7.01-4.42 18.634 18.634 0 0 1-4.42-7.009c-.362-1.03-.037-2.137.703-2.877L1.885.511z"/>
+</svg>    &nbsp; Llamar</button>
+          </a>
+
+            <a href="{%url 'edit_cliente' pk=cl.id_paciente %}">
+            <button class="btn"><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+  <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
+</svg> &nbsp; Ver</button>
+
+          </a>
+
+
+          <!--<a href="{%url 'delete_cliente' pk=cl.id_paciente %}">-->
+          <!--    <button class="button is-danger">Borrar</button>-->
+
+          <!--  </a>-->
+</div>
+        </td>
+
+      </tr>
+      {%endfor%}
+
+    </tbody>
+  </table>
+</div>
+
+    </div>
+{% endifequal %}
+<!--{%include 'shearch.html'%}-->
+
+
+</div>
+
+
+
+{%endblock%}

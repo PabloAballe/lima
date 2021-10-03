@@ -2,8 +2,20 @@
 #importamoss las vistas y las urls
 from django.urls import path
 from . import views
+from django.conf.urls import (
+handler400, handler403, handler404, handler500
+)
 
 
+
+# handler400 = 'lima.views.handler404'
+# handler403 = 'lima.views.permission_denied'
+# handler404 = 'lima.views.page_not_found'
+# handler500 = 'lima.views.server_error'
+import django
+
+def custom_page_not_found(request):
+    return django.views.defaults.page_not_found(request, None)
 
 urlpatterns = [
     path('admin', views.admin, name='admin'),
@@ -82,4 +94,11 @@ urlpatterns = [
      ### tareas
     path('tarea/<int:pk>', views.tarea_details, name="tarea_details"),
     path('new_tarea/<int:pk>/', views.new_tarea, name="new_tarea"),
+    ### whatsap marketing
+    path('send_whatsApp', views.send_whatsApp, name="send_whatsApp"),
+    ### sms marketing
+    path('send_SMS', views.send_SMS, name="send_SMS"),
+    ### errors
+    path("404/", views.handler404),
+    path("404/", views.handler500),
 ]

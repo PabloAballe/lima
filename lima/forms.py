@@ -1,8 +1,6 @@
 from django import forms
 from django.forms import ModelForm
 from .models import *
-from django_summernote.widgets import SummernoteWidget, SummernoteInplaceWidget
-from django_summernote.fields import SummernoteTextFormField, SummernoteTextField
 from ckeditor.widgets import CKEditorWidget
 from django.template import Context, Template
 from jsignature.forms import JSignatureField
@@ -36,9 +34,6 @@ class TareaForm(forms.ModelForm):
 class MensajeForm(forms.ModelForm):
     class Meta:
         model=Mensajes
-        # widgets = {
-        #     'cuerpo_mensaje': SummernoteInplaceWidget(),
-        # }
         widgets = {
             'cuerpo_mensaje': forms.TextInput(attrs={'class':'textarea h-24', 'id':''}),
         }
@@ -68,7 +63,7 @@ class EmailTemplateEditForm(forms.ModelForm):
     class Meta:
         model=EmailTemplates
         widgets = {
-            'plantilla': forms.Textarea(attrs={'class':'some_class', 'id':'summernote'}),
+            'plantilla': forms.Textarea(attrs={'class':'some_class', 'id':'editor'}),
         }
         fields=('nombre', 'plantilla' )
 
@@ -78,15 +73,16 @@ class EmailTemplateNewForm(forms.ModelForm):
     class Meta:
         model=EmailTemplates
         widgets = {
-            'plantilla': forms.Textarea(attrs={'class':'some_class', 'id':'summernote'} ),
+            'plantilla': forms.Textarea(attrs={'class':'some_class', 'id':'editor'} ),
         }
         fields=('nombre', 'plantilla' )
 
 class DocTemplateEditForm(forms.ModelForm):
     class Meta:
         model=DocTemplate
+
         widgets = {
-            'plantilla_doc': forms.Textarea(attrs={'class':'some_class', 'id':'summernote'}),
+            'plantilla_doc': forms.Textarea(attrs={'class':'some_class', 'id':'editor'}),
         }
         fields=('nombre_doc', 'plantilla_doc' )
 
@@ -94,7 +90,7 @@ class DocTemplateNewForm(forms.ModelForm):
     class Meta:
         model=DocTemplate
         widgets = {
-            'plantilla_doc': forms.Textarea(attrs={'class':'some_class', 'id':'summernote'}),
+            'plantilla_doc': forms.Textarea(attrs={'class':'some_class', 'id':'editor'}),
         }
         fields=('nombre_doc', 'plantilla_doc' )
 
@@ -150,15 +146,20 @@ class PrerenderForm(forms.ModelForm):
     class Meta:
         model=DocSings
         widgets = {
-            'plantilla_render': forms.Textarea(attrs={'class':'some_class', 'id':'summernote'}),
+            'plantilla_render': forms.Textarea(attrs={'class':'some_class', 'id':'editor'}),
         }
         fields=('plantilla_render', )
 
 class EmailForm(forms.Form):
     asunto=forms.CharField(label='Asunto del Email:', max_length=100)
     destinatario=forms.CharField(label='Destinatario del Email:', max_length=100)
-    #emails=forms.ModelMultipleChoiceField(queryset=Paciente.objects.exclude(email='').filter( autorizacion_envio_informacion_comercial=True), label='Selecciona los emails a enviar:')
     plantilla=forms.ModelChoiceField(queryset=EmailTemplates.objects.all().order_by("nombre"))
+
+class WhatsappForm(forms.Form):
+    widgets = {
+            'mensaje': forms.Textarea(attrs={'class':'some_class', 'id':'editor'}),
+        }
+    mensaje=forms.CharField(label='Mensaje a enviar:', max_length=500,widget=forms.Textarea)
 
 class EstadisticasAdminForm(forms.Form):
     fecha_inico=forms.DateTimeField(label='Fecha de inicio')

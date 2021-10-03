@@ -34,6 +34,9 @@ ALLOWED_HOSTS = [
 
 INSTALLED_APPS = [
     'corsheaders',
+     'lima',
+     'dashboard',
+     'website',
     'admin_interface',
     'colorfield',
     'django.contrib.admin',
@@ -41,23 +44,22 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'lima',
     'crispy_tailwind',
     'crispy_forms',
     #custom admin
     'simple_history',
     'import_export',
-    'django_summernote',
     'ckeditor',
     'jsignature',
     'django.contrib.contenttypes',
      'django_filters',
      'faicon',
-
+     'tinymce',
+     'maintenancemode',
 ]
 
 MIDDLEWARE = [
-    'corsheaders.middleware.CorsMiddleware',
+
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -66,7 +68,11 @@ MIDDLEWARE = [
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
+    'maintenancemode.middleware.MaintenanceModeMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
 ]
+
+CORS_ORIGIN_ALLOW_ALL = True
 
 ROOT_URLCONF = 'limayneon.urls'
 
@@ -81,6 +87,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'maintenance_mode.context_processors.maintenance_mode',
             ],
         },
     },
@@ -158,7 +165,6 @@ MEDIA_URL = '/media/'
 
 X_FRAME_OPTIONS='SAMEORIGIN' # only if django version >= 3.0
 IMPORT_EXPORT_USE_TRANSACTIONS = True
-SUMMERNOTE_THEME = 'bs4'  # Show summernote with Bootstrap4
 try:
     from .local_settings import *
 except ImportError:
@@ -175,6 +181,8 @@ EMAIL_HOST_USER = 'thewavecompany.app@gmail.com'
 EMAIL_HOST_PASSWORD = 'bworedjxndeiivbw'  # os.environ['password_key'] suggested
 EMAIL_USE_TLS = True
 
+
+
 #firma
 JSIGNATURE_WIDTH = 500
 JSIGNATURE_HEIGHT = 200
@@ -190,6 +198,38 @@ DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS = {'PNG': ".png"}
 DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True
 
 
-JET_PROJECT = 'wavesense'
-JET_TOKEN = '66d5a748-0a11-4f0b-8957-41efe10114fd'
-CORS_ORIGIN_ALLOW_ALL = True
+
+
+TINYMCE_JS_URL = 'http://debug.example.org/tiny_mce/tiny_mce_src.js'
+TINYMCE_DEFAULT_CONFIG = {
+    "height": "320px",
+    "width": "960px",
+    "menubar": "file edit view insert format tools table help",
+    "plugins": "advlist autolink lists link image charmap print preview anchor searchreplace visualblocks code "
+    "fullscreen insertdatetime media table paste code help wordcount spellchecker",
+    "toolbar": "undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft "
+    "aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor "
+    "backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | "
+    "fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | "
+    "a11ycheck ltr rtl | showcomments addcomment code",
+    "custom_undo_redo_levels": 10,
+    "language": "es_ES",  # To force a specific language instead of the Django current language.
+}
+TINYMCE_SPELLCHECKER = True
+TINYMCE_COMPRESSOR = True
+
+# Enable / disable maintenance mode.
+# Default: False
+MAINTENANCE_MODE = True  # or ``False`` and use ``maintenance`` command
+
+# if True the superuser will not see the maintenance-mode page
+MAINTENANCE_MODE_IGNORE_SUPERUSER = True
+MAINTENANCE_MODE_IGNORE_IP_ADDRESSES = ()
+# the absolute url where users will be redirected to during maintenance-mode
+MAINTENANCE_MODE_REDIRECT_URL = None
+# the template that will be shown by the maintenance-mode page
+MAINTENANCE_MODE_TEMPLATE = '503.html'
+# the HTTP status code to send
+MAINTENANCE_MODE_STATUS_CODE = 503
+# the value in seconds of the Retry-After header during maintenance-mode
+MAINTENANCE_MODE_RETRY_AFTER = 3600 # 1 hour

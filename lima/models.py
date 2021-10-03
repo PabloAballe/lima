@@ -19,7 +19,9 @@ from io import BytesIO
 from django.core.files.uploadedfile import InMemoryUploadedFile
 from django_resized import ResizedImageField
 import sys
+from django.core.validators import RegexValidator
 # Create your models here.
+phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
 
 class Servicios(models.Model):
     id_servicio=models.AutoField(primary_key=True, auto_created = True)
@@ -195,11 +197,12 @@ def allEstados():
     estados = EstadosClientes.objects.all()
     return estados
 
+
 class Paciente(models.Model):
     id_paciente=models.AutoField(primary_key=True, auto_created = True, null=False)
     nombre_paciente=models.CharField(max_length=50,help_text="Ingrese el nombre de la/el paciente", null=False)
     apellidos_paciente=models.CharField(max_length=50,help_text="Ingrese los apellidos de la/el paciente", blank=True, default="")
-    telefono_paciente=models.IntegerField(help_text="Ingrese el teléfono de la/el paciente", null=True, default=0, blank=True)
+    telefono_paciente=models.CharField(max_length=17,help_text="Ingrese el teléfono de la/el paciente", default=0,validators=[phone_regex], blank=True )
     email=models.EmailField(help_text="Ingrese el correo electronico de la/el paciente", blank=True, default="")
     dni=models.CharField(max_length=50,help_text="Ingrese el DNI del cliente", default="", blank=True)
     documento_de_autorizacion=models.BooleanField(default=False)
@@ -343,6 +346,7 @@ class DocSings(models.Model):
     def __str__(self):
         return f"Firmado el : {self.firmado_el}"
 
+
 class Configuracion(models.Model):
     id=models.AutoField(primary_key=True, auto_created = True)
     nombre_comercial=models.CharField(max_length=100,help_text="Ingrese el nombre comercial del negocio" , null=False)
@@ -354,13 +358,17 @@ class Configuracion(models.Model):
     logo=ResizedImageField(size=[500, 500],upload_to='images/', default='img/login.png')
     slots=models.IntegerField(default='15', help_text="Ingrese el tamaño de los slots")
     tiempo_expira_caja=models.IntegerField(default='15', help_text="Ingrese el tamaño de los slots")
-    politica=models.TextField(help_text="Ingrese la política  de la empresa que aparecera en la parte inferior de los textos")
-    enviar_email_nuevos_clientes=models.BooleanField(default=True)
-    enviar_email_nueva_caja=models.BooleanField(default=True)
-    enviar_email_nuevo_fichaje=models.BooleanField(default=True)
-    enviar_email_nuevas_listas=models.BooleanField(default=True)
-    plantilla_email=models.ForeignKey(EmailTemplates, on_delete=models.RESTRICT , blank=True, default="1",related_name ="plantilla_email" )
-    plantilla_lista=models.ForeignKey(EmailTemplates, on_delete=models.RESTRICT , blank=True, default="1",related_name ="plantilla_lista")
+    politica=models.TextField(help_text="Ingrese la política  de la empresa que aparecera en la parte inferior de los textos", blank=True)
+    twilio_SENDGRID_API_KEY=models.CharField(max_length=500,help_text="Ingrese la SENDGRID API KEY de Twilio", default="" , blank=True)
+    twilio_ACCOUNT_SID=models.CharField(max_length=500,help_text="Ingrese la ACCOUNT SID de Twilio", default="" , blank=True)
+    twilio_AUTH_TOKEN=models.CharField(max_length=500,help_text="Ingrese el AUTH TOKEN de Twilio", default="" , blank=True)
+    twilio_NUMBER=models.CharField(max_length=17,help_text="Ingrese el Número verificado en Twilio", default=0,validators=[phone_regex], blank=True )
+    enviar_email_nuevos_clientes=models.BooleanField(default=False)
+    enviar_email_nueva_caja=models.BooleanField(default=False)
+    enviar_email_nuevo_fichaje=models.BooleanField(default=False)
+    enviar_email_nuevas_listas=models.BooleanField(default=False)
+    plantilla_email=models.ForeignKey(EmailTemplates, on_delete=models.RESTRICT ,default="1",related_name ="plantilla_email" )
+    plantilla_lista=models.ForeignKey(EmailTemplates, on_delete=models.RESTRICT ,default="1",related_name ="plantilla_lista")
     history = HistoricalRecords()
     icon = FAIconField(default="", blank=True)
 
