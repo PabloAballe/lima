@@ -56,10 +56,15 @@ INSTALLED_APPS = [
      'faicon',
      'tinymce',
      'maintenancemode',
+      'admin_reorder',
+      "django_unicorn",
+      'django_mail_admin',
+      "view_breadcrumbs",
+      'django_editorjs',
+      'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [
-
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -70,6 +75,9 @@ MIDDLEWARE = [
     'simple_history.middleware.HistoryRequestMiddleware',
     'maintenancemode.middleware.MaintenanceModeMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'admin_reorder.middleware.ModelAdminReorder',
+
+
 ]
 
 CORS_ORIGIN_ALLOW_ALL = True
@@ -88,10 +96,20 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'maintenance_mode.context_processors.maintenance_mode',
+
+
             ],
         },
     },
 ]
+
+
+# Name, Max Width (inclusive)
+DEFAULT_BREAKPOINTS = {
+    'phone': 480,
+    'tablet': 767,
+    'desktop': None,
+}
 
 WSGI_APPLICATION = 'limayneon.wsgi.application'
 
@@ -100,10 +118,6 @@ WSGI_APPLICATION = 'limayneon.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    # },
  'default': {
             'ENGINE': 'django.db.backends.mysql',
             'NAME': 'wavecompany$lima',
@@ -114,10 +128,37 @@ DATABASES = {
                 'OPTIONS': {
                 'sql_mode': 'traditional',
             }
-        }
+        },
+    'slave': {
+        'ENGINE': 'django.db.backends.mysql',
+            'NAME': 'wavecompany$lima_slave',
+            'USER': 'wavecompany',
+            'PASSWORD': 't73@ZeN89B5mt75',
+            'HOST': 'wavecompany.mysql.pythonanywhere-services.com',
+            'PORT': '3306',
+                'OPTIONS': {
+                'sql_mode': 'traditional',
+            }
+    }
 
 }
 
+
+def db_for_read(self, model, **hints):
+    """
+    Reads go to a randomly-chosen slave.
+    """
+    if test_connection_to_db('default'):
+        return 'default'
+    return 'slave'
+
+def db_for_write(self, model, **hints):
+    """
+    Writes always go to master.
+    """
+    if test_connection_to_db('default'):
+        return 'default'
+    return 'slave'
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -174,13 +215,20 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
 
 # For Django Email Backend
-EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-EMAIL_HOST = 'smtp.gmail.com'
-EMAIL_PORT = 587
-EMAIL_HOST_USER = 'thewavecompany.app@gmail.com'
-EMAIL_HOST_PASSWORD = 'bworedjxndeiivbw'  # os.environ['password_key'] suggested
-EMAIL_USE_TLS = True
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = 'smtp.gmail.com'
+# EMAIL_PORT = 587
+# EMAIL_HOST_USER = 'thewavecompany.app@gmail.com'
+# EMAIL_HOST_PASSWORD = 'bworedjxndeiivbw'  # os.environ['password_key'] suggested
+# EMAIL_USE_TLS = True
 
+DJANGO_MAIL_ADMIN = {
+    'BACKENDS': {
+        'default': 'django_mail_admin.backends.CustomEmailBackend',
+        'smtp': 'django.core.mail.backends.smtp.EmailBackend',
+        'ses': 'django_ses.SESBackend',
+    }
+}
 
 
 #firma
@@ -198,10 +246,68 @@ DJANGORESIZED_DEFAULT_FORMAT_EXTENSIONS = {'PNG': ".png"}
 DJANGORESIZED_DEFAULT_NORMALIZE_ROTATION = True
 
 
+ADMIN_REORDER = (
+
+
+
+    # models with custom name
+    {'app': 'auth', 'models': (
+        'auth.Group',
+        {'model': 'auth.User', 'label': 'Usuarios'},
+        {'model': 'lima.Tecnica', 'label': 'Tecnicas'},
+    )},
+
+    #Anuncios
+    {'app': 'lima', 'label': 'Anuncios Clínicas',
+     'models': ('lima.Anuncios',)
+    },
+    # Clientes
+    {'app': 'lima', 'label': 'Clientes',
+     'models': ('lima.Paciente','lima.Tratamientos','lima.Lista', 'lima.Cita', 'lima.ImagenesClientes', 'lima.Tags','lima.EstadosClientes')
+    },
+        # Centros
+    {'app': 'lima', 'label': 'Centros',
+     'models': ('lima.Centro',)
+    },
+       # Control Horario
+    {'app': 'lima', 'label': 'Control de Horarios',
+     'models': ('lima.ControlHorario','lima.Turnos')
+    },
+
+    #Paneles
+    {'app': 'lima', 'label': 'Paneles',
+     'models': ('lima.Paneles','lima.Estados','lima.Tareas',)
+    },
+    #Servicios
+    {'app': 'lima', 'label': 'Servicios',
+     'models': ('lima.Servicios',)
+    },
+    #Cajas
+    {'app': 'lima', 'label': 'Servicios',
+     'models': ('lima.Cajas',)
+    },
+    #Stock
+    {'app': 'lima', 'label': 'Unidades de Stock',
+     'models': ('lima.Stock',)
+    },
+    #WEB
+    {'app': 'website', 'label': 'Sitio Web / APP',
+     'models': ('website.Blog','website.Conctact','website.Pages')},
+     #Email
+     {'app': 'django_mail_admin', 'label': 'Emails'},
+    # Tema
+    {'app': 'admin_interface', 'label': 'Temas del Configurador'},
+)
+
+
 
 
 TINYMCE_JS_URL = 'http://debug.example.org/tiny_mce/tiny_mce_src.js'
 TINYMCE_DEFAULT_CONFIG = {
+    'cleanup_on_startup': True,
+   'custom_undo_redo_levels': 20,
+   'selector': 'textarea',
+   'theme': 'silver',
     "height": "320px",
     "width": "960px",
     "menubar": "file edit view insert format tools table help",
@@ -215,12 +321,16 @@ TINYMCE_DEFAULT_CONFIG = {
     "custom_undo_redo_levels": 10,
     "language": "es_ES",  # To force a specific language instead of the Django current language.
 }
-TINYMCE_SPELLCHECKER = True
+
+
+
+
+TINYMCE_SPELLCHECKER = False
 TINYMCE_COMPRESSOR = True
 
 # Enable / disable maintenance mode.
 # Default: False
-MAINTENANCE_MODE = True  # or ``False`` and use ``maintenance`` command
+MAINTENANCE_MODE = False   # or ``False`` and use ``maintenance`` command
 
 # if True the superuser will not see the maintenance-mode page
 MAINTENANCE_MODE_IGNORE_SUPERUSER = True
@@ -228,8 +338,15 @@ MAINTENANCE_MODE_IGNORE_IP_ADDRESSES = ()
 # the absolute url where users will be redirected to during maintenance-mode
 MAINTENANCE_MODE_REDIRECT_URL = None
 # the template that will be shown by the maintenance-mode page
-MAINTENANCE_MODE_TEMPLATE = '503.html'
+MAINTENANCE_MODE_TEMPLATE = 'lima/errors/503.html'
 # the HTTP status code to send
 MAINTENANCE_MODE_STATUS_CODE = 503
 # the value in seconds of the Retry-After header during maintenance-mode
 MAINTENANCE_MODE_RETRY_AFTER = 3600 # 1 hour
+
+
+BREADCRUMBS_HOME_LABEL = "Inicio"
+BREADCRUMBS_TEMPLATE = "lima/core/breadcrumbs.html"
+
+CKEDITOR_UPLOAD_PATH = "uploads/"
+CKEDITOR_FILENAME_GENERATOR = 'utils.get_filename'

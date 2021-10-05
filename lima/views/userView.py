@@ -8,10 +8,10 @@ from django.contrib.auth import logout as do_logout
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as do_login
-from .models import *
+from ..models import *
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import *
+from ..forms import *
 from django.shortcuts import render, get_object_or_404
 from itertools import chain
 import datetime as dt
@@ -39,7 +39,7 @@ from django.conf import settings
 from datetime import datetime
 from django.template.loader import get_template
 from django.contrib import messages
-from .filters import *
+from ..filters import *
 import os
 import webbrowser as web
 from twilio.rest import Client
@@ -80,7 +80,7 @@ def perfil(request):
     else:
         salida=False
 
-    return render(request, 'perfil.html', {'meses': cen,'cen': cen, 'salida': salida, 'footer': footer })
+    return render(request, 'user/perfil.html', {'meses': cen,'cen': cen, 'salida': salida, 'footer': footer })
 
 @login_required(login_url='login')
 def view_perfiles(request):
@@ -118,7 +118,7 @@ def view_perfiles(request):
         cen = paginator.page(1)
     except EmptyPage:
         cen = paginator.page(paginator.num_pages)
-    return render(request, 'view_perfiles.html', { 'tecnica': cen , 'form': form, 'footer': footer, 'cen': cen,'notfound': notfound  })
+    return render(request, 'user/view_perfiles.html', { 'tecnica': cen , 'form': form, 'footer': footer, 'cen': cen,'notfound': notfound  })
 
 @login_required(login_url='login')
 def ver_horario(request, pk):
@@ -140,7 +140,7 @@ def ver_horario(request, pk):
             salida=True
     else:
         salida=False
-    return render(request, 'perfil_horario.html', {'meses': meses, 'salida': salida, 'tecnica': tecnica, 'footer': footer })
+    return render(request, 'user/perfil_horario.html', {'meses': meses, 'salida': salida, 'tecnica': tecnica, 'footer': footer })
 
 
 
@@ -165,7 +165,7 @@ def ver_horario_visual(request, pk):
             salida=True
     else:
         salida=False
-    return render(request, 'calendar_horario.html', {'meses': meses, 'salida': salida, 'tecnica': tecnica , 'today': today, 'footer': footer})
+    return render(request, 'timeControll/calendar_horario.html', {'meses': meses, 'salida': salida, 'tecnica': tecnica , 'today': today, 'footer': footer})
 
 @login_required(login_url='login')
 def ver_visual_tecnica(request, pk):
@@ -198,7 +198,7 @@ def ver_visual_tecnica(request, pk):
             salida=True
     else:
         salida=False
-    return render(request, 'ver_visual_tecnica.html', {'meses': meses, 'salida': salida, 'tecnica': tecnica , 'today': today, 'footer': footer, 'tecnicas': tecnicas})
+    return render(request, 'user/ver_visual_tecnica.html', {'meses': meses, 'salida': salida, 'tecnica': tecnica , 'today': today, 'footer': footer, 'tecnicas': tecnicas})
 
 
 @login_required(login_url='login')
@@ -226,7 +226,7 @@ def edit_turno(request, pk):
             salida=True
     else:
         salida=False
-    return render(request, 'edit_turno.html', {'meses': meses, 'salida': salida, 'tecnica': tecnica , 'today': today, 'footer': footer})
+    return render(request, 'timeControll/edit_turno.html', {'meses': meses, 'salida': salida, 'tecnica': tecnica , 'today': today, 'footer': footer})
 
 
 

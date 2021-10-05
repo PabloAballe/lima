@@ -1,9 +1,9 @@
-{%extends 'base.html'%}
+{%extends 'core/base.html'%}
 {%load static%}
 {% load crispy_forms_tags %}
 
 {%block content%}
-{%include 'nav.html'%}
+{%include 'core/nav.html'%}
 <!-- include libraries(jQuery, bootstrap) -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
@@ -16,7 +16,7 @@
   <br>
   <h2>{{title}}</h2>
   <br>
-  {% include 'variables_email.html'%}
+  {% include 'marketing/variables_email.html'%}
   <br>
     <form method="post" enctype="multipart/form-data" >
     {% csrf_token %}

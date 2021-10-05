@@ -1,9 +1,9 @@
-{%extends 'base.html'%}
+{%extends 'core/base.html'%}
 {%load static%}
 {% load crispy_forms_tags %}
 {% load tailwind_filters %}
 {%block content%}
-{%include 'nav.html'%}
+{%include 'core/nav.html'%}
 
 
 <!-- include summernote css/js -->
@@ -31,7 +31,7 @@
 <div style="width: 50rem; margin-left: 5rem">
     <!--mensajes-->
 
-{% include 'mensajes.html'%}
+{% include 'core/mensajes.html'%}
 
 <!--mensaje-->
 <br>

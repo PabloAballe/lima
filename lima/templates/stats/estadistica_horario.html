@@ -1,8 +1,8 @@
 
-{%extends 'base.html'%}
+{%extends 'core/base.html'%}
 
 {%block content%}
-{%include 'nav.html'%}
+{%include 'core/nav.html'%}
 <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
@@ -15,7 +15,7 @@
 
 </h1>
 
-{%include 'estadisticas_form.html'%}
+{%include 'stats/estadisticas_form.html'%}
 
 
 
@@ -30,8 +30,8 @@
     </div>
 
     <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion" style="height: 40vw;">
-        <center style="height: 40vw;">
-           <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
+        <center style="height: 40rem;overflow: auto ">
+           <div class="chart-container" style="position: relative; height:40rem; width:60vh; overflow: auto; ">
 
 
         <canvas id="bar" width="50px" height="50px"></canvas>
@@ -51,8 +51,8 @@
     </div>
 
     <div id="collapseTwo" class="collapse " aria-labelledby="headingsTwo" data-parent="#accordion"  >
-        <center style="height: 40vw;">
-  <div class="chart-container" style="position: relative; height:20vh; width:40vh;">
+        <center style="height: 40rem; overflow: auto">
+  <div class="chart-container" style="position: relative; height:40rem; width:40vh; overflow: auto">
         <canvas id="circle" width="50px" height="50px"></canvas>
      </div>
         </center>
@@ -70,8 +70,8 @@
     </div>
 
     <div id="collapseTree" class="collapse " aria-labelledby="headingsTree" data-parent="#accordion"  style="height: 40vw;">
-      <center style="height: 40vw;">
- <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
+      <center style="height: 40rem;overflow: auto ">
+ <div class="chart-container" style="position: relative; height:40rem; width:60vh; overflow: auto;">
 
         <canvas id="line" width="50px" height="50px"></canvas>
      </div>

@@ -1,0 +1,22 @@
+{% extends 'web_base.html' %}
+{% block 'web_content'%}
+{% load tailwind_filters %}
+{{page.cuerpo_pagina | safe }}
+<div class="contact ">
+<img async loding="lazy"  src="{{web.logo_web_app.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
+  <br>
+  <h2>Contáctanos</h2>
+
+  <br>
+  <form method="post" enctype="multipart/form-data" >
+    {% csrf_token %}
+     {{ form | crispy }}
+    <div class="buttons">
+    <button type="submit" class="btn">Enviar</button>
+
+  </form>
+  <input type="button" value="Cancelar" class="btn" onClick="javascript:history.go(-1);">
+
+
+</div></div>
+{% endblock %}

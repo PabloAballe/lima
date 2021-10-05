@@ -8,10 +8,10 @@ from django.contrib.auth import logout as do_logout
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as do_login
-from .models import *
+from ..models import *
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import *
+from ..forms import *
 from django.shortcuts import render, get_object_or_404
 from itertools import chain
 import datetime as dt
@@ -39,7 +39,7 @@ from django.conf import settings
 from datetime import datetime
 from django.template.loader import get_template
 from django.contrib import messages
-from .filters import *
+from ..filters import *
 import os
 import webbrowser as web
 from twilio.rest import Client
@@ -89,7 +89,7 @@ def new_cita(request, pk):
                 #messages.error(request,f'Ha sucedido el siguiennte error {form.errors }')
                 form = CitaForm()
 
-    return render(request, "new_cita.html", {'form': form, 'footer': footer})
+    return render(request, "treatmentSesion/new_cita.html", {'form': form, 'footer': footer})
 
 @login_required(login_url='login')
 def edit_cita(request, pk):
@@ -130,7 +130,7 @@ def edit_cita(request, pk):
                 #messages.error(request,f'Ha sucedido el siguiente error {form.errors }')
                 form = CitaForm()
 
-    return render(request, "edit_cita.html", {'form': form, 'footer': footer})
+    return render(request, "treatmentSesion/edit_cita.html", {'form': form, 'footer': footer})
 
 
 
@@ -155,7 +155,7 @@ def edit_cita(request, pk):
             return redirect("cliente_details_citas", pk=cita.paciente.id_paciente)
     else:
         form = CitaForm(instance=cita)
-    return render(request, 'edit_cita.html', {'form': form, 'footer': footer})
+    return render(request, 'treatmentSesion/edit_cita.html', {'form': form, 'footer': footer})
 
 
 

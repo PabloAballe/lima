@@ -1,12 +1,12 @@
-{%extends 'base.html'%}
+{%extends 'core/base.html'%}
 {%load static%}
 {% load crispy_forms_tags %}
 {%block content%}
-{%include 'nav.html'%}
+{%include 'core/nav.html'%}
 <div class="login " style="width: 80%; margin:auto">
   <br>
   <h2>Plantilla de Email</h2>
-  {% include 'variables_email.html'%}
+  {% include 'marketing/variables_email.html'%}
   <br>
   <form method="post" >
     {% csrf_token %}

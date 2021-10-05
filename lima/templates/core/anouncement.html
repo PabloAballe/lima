@@ -18,7 +18,7 @@
       {% for anuncio in anuncio %}
     <div class="snap-start w-full h-full flex items-center justify-center text-white text-4xl font-bold flex-shrink-0 bg-black relative" id="slide-{{forloop.counter}}">
       <img src="{{anuncio.imagen.url}}" class="h-full w-full object-cover absolute inset-0 z-10 opacity-50" alt="{{anuncio.cuerpo_anuncio}}">
-      <a href="{{anuncio.link_anuncio}}"  target="_blank" class="z-20 text-center">{{anuncio.cuerpo_anuncio}}</a>
+      <a href="{{anuncio.link_anuncio}}"  target="_blank" class="z-20 text-center" style="font-size: 1rem">{{anuncio.cuerpo_anuncio}}</a>
     </div>
     {% endfor %}
   </div>

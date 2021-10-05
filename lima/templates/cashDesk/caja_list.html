@@ -1,7 +1,7 @@
-{%extends 'base.html'%}
+{%extends 'core/base.html'%}
 
 {%block content%}
-{%include 'nav.html'%}
+{%include 'core/nav.html'%}
 <div class="index">
 <h1>Listado de cajas </h1>
     {% if perms.lima.add_cajas %}
@@ -17,8 +17,8 @@
    <br/> <br/>
     {% endif %}
 
-{%include 'table_caja_list.html'%}
-{%include 'pagination.html'%}
+{%include 'cashDesk/table_caja_list.html'%}
+{%include 'core/pagination.html'%}
 </div>
 
 

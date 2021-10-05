@@ -1,9 +1,11 @@
 {%load static%}
 
 
+<div class="movile-navigation">
+    {% include 'core/movile.html'%}
+</div>
 
-
-<div class="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box">
+<div class="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box" style="overflow-x: auto;">
     <a class="navbar-item" href="{%url 'index'%}">
       <img async src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" style="height: 50px;" />
     </a>
@@ -78,5 +80,11 @@
 </div>
 
 
+<div class="aside-bar">
+    {% include 'core/aside.html'%}
+</div>
 
-{% include 'aside.html'%}
+
+<div style="margin: auto ; width: 50%; font-size: 600px;">
+{% include 'core/breadcrumbs.html'%}
+</div>

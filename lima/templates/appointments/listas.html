@@ -1,7 +1,7 @@
-{%extends 'base.html'%}
+{%extends 'core/base.html'%}
 {%load static%}
 {%block content%}
-{%include 'nav.html'%}
+{%include 'core/nav.html'%}
  {% load tz %}
 <div class="index">
 <link href="{% static 'fullcalendar/main.css' %}" rel='stylesheet' />
@@ -57,7 +57,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <div id="calendar" ></div>
 <h1>Citas Pendientes</h1>
-{% include 'table_listas.html'%}
+{% include 'appointments/table_listas.html'%}
 <script>
 
 </script>

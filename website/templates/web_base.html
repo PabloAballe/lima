@@ -1,0 +1,46 @@
+<!doctype html>
+
+<html lang="es" data-theme="light">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>{{web.nombre_web_app}}</title>
+  <meta name="description" content="{{web.descripcion_web_app}}">
+  <meta name="author" content="{{web.nombre_web_app}}">
+
+  <meta property="og:title" content="{{web.nombre_web_app}}">
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="http://wavecompany.pythonanywhere.com/">
+  <meta property="og:description" content="{{web.descripcion_web_app}}">
+  <meta property="og:image" content="{{web.logo_web_app.url}}">
+
+  <link rel="icon" href="{{web.logo_web_app.url}}">
+  <link rel="icon" href="{{web.logo_web_app.url}}" type="image/png">
+  <link rel="apple-touch-icon" href="{{web.logo_web_app.url}}">
+
+<!--daisyui-->
+<link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
+<link href="https://cdn.jsdelivr.net/npm/daisyui@1.14.2/dist/full.css" rel="stylesheet" type="text/css" />
+<!--end daisy ui-->
+<style>
+
+body .navbar{
+    background-color: {{web.color_primario}} !Important;
+}
+ .contact{
+    width: 80%;
+    margin: auto;
+    margin-bottom: 5rem;
+}
+</style>
+</head>
+
+<body>
+{% include 'core/message.html'%}
+{% include 'core/confirm.html'%}
+{% include 'web_nav.html'%}
+{% block 'web_content'%}
+{% endblock %}
+</body>
+</html>

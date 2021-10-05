@@ -1,12 +1,12 @@
-{%extends 'base.html'%}
+{%extends 'core/base.html'%}
 {% load crispy_forms_tags %}
 {%block content%}
-{%include 'nav.html'%}
+{%include 'core/nav.html'%}
 <div class="index">
 <h1>Buscador de clientes</h1>
 
 {% ifequal  notfound True %}
-{% include 'notfound.html'%}
+{% include 'core/notfound.html'%}
 {% else %}
  <div>
     <form method="get">
@@ -133,7 +133,6 @@
 
     </div>
 {% endifequal %}
-<!--{%include 'shearch.html'%}-->
 
 
 </div>

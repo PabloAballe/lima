@@ -1,16 +1,16 @@
-{%extends 'base.html'%}
+{%extends 'core/base.html'%}
 {%load static%}
 {% load crispy_forms_tags %}
 {% load tailwind_filters %}
 {%block content%}
-{%include 'nav.html'%}
+{%include 'core/nav.html'%}
 
 <div class="login " style="width: 80%; margin:auto">
     <img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
   <br>
   <h2>Añade una nueva plantilla</h2>
   <br>
-  {% include 'variables_email.html'%}
+  {% include 'marketing/variables_email.html'%}
   <form method="post" >
     {% csrf_token %}
     {{ form|crispy }}

@@ -1,7 +1,7 @@
-{%extends 'base.html'%}
+{%extends 'core/base.html'%}
 
 {%block content%}
-{%include 'nav.html'%}
+{%include 'core/nav.html'%}
 
 <div class="index">
 <h1><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-person-circle" viewBox="0 0 16 16">
@@ -56,7 +56,7 @@
    {%endif%}
    </div>
      <br><br>
-{%include 'cliente_tabs.html'%}
+{%include 'client/cliente_tabs.html'%}
 {% block 'cliente' %}
 {%endblock%}
 </div>

@@ -8,10 +8,10 @@ from django.contrib.auth import logout as do_logout
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as do_login
-from .models import *
+from ..models import *
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import *
+from ..forms import *
 from django.shortcuts import render, get_object_or_404
 from itertools import chain
 import datetime as dt
@@ -39,7 +39,7 @@ from django.conf import settings
 from datetime import datetime
 from django.template.loader import get_template
 from django.contrib import messages
-from .filters import *
+from ..filters import *
 import os
 import webbrowser as web
 from twilio.rest import Client
@@ -79,7 +79,7 @@ def docs_list(request):
                 print("no hay resultados")
     else:
         form = SheachForm()
-    return render(request, 'docs_list.html', {'footer': footer, 'docs': docs, 'form': form ,'notfound': notfound})
+    return render(request, 'docs/docs_list.html', {'footer': footer, 'docs': docs, 'form': form ,'notfound': notfound})
 @login_required(login_url='login')
 def docs_template(request, pk):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
@@ -101,7 +101,7 @@ def docs_template(request, pk):
             return redirect("docs_list")
         else:
            pass
-    return render(request, 'docs_template.html', {'footer': footer, 'form': form })
+    return render(request, 'docs/docs_template.html', {'footer': footer, 'form': form })
 
 
 @login_required(login_url='login')
@@ -136,7 +136,7 @@ def new_doc_template(request):
             return redirect("docs_list")
     else:
         pass
-    return render(request, 'docs_template.html', {'footer': footer, 'form': form})
+    return render(request, 'docs/docs_template.html', {'footer': footer, 'form': form})
 
 
 @login_required(login_url='login')
@@ -201,7 +201,7 @@ def doc_prerender(request, user,doc):
     else:
         form=PrerenderForm(instance=sign_)
 
-    return render(request, "doc_prerender.html", {'form': form, 'footer': footer, 'doc': doc_, 'user_':user_ ,'firma': sign_.firma_imagen, 'sign': sign_})
+    return render(request, "docs/doc_prerender.html", {'form': form, 'footer': footer, 'doc': doc_, 'user_':user_ ,'firma': sign_.firma_imagen, 'sign': sign_})
 @login_required(login_url='login')
 def docs_sign_list(request, user=0):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
@@ -232,7 +232,7 @@ def docs_sign_list(request, user=0):
                 print("no hay resultados")
     else:
         form = SheachForm()
-    return render(request, 'docs_list.html', {'footer': footer, 'docs': docs, 'form': form ,'notfound': notfound, 'cliente': user })
+    return render(request, 'docs/docs_list.html', {'footer': footer, 'docs': docs, 'form': form ,'notfound': notfound, 'cliente': user })
 
 
 

@@ -1,49 +1,22 @@
 
 # Create your views here.
 from django.shortcuts import render, redirect
-from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
-from django.contrib.auth import logout as do_logout
-from django.contrib.auth import authenticate
-from django.contrib.auth.forms import AuthenticationForm
-from django.contrib.auth import login as do_login
-from .models import *
+from ..models import *
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import *
+from ..forms import *
 from django.shortcuts import render, get_object_or_404
-from itertools import chain
 import datetime as dt
 from django.utils import timezone, dateformat
-from django.db.models import Sum
-from django.db.models import Count
-from django.core import serializers
-from django.http import JsonResponse
-from django.forms.models import model_to_dict
-from django.core.mail import send_mail
 from django.http import HttpResponse
-from django.core.mail import EmailMessage
-from django.utils.safestring import SafeString
-from django.core import mail
-from django.template.loader import render_to_string
-from django.utils.html import strip_tags
 from django.template import Context, Template
-from jsignature.utils import draw_signature
-import base64
-from django.core.files.base import ContentFile
-from io import BytesIO
-from PIL import Image
-import PIL
-from django.conf import settings
-from datetime import datetime
-from django.template.loader import get_template
 from django.contrib import messages
-from .filters import *
+from ..filters import *
 import os
-import webbrowser as web
+
+#email
 from twilio.rest import Client
-#mailchimp
 from django.conf import settings
 from mailchimp_marketing.api_client import ApiClientError
 from sendgrid import SendGridAPIClient
@@ -79,7 +52,7 @@ def clientes(request):
         form = SheachForm()
 
     context={ 'form': form, 'notfound': notfound,'footer':footer,'filter': user_filter}
-    return render (request, 'table_clientes_total.html', context)
+    return render (request, 'client/table_clientes_total.html', context)
 @login_required(login_url='login')
 def cliente_details_citas(request, pk):
     suscription=Suscription.objects.filter(type="S").latest('id_sicription')
@@ -92,7 +65,7 @@ def cliente_details_citas(request, pk):
     footer=Configuracion.objects.all().last()
     cliente1=get_object_or_404(Paciente, pk=pk)
     lista=Lista.objects.all().order_by("-hora_inicio").filter(cliente=cliente1)
-    return render(request, "cliente_details_cita.html", {'cliente': cliente1, 'footer': footer, 'lista': lista})
+    return render(request, "client/cliente_details_cita.html", {'cliente': cliente1, 'footer': footer, 'lista': lista})
 
 @login_required(login_url='login')
 def cliente_details_tratamientos(request, pk):
@@ -106,7 +79,7 @@ def cliente_details_tratamientos(request, pk):
     footer=Configuracion.objects.all().last()
     cliente1=get_object_or_404(Paciente, pk=pk)
     tratamientos=Tratamientos.objects.all().order_by("-fecha").filter(cliente=cliente1)
-    return render(request, "cliente_details_tratamientos.html", {'cliente': cliente1, 'footer': footer, 'tratamientos': tratamientos})
+    return render(request, "client/cliente_details_tratamientos.html", {'cliente': cliente1, 'footer': footer, 'tratamientos': tratamientos})
 
 @login_required(login_url='login')
 def cliente_details_zonas(request, pk):
@@ -120,7 +93,7 @@ def cliente_details_zonas(request, pk):
     footer=Configuracion.objects.all().last()
     cliente1=get_object_or_404(Paciente, pk=pk)
     cita=Cita.objects.all().order_by("fecha").filter(paciente=cliente1)
-    return render(request, "cliente_details_zonas.html", {'cliente': cliente1, 'cita': cita, 'footer': footer})
+    return render(request, "client/cliente_details_zonas.html", {'cliente': cliente1, 'cita': cita, 'footer': footer})
 
 @login_required(login_url='login')
 def cliente_details(request, pk):
@@ -136,7 +109,7 @@ def cliente_details(request, pk):
     cita=Cita.objects.all().order_by("fecha").filter(paciente=cliente1)
     tratamientos=Tratamientos.objects.all().order_by("fecha").filter(cliente=cliente1)
     lista=Lista.objects.all().order_by("-hora_inicio").filter(cliente=cliente1)
-    return render(request, "cliente_details.html", {'cliente': cliente1, 'cita': cita, 'footer': footer, 'tratamientos': tratamientos, 'lista': lista})
+    return render(request, "client/cliente_details.html", {'cliente': cliente1, 'cita': cita, 'footer': footer, 'tratamientos': tratamientos, 'lista': lista})
 
 
 @login_required(login_url='login')
@@ -198,7 +171,7 @@ def new_cliente(request, pk):
     else:
         form = ClienteForm()
 
-    return render(request, "new_cliente.html", {'form': form, 'footer': footer})
+    return render(request, "client/new_cliente.html", {'form': form, 'footer': footer})
 
 
 
@@ -223,7 +196,7 @@ def edit_cliente(request, pk):
             return redirect("cliente_details_citas", pk=cliente.id_paciente)
     else:
         form = ClienteForm(instance=cliente)
-    return render(request, 'edit_cliente.html', {'form': form, 'footer': footer})
+    return render(request, 'client/edit_cliente.html', {'form': form, 'footer': footer})
 
 @login_required(login_url='login')
 def delete_cliente(request, pk):

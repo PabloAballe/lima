@@ -1,11 +1,11 @@
-{%extends 'base.html'%}
+{%extends 'core/base.html'%}
 
 {%block content%}
 
-{%include 'nav.html'%}
+{%include 'core/nav.html'%}
 
 <div class="map-centro">
-{%include 'maps.html'%}
+{%include 'core/maps.html'%}
 </div>
 
 <style>
@@ -13,6 +13,7 @@
         position:absolute;
         top: 5rem;
         left: 20rem;
+        overflow-x: auto;
     }
 </style>
 

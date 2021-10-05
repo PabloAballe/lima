@@ -1,7 +1,7 @@
-{%extends 'base.html'%}
+{%extends 'core/base.html'%}
 
 {%block content%}
-{%include 'nav.html'%}
+{%include 'core/nav.html'%}
 <div class="index">
 <h1>Listado de Documentos </h1>
     {% if perms.lima.add_emailtemplates %}
@@ -13,9 +13,9 @@
 
    </a>
     {% endif %}
-{%include 'shearch.html'%}
-{%include 'table_doc_list.html'%}
-{%include 'pagination.html'%}
+{%include 'core/shearch.html'%}
+{%include 'docs/table_doc_list.html'%}
+{%include 'core/pagination.html'%}
 
 </div>
 

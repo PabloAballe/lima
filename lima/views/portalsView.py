@@ -8,10 +8,10 @@ from django.contrib.auth import logout as do_logout
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as do_login
-from .models import *
+from ..models import *
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import *
+from ..forms import *
 from django.shortcuts import render, get_object_or_404
 from itertools import chain
 import datetime as dt
@@ -39,7 +39,7 @@ from django.conf import settings
 from datetime import datetime
 from django.template.loader import get_template
 from django.contrib import messages
-from .filters import *
+from ..filters import *
 import os
 import webbrowser as web
 from twilio.rest import Client
@@ -62,7 +62,7 @@ def portales(request):
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     paneles=Paneles.objects.all().order_by('nombre_panel').filter(portales__id_tecnica=request.user.tecnica.id_tecnica)
-    return render(request, "portales.html", {'footer': footer,'paneles':paneles})
+    return render(request, "portals/portales.html", {'footer': footer,'paneles':paneles})
 
 @login_required(login_url='login')
 def portales_details(request,pk):
@@ -77,7 +77,7 @@ def portales_details(request,pk):
     footer=Configuracion.objects.all().last()
     panel=get_object_or_404(Paneles, pk=pk)
     estados=Estados.objects.all().order_by('orden_del_estado').filter(panel=panel)
-    return render(request, "portal_details.html", {'footer': footer,'panel':panel, 'estados': estados})
+    return render(request, "portals/portal_details.html", {'footer': footer,'panel':panel, 'estados': estados})
 
 @login_required(login_url='login')
 def estados(request):
@@ -91,7 +91,7 @@ def estados(request):
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     paneles=Paneles.objects.all().order_by('nombre_panel').filter(portales__id_tecnica=request.user.tecnica.id_tecnica)
-    return render(request, "portales.html", {'footer': footer,'paneles':paneles})
+    return render(request, "portals/portales.html", {'footer': footer,'paneles':paneles})
 
 @login_required(login_url='login')
 def tarea_details(request, pk):
@@ -126,7 +126,7 @@ def tarea_details(request, pk):
             return redirect("tarea_details", pk=tarea.id_tarea)
         else:
             formMensaje = MensajeForm()
-    return render(request, "tarea_details.html", {'footer': footer,'mensajes':mensajes, 'tarea': tarea,'form': form,'formMensaje': formMensaje})
+    return render(request, "portals/tarea_details.html", {'footer': footer,'mensajes':mensajes, 'tarea': tarea,'form': form,'formMensaje': formMensaje})
 
 @login_required(login_url='login')
 def new_tarea(request, pk):
@@ -151,6 +151,6 @@ def new_tarea(request, pk):
             return redirect("portales_details", pk=portal.id_panel)
         else:
             form = TareaForm()
-    return render(request, "new_tarea.html", {'footer': footer,'form': form})
+    return render(request, "portals/new_tarea.html", {'footer': footer,'form': form})
 
 

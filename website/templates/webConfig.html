@@ -1,0 +1,26 @@
+{%extends 'core/base.html'%}
+{%load static%}
+{% load crispy_forms_tags %}
+{%block content%}
+{%include 'core/nav.html'%}
+
+<div class="login ">
+<img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
+  <br>
+  <h2>Configuración de la WEB / App</h2>
+
+  <br>
+  <form method="post" enctype="multipart/form-data" >
+    {% csrf_token %}
+     {{ form | crispy }}
+    <div class="buttons">
+    <button type="submit" class="btn">Guardar</button>
+
+  </form>
+  <input type="button" value="Cancelar" class="btn" onClick="javascript:history.go(-1);">
+
+
+</div></div>
+
+
+{%endblock%}

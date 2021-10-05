@@ -8,10 +8,10 @@ from django.contrib.auth import logout as do_logout
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as do_login
-from .models import *
+from ..models import *
 from django.contrib.auth.models import User
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-from .forms import *
+from ..forms import *
 from django.shortcuts import render, get_object_or_404
 from itertools import chain
 import datetime as dt
@@ -39,7 +39,7 @@ from django.conf import settings
 from datetime import datetime
 from django.template.loader import get_template
 from django.contrib import messages
-from .filters import *
+from ..filters import *
 import os
 import webbrowser as web
 from twilio.rest import Client
@@ -63,4 +63,4 @@ def map(request, centro):
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     cen_=get_object_or_404(Centro, pk=centro)
-    return render(request, "centro_map.html", {'centro': cen_,'footer': footer})
+    return render(request, "clinic/centro_map.html", {'centro': cen_,'footer': footer})
