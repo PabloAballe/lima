@@ -1,47 +1,136 @@
 {% load static %}
 
-<div class="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box">
-    <div class="avatar">
-  <div class="rounded-btn w-24 h-14">
-    <img src="{{web.logo_web_app.url}}" style="padding: 1rem ">
-  </div>
-</div>
-  <div class="flex-none px-2 mx-2">
-    <span class="text-lg font-bold">
-            {{web.nombre_web_app}}
-          </span>
-  </div>
-  <div class="flex-1 px-2 mx-2">
-    <div class="items-stretch hidden lg:flex">
-      <a href="{% url 'website_index' %}"class="btn btn-ghost btn-sm rounded-btn">
-              Inicio
-            </a>
-      <a href="{% url 'website_blog_list' %}" class="btn btn-ghost btn-sm rounded-btn">
-              Blog
-            </a>
-    {% for  link in nav %}
-    <a href="{% url 'website_page' slug=link.slug_pagina %}" class="btn btn-ghost btn-sm rounded-btn">
-    {{link.nombre_pagina}}
-    </a>
-    {% endfor  %}
+<!-- Navbar goes here -->
+		<nav class="bg-white shadow-lg">
+			<div class="max-w-6xl mx-auto px-4">
+				<div class="flex justify-between">
+					<div class="flex space-x-7">
+						<div>
+							<!-- Website Logo -->
+							<a href="{% url 'website_index' %}" class="flex items-center py-4 px-2">
+								<img src="{{web.logo_web_app.url}}" alt="{{web.nombre_web_app}}" class="h-8 w-8 mr-2">
+								<span class="font-semibold text-lg">{{web.nombre_web_app}}</span>
+							</a>
+						</div>
+						<!-- Primary Navbar items -->
+						<div class="hidden md:flex items-center space-x-1">
+						    <a href="{% url 'website_index' %}"class="py-4 px-2  border-b-4  font-semibold ">
+                              Inicio
+                            </a>
+                      <a href="{% url 'website_blog_list' %}" class="py-4 px-2 font-semibold transition duration-300">
+                              Blog
+                            </a>
+                    {% for  link in nav %}
+                    <a href="{% url 'website_page' slug=link.slug_pagina %}" class="py-4 px-2  font-semibold  transition duration-300">
+                    {{link.nombre_pagina}}
+                    </a>
+                    {% endfor  %}
 
-      <a href="{% url 'website_contact' %}" class="btn btn-ghost btn-sm rounded-btn">
-              Contacto
-            </a>
-    </div>
-  </div>
-  <div class="flex-none">
-    <button class="btn btn-square btn-ghost">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>
-      </svg>
-    </button>
-  </div>
-  <div class="flex-none">
-    <button class="btn btn-square btn-ghost">
-      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current">
-        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>
-      </svg>
-    </button>
-  </div>
-</div>
+                      <a href="{% url 'website_contact' %}" class="py-4 px-2 font-semibold  transition duration-300">
+                              Contacto
+                            </a>
+
+						</div>
+					</div>
+					<!-- Secondary Navbar items -->
+					<!--<div class="hidden md:flex items-center space-x-3 ">-->
+					<!--	<a href="" class="py-2 px-2 font-medium text-gray-500 rounded hover:bg-green-500 hover:text-white transition duration-300">Log In</a>-->
+					<!--	<a href="" class="py-2 px-2 font-medium text-white bg-green-500 rounded hover:bg-green-400 transition duration-300">Sign Up</a>-->
+					<!--</div>-->
+					<!-- Mobile menu button -->
+					<div class="md:hidden flex items-center">
+						<button class="outline-none mobile-menu-button">
+						<svg class=" w-6 h-6 text-gray-500"
+							x-show="!showMenu"
+							fill="none"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="2"
+							viewBox="0 0 24 24"
+							stroke="currentColor"
+						>
+							<path d="M4 6h16M4 12h16M4 18h16"></path>
+						</svg>
+					</button>
+					</div>
+				</div>
+			</div>
+			<!-- mobile menu -->
+			<div class="hidden mobile-menu">
+				<ul class="">
+					<li> <a href="{% url 'website_index' %}"class="block text-sm px-2 py-4  transition duration-300">
+                              Inicio
+                            </a></li>
+					<li> <a href="{% url 'website_blog_list' %}" class="block text-sm px-2 py-4  transition duration-300">
+                              Blog
+                            </a></li>
+
+					{% for  link in nav %}
+                    <li>
+                    <a href="{% url 'website_page' slug=link.slug_pagina %}" class="block text-sm px-2 py-4  transition duration-300">
+                    {{link.nombre_pagina}}
+                    </a></li>
+                    {% endfor  %}
+					<li> <a href="{% url 'website_contact' %}" class="block text-sm px-2 py-4  transition duration-300">
+                              Contacto
+                            </a></li>
+
+
+
+				</ul>
+			</div>
+			<script>
+				const btn = document.querySelector("button.mobile-menu-button");
+				const menu = document.querySelector(".mobile-menu");
+
+				btn.addEventListener("click", () => {
+					menu.classList.toggle("hidden");
+				});
+			</script>
+		</nav>
+
+<!--<div class="navbar mb-2 shadow-lg bg-neutral text-neutral-content rounded-box">-->
+<!--    <div class="avatar">-->
+<!--  <div class="rounded-btn w-24 h-14">-->
+<!--    <img src="{{web.logo_web_app.url}}" style="padding: 1rem ">-->
+<!--  </div>-->
+<!--</div>-->
+<!--  <div class="flex-none px-2 mx-2">-->
+<!--    <span class="text-lg font-bold">-->
+<!--            {{web.nombre_web_app}}-->
+<!--          </span>-->
+<!--  </div>-->
+<!--  <div class="flex-1 px-2 mx-2">-->
+<!--    <div class="items-stretch hidden lg:flex">-->
+<!--      <a href="{% url 'website_index' %}"class="btn btn-ghost btn-sm rounded-btn">-->
+<!--              Inicio-->
+<!--            </a>-->
+<!--      <a href="{% url 'website_blog_list' %}" class="btn btn-ghost btn-sm rounded-btn">-->
+<!--              Blog-->
+<!--            </a>-->
+<!--    {% for  link in nav %}-->
+<!--    <a href="{% url 'website_page' slug=link.slug_pagina %}" class="btn btn-ghost btn-sm rounded-btn">-->
+<!--    {{link.nombre_pagina}}-->
+<!--    </a>-->
+<!--    {% endfor  %}-->
+
+<!--      <a href="{% url 'website_contact' %}" class="btn btn-ghost btn-sm rounded-btn">-->
+<!--              Contacto-->
+<!--            </a>-->
+<!--    </div>-->
+<!--  </div>-->
+<!--  <div class="flex-none">-->
+<!--    <button class="btn btn-square btn-ghost">-->
+<!--      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current">-->
+<!--        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z"></path>-->
+<!--      </svg>-->
+<!--    </button>-->
+<!--  </div>-->
+<!--  <div class="flex-none">-->
+<!--    <button class="btn btn-square btn-ghost">-->
+<!--      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" class="inline-block w-6 h-6 stroke-current">-->
+<!--        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"></path>-->
+<!--      </svg>-->
+<!--    </button>-->
+<!--  </div>-->
+<!--</div>-->

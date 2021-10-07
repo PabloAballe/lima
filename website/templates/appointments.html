@@ -1,0 +1,95 @@
+
+{% extends 'web_base.html' %}
+{% load unicorn %}
+{% block 'web_content'%}
+<div class="contact">
+{% for page in page %}
+{{page.cuerpo_pagina | safe }}
+{% endfor %}
+{%load static%}
+ {% load tz %}
+<link href="{% static 'fullcalendar/main.css' %}" rel='stylesheet' />
+<script src="{% static 'fullcalendar/main.js' %}"></script>
+<script src="{% static 'fullcalendar/locales-all.js' %}"></script>
+<script>
+
+document.addEventListener('DOMContentLoaded', function() {
+  var calendarEl = document.getElementById('calendar');
+  var today = new Date();
+  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+  var eventos = [
+     {%for bloqueo in bloqueos %}
+        {% if not forloop.first %},{% endif %}
+        {
+            title: "No disponible",
+            start: "{{bloqueo.hora_inicio |date:'Y-m-d H:i:s'  }}",
+            end: "{{bloqueo.hora_fin |date:'Y-m-d H:i:s' }}",
+            color: "#696969"
+        }
+    {% endfor %}
+    ];
+
+let days_off=[];
+        if ('{{cen.dias_abre_centro}}'.includes("Lunes")){days_off.push(1);}
+        if ('{{cen.dias_abre_centro}}'.includes("Martes")){days_off.push(2);}
+        if ('{{cen.dias_abre_centro}}'.includes("Miercoles")){days_off.push(3);}
+        if ('{{cen.dias_abre_centro}}'.includes("Jueves")){days_off.push(4);}
+        if ('{{cen.dias_abre_centro}}'.includes("Viernes")){days_off.push(5);}
+        if ('{{cen.dias_abre_centro}}'.includes("Sabado")){days_off.push(6);}
+        if ('{{cen.dias_abre_centro}}'.includes("Domingo")){days_off.push(7);}
+    console.log(eventos);
+    console.log(days_off);
+  var calendar = new FullCalendar.Calendar(calendarEl, {
+      dateClick: function(info) {
+            calendar.gotoDate( info.dateStr )
+            calendar.changeView( 'timeGridDay', info.dateStr);
+          },
+     locale: 'es',
+    initialView: 'timeGridWeek',
+    slotLabelInterval: '00:{{footer.slots}}:00',
+    slotDuration: '00:{{footer.slots}}:00',
+    initialDate: today,
+    hiddenDays: days_off,
+    headerToolbar: {
+      left: 'prev,next today',
+      center: 'title',
+      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+    },
+    lang: 'es',
+    events: eventos
+  });
+  calendar.render();
+});
+
+
+</script>
+<br>
+<p class="text-4xl text-center">👋 Hola {{cliente.nombre_paciente}}</p>
+
+<br>
+<hr>
+<br>
+<h1 class="text-3xl text-center">Agenda tu cita</h1>
+<br>
+<p class="text-2xl text-center">👉 Recuerda que el centro abre de  {{cen.dias_abre_centro}} de {{cen.horario_apertura}} a {{cen.horario_cierre}}
+
+</p>
+<div class="grid grid-cols-1 ">
+    <div class="form p-2">
+   {% include 'website_cita_form.html'%}
+</div>
+    <div id="calendar" class="p-2" ></div>
+
+
+</div>
+
+
+
+
+
+
+
+</div>
+{% endblock %}

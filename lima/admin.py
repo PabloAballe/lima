@@ -47,9 +47,9 @@ class HorariosAdmin(ImportExportModelAdmin):
 
 
 class TurnosAdmin(ImportExportModelAdmin):
-    list_display= ['tecnica','centro', 'turno']
-    search_fields =  ['tecnica__nombre_tecnica','centro__nombre_centro', 'turno']
-    list_filter =   ['tecnica__nombre_tecnica','centro__nombre_centro', 'turno']
+    list_display= ['tecnica','centro',  'turno_inicio', 'turno_fin']
+    search_fields =  ['tecnica__nombre_tecnica','centro__nombre_centro', 'turno_inicio', 'turno_fin']
+    list_filter =   ['tecnica__nombre_tecnica','centro__nombre_centro', 'turno_inicio', 'turno_fin']
 
 class TratamientosAdmin(ImportExportModelAdmin):
     list_display= ['fecha', 'cliente','js', 'jl', 'tecnica','comentario']

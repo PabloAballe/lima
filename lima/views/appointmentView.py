@@ -15,6 +15,11 @@ from django.template import Context, Template
 from django.contrib import messages
 from ..filters import *
 
+from twilio.rest import Client
+#mailchimp
+from django.conf import settings
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail
 
 @login_required(login_url='login')
 def listas(request, centro=0, pk=0):
@@ -47,7 +52,7 @@ def edit_lista(request, paciente=0,pk=0):
         messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
-    msg=footer.plantilla_email.plantilla
+    msg=footer.plantilla_lista.plantilla
     if pk!=0:
         lista=get_object_or_404(Lista, pk=pk)
         mensaje=footer.plantilla_email.plantilla
@@ -58,8 +63,8 @@ def edit_lista(request, paciente=0,pk=0):
                 lista=form.save(commit=False)
                 fecha = (lista.hora_inicio +  dt.timedelta(minutes=lista.servicios.duracion_sevicio))
                 lista.hora_fin=fecha
-                flag=Lista.objects.raw(f"SELECT lima_lista.id_lista,COUNT(lima_lista.id_lista) AS flag FROM 	lima_lista WHERE lima_lista.hora_inicio BETWEEN '{lista.hora_inicio}' AND '{lista.hora_fin}' AND lima_lista.tecnica_id={lista.tecnica.id_tecnica}")
-                if flag[0].flag>0:
+                flag=Lista.objects.raw(f"SELECT lima_lista.id_lista,COUNT(lima_lista.id_lista) AS flag FROM 	lima_lista WHERE 	lima_lista.centro_id={lista.centro.pk} AND ( (	lima_lista.hora_inicio >= '{lista.hora_inicio}' AND lima_lista.hora_inicio<='{lista.hora_fin}') OR (lima_lista.hora_fin> '{lista.hora_inicio}' AND lima_lista.hora_fin < '{lista.hora_fin}'))")
+                if flag[0].flag!=0:
                     messages.error(request,f'No se ha podido guardar la cita porque no se encuentra este espacio y técnica disponible actualmente de {lista.hora_inicio} a {lista.hora_fin}')
                     return redirect("cliente_details_citas", pk=lista.cliente.pk)
                 else:
@@ -121,7 +126,7 @@ def edit_lista(request, paciente=0,pk=0):
                 lista.cliente=cliente
                 fecha = (lista.hora_inicio +  dt.timedelta(minutes=lista.servicios.duracion_sevicio))
                 lista.hora_fin=fecha
-                flag=Lista.objects.raw(f"SELECT lima_lista.id_lista, COUNT(*) AS flag FROM 	lima_lista WHERE lima_lista.hora_inicio BETWEEN '{lista.hora_inicio}' AND '{lista.hora_fin}' AND lima_lista.tecnica_id={lista.tecnica.id_tecnica}")
+                flag=Lista.objects.raw(f"SELECT lima_lista.id_lista,COUNT(lima_lista.id_lista) AS flag FROM 	lima_lista WHERE 	lima_lista.centro_id={lista.centro.pk} 	AND ( (	lima_lista.hora_inicio >= '{lista.hora_inicio}' AND lima_lista.hora_inicio<='{lista.hora_fin}') OR (lima_lista.hora_fin> '{lista.hora_inicio}' AND lima_lista.hora_fin < '{lista.hora_fin}'))")
                 if flag[0].flag>0:
                     messages.error(request,f'No se ha podido guardar la cita porque no se encuentra este espacio y técnica disponible actualmente de {lista.hora_inicio} a {lista.hora_fin}')
                     return redirect("cliente_details_citas", pk=lista.cliente.pk)

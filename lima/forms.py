@@ -16,7 +16,8 @@ class CentroForm(ModelForm):
             'horario_apertura': forms.TextInput(attrs={'class':'some_class', 'id':'datepicker'}),
             'horario_cierre': forms.TextInput(attrs={'class':'some_class', 'id':'datepicker1'}),
         }
-        fields = ('nombre_centro','telefono_centro' ,'propietaria','localizacion', 'horario_apertura','horario_cierre')
+        fields=('__all__' )
+        exclude = ['id_centro', 'history']
 
 
 class CitaFormAdmin(forms.ModelForm):
@@ -131,6 +132,11 @@ class ListaForm(forms.ModelForm):
     class Meta:
         model=Lista
         fields=('hora_inicio' , 'tecnica','servicios')
+
+class AppointmentWEBForm(forms.ModelForm):
+    class Meta:
+        model=Lista
+        fields=('hora_inicio' ,'servicios')
 
 class FotoForm(forms.ModelForm):
     class Meta:

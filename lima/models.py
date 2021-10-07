@@ -20,6 +20,7 @@ from django.core.files.uploadedfile import InMemoryUploadedFile
 from django_resized import ResizedImageField
 import sys
 from django.core.validators import RegexValidator
+from multiselectfield import MultiSelectField
 
 phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
 
@@ -35,6 +36,15 @@ class Servicios(models.Model):
     def __str__(self):
         return self.nombre_servicio
 
+
+DAYS_OF_WEEK = (('lunes', 'Lunes'),
+              ('martes', 'Martes'),
+              ('miercoles', 'Miercoles'),
+              ('jueves', 'Jueves'),
+              ('viernes', 'Viernes'),
+              ('sabado', 'Sabado'),
+              ('domingo', 'Domingo'))
+
 class Centro(models.Model):
     id_centro=models.AutoField(primary_key=True, auto_created = True)
     nombre_centro=models.CharField(max_length=50,help_text="Ingrese el nombre del centro", null=False)
@@ -43,6 +53,7 @@ class Centro(models.Model):
     horario_cierre=models.TimeField(auto_now=False, auto_now_add=False,help_text="Ingrese la hora de cierre de la clínica entre semana",default="21:00:00")
     telefono_centro=models.IntegerField(help_text="Ingrese el teléfono del centro", null=True, default=0, blank=True)
     localizacion=models.CharField(max_length=100,help_text="Ingrese la hubicación del centro")
+    dias_abre_centro = MultiSelectField(choices=DAYS_OF_WEEK, default="lunes")
     habilitado=models.BooleanField(default=True)
     history = HistoricalRecords()
     icon = FAIconField(default="", blank=True)
@@ -289,12 +300,13 @@ class ControlHorario(models.Model):
     def __str__(self):
         return f"Fichages : {self.fecha}"
 
+your_date = datetime.datetime.now()
 class Turnos(models.Model):
     id_turno=models.AutoField(primary_key=True, auto_created = True)
     tecnica=models.ForeignKey(Tecnica, on_delete=models.RESTRICT,auto_created = True, default="lima")
     centro=models.ForeignKey(Centro, on_delete=models.RESTRICT)
-    turno=models.DateTimeField(null=False)
-    history = HistoricalRecords()
+    turno_inicio=models.DateTimeField(null=False, default=your_date)
+    turno_fin=models.DateTimeField(null=False, default=your_date)
     icon = FAIconField(default="", blank=True)
 
     class Meta:

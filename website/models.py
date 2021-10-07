@@ -31,6 +31,7 @@ class Blog(models.Model):
 
 OPCIONES_PAGINAS = (
     ('I', 'INDEX'),
+    ('A', 'CITAS'),
     ('C', 'CONTACTO'),
     ('B', 'BLOG'),
     ('O', 'OTRO')  # hay que ser inclusivos

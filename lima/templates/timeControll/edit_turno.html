@@ -22,8 +22,8 @@ document.addEventListener('DOMContentLoaded', function() {
         {% if not forloop.first %},{% endif %}
         {
             title: "{{mes.tecnica.nombre_tecnica}}  {{mes.tecnica.apellidos_tecnica}} //  {{mes.centro.nombre_centro}}",
-            start: "{{mes.turno |date:'Y-m-d H:i'}}",
-            end: "{{mes.turno  |date:'Y-m-d H:i'}}",
+            start: "{{mes.turno_inicio |date:'Y-m-d H:i'}}",
+            end: "{{mes.turno_fin  |date:'Y-m-d H:i'}}",
             color: "{{mes.tecnica.color}}"
         }
     {% endfor %}

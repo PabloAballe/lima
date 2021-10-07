@@ -62,6 +62,7 @@ INSTALLED_APPS = [
       "view_breadcrumbs",
       'django_editorjs',
       'django.contrib.humanize',
+      'multiselectfield',
 ]
 
 MIDDLEWARE = [

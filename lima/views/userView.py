@@ -215,10 +215,10 @@ def edit_turno(request, pk):
     salida=False
     if pk !=0:
         tecnica=get_object_or_404(Tecnica, pk=pk)
-        meses=Turnos.objects.filter(tecnica=tecnica).order_by("-turno")
+        meses=Turnos.objects.filter(tecnica=tecnica).order_by("-turno_inicio")
     else:
         tecnica =request.user.tecnica
-        meses=Turnos.objects.all().order_by("-turno")
+        meses=Turnos.objects.all().order_by("-turno_inicio")
 
     horario=ControlHorario.objects.filter(tecnica=tecnica).last()
     if horario:

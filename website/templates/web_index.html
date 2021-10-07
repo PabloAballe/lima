@@ -1,4 +1,8 @@
 {% extends 'web_base.html' %}
 {% block 'web_content'%}
+<div class="contact">
+{% for page in page %}
 {{page.cuerpo_pagina | safe }}
+{% endfor %}
+</div>
 {% endblock %}
