@@ -61,7 +61,7 @@ def lista_fotos(request, client):
     footer=Configuracion.objects.all().last()
     cls=get_object_or_404(Paciente, pk=client)
     fotos=ImagenesClientes.objects.all().filter(cliente=client).order_by('-fecha')
-    return render(request, 'lista_fotos.html', {'footer': footer, 'cliente': cls, 'fotos': fotos })
+    return render(request, 'pictures/lista_fotos.html', {'footer': footer, 'cliente': cls, 'fotos': fotos })
 
 @login_required(login_url='login')
 def new_fotos(request, cliente):
@@ -84,10 +84,10 @@ def new_fotos(request, cliente):
             photo.save()
             messages.success(request,f'Se ha guardado la fotografia ')
             return redirect("lista_fotos", client=cls.pk)
-    return render(request, 'new_fotos.html', {'footer': footer, 'form': form })
+    return render(request, 'pictures/new_fotos.html', {'footer': footer, 'form': form })
 
 @login_required(login_url='login')
 def delete_fotos(request,cliente, pk):
-    foto=get_object_or_404(ImagenesClientes, pk=pk).delete()
     cls=get_object_or_404(Paciente, pk=cliente)
-    return redirect("lista_fotos", client=cls.pk)
+    foto=get_object_or_404(ImagenesClientes, pk=pk).delete()
+    return redirect("pictures/lista_fotos", client=cls.pk)

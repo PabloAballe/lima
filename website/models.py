@@ -14,7 +14,7 @@ class Blog(models.Model):
     id_post=models.AutoField(primary_key=True, auto_created = True)
     imagen=ResizedImageField(size=[500, 500],upload_to='images/website/', default='logo.png')
     titulo=models.CharField(max_length=50,help_text="Ingrese el título del post")
-    post=RichTextField()
+    post=models.TextField()
     autor=models.CharField(max_length=50,help_text="Ingrese el nombre de la/el autor")
     creado_el=models.DateTimeField(null=False, default=now)
     slug_post=models.CharField(max_length=200, blank=True)
@@ -40,7 +40,7 @@ OPCIONES_PAGINAS = (
 class Pages(models.Model):
     id_pagina=models.AutoField(primary_key=True, auto_created = True)
     nombre_pagina=models.CharField(max_length=50,help_text="Ingrese el nombre de la página")
-    cuerpo_pagina=RichTextField()
+    cuerpo_pagina=models.TextField()
     slug_pagina=models.CharField(max_length=200, blank=True)
     creado_el=models.DateTimeField(null=False, default=now)
     pertenece_a=models.CharField(max_length=1, choices=OPCIONES_PAGINAS, help_text="Ingrese a que catergoria pertecene está página", default="O")

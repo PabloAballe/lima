@@ -1,18 +1,15 @@
 {%load static%}
 {% load unicorn %}
 <!DOCTYPE html>
-<html lang="es" data-theme="{{request.user.tecnica.tema}}" style="zoom: 80%;">
+<html lang="es" data-theme="{{request.user.tecnica.tema}}" style="zoom: 90%;">
 
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=0.6">
   <title>{{footer.nombre_comercial}}</title>
- {% unicorn_scripts %}
+{% unicorn_scripts %}
   <link rel="icon"  href="{{footer.logo.url}}">
- <!--<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous">-->
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js" integrity="sha384-ChfqqxuZUCnJSK3+MXmPNIyE6ZbWh2IMqE241rYiqJxyMiZ6OW/JmZQ5stwEULTy" crossorigin="anonymous"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.9.1/css/bulma.min.css">
- <!--daisy ui-->
+
    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
   <link href="https://cdn.jsdelivr.net/npm/daisyui@1.14.0/dist/full.css" rel="stylesheet" type="text/css" />
   <!--daisy ui-->
@@ -24,6 +21,18 @@
 <body style=" margin-bottom:0px;backdrop-filter: blur(5px);">
      {% csrf_token %}
     <style>
+    .tox-notifications-container{
+        display: none;
+    }
+     button {
+        margin-left: 0px !Important;
+        line-height: 1rem !Important ;
+    }
+    /*html {*/
+    /*  pointer-events: none;*/
+    /*  cursor: wait;*/
+
+    /*}*/
     button {
         margin: 0.5rem;
     }
@@ -99,7 +108,7 @@ backdrop-filter: saturate(100%) blur(20px);
  }
  .index,.login{
     position: absolute;
-    top: 3rem;
+    top: 4rem;
     left: 20rem;
     margin:0rem;
     padding: 0rem;
@@ -109,9 +118,7 @@ backdrop-filter: saturate(100%) blur(20px);
 
  }
 
-footer{
-    display: none !important;
-}
+
 
  .login::-webkit-scrollbar,.index::-webkit-scrollbar {
   display: none;
@@ -152,16 +159,14 @@ footer{
     left: 0rem;
     overflow-x: auto;
  }
-.movile-navigation  {
-    position:absolute;
-    bottom: -10rem;
-    margin-bottom: -10rem;
-    z-index : 10000;
-    height: 10rem;
-}
-footer,.Window__Component-sc-1wwhwms-0 *{
-    display: none !important;
-}
+/*.movile-navigation  {*/
+/*    position:absolute;*/
+/*    bottom: 0px;*/
+/*    margin-bottom: -10rem;*/
+/*    z-index : 100;*/
+/*    height: 10rem;*/
+/*}*/
+
 }
 </style>
 <div id="loading">
@@ -171,7 +176,9 @@ footer,.Window__Component-sc-1wwhwms-0 *{
           </div>
         </div>
         </div>
-	<script>
+	<script  >
+
+
 // Quick and simple export target #table_id into a csv
 function download_table_as_csv(table_id, separator = ';') {
     // Select rows from table_id
@@ -203,38 +210,7 @@ function download_table_as_csv(table_id, separator = ';') {
     document.body.removeChild(link);
 }
 
-// tables to excel
 
-function exportTableToExcel(tableID, filename = ''){
-    var downloadLink;
-    var dataType = 'application/vnd.ms-excel';
-    var tableSelect = document.getElementById(tableID);
-    var tableHTML = tableSelect.outerHTML.replace(/ /g, '%20');
-
-    // Specify file name
-    filename = filename?filename+'.xls':'excel_data.xls';
-
-    // Create download link element
-    downloadLink = document.createElement("a");
-
-    document.body.appendChild(downloadLink);
-
-    if(navigator.msSaveOrOpenBlob){
-        var blob = new Blob(['\ufeff', tableHTML], {
-            type: dataType
-        });
-        navigator.msSaveOrOpenBlob( blob, filename);
-    }else{
-        // Create a link to the file
-        downloadLink.href = 'data:' + dataType + ', ' + tableHTML;
-
-        // Setting the file name
-        downloadLink.download = filename;
-
-        //triggering the function
-        downloadLink.click();
-    }
-}
 
 
 
@@ -271,25 +247,24 @@ function(){
     {%block content%}
 
   {%endblock%}
+  {% if  'cliente_pk' in  request.session %}
+  {% include 'client/client_floating_bar.html'%}
+  {% endif %}
 </div>
 
 
-<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script   src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
  {% include 'core/message.html'%}
   {% include 'core/confirm.html'%}
 {% include 'core/animation_tables.html'%}
-  <script src="https://use.fontawesome.com/339a78d04c.js"></script>
-  <script src="sweetalert2.all.min.js"></script>
-  <!-- Optional: include a polyfill for ES6 Promises for IE11 -->
-  <script src="https://cdn.jsdelivr.net/npm/promise-polyfill"></script>
-  <script defer src="https://use.fontawesome.com/releases/v5.14.0/js/all.js"></script>
-  <script src="{% static 'js/main.js' %}"></script>
-{% include 'core/cookies.html'%}
- <script src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
 
-    <script>
+  <script   src="{% static 'js/main.js' %}"></script>
+{% include 'core/cookies.html'%}
+ <script   src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
+
+    <script  >
       tinymce.init({
-  selector: '#editor',
+  selector: 'textarea',
   plugins: 'code autoresize lists checklist print preview powerpaste casechange importcss tinydrive searchreplace autolink autosave save directionality advcode visualblocks visualchars fullscreen image link media mediaembed template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists checklist wordcount tinymcespellchecker a11ychecker imagetools textpattern noneditable help formatpainter permanentpen pageembed charmap tinycomments mentions quickbars linkchecker emoticons advtable export',
   tinydrive_token_provider: 'URL_TO_YOUR_TOKEN_PROVIDER',
   tinydrive_dropbox_app_key: 'YOUR_DROPBOX_APP_KEY',
@@ -314,7 +289,40 @@ function(){
   image_advtab: true,
 
 });
+
     </script>
+    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+      <script   src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+    <script  >
+        $('button, input:button').addClass('btn-sm');
+         $("a").click(function(){
+
+        $('button, input:button').addClass('btn-disabled');
+        document.body.style.cursor = 'wait';
+         document.body.style.pointerEvents  = 'none';
+         setTimeout(function(){
+             $('button, input:button').removeClass('btn-disabled');
+             document.body.style.cursor = 'default';
+            document.body.style.pointerEvents  = 'auto';
+
+
+         }, 3000);
+  });
+    </script>
+
+
+<!-- XDSoft DateTimePicker -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
+<script   src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+
+    <script>
+
+  $(function () {
+    jQuery.datetimepicker.setLocale('es');
+    $(".datetimeinput").datetimepicker({  format:'Y-m-d',timepicker:false});
+  });
+</script>
+
 </body>
 
 </html>

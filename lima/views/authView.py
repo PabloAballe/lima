@@ -35,7 +35,10 @@ def login(request):
                 do_login(request, user)
                 messages.success(request,f'Has iniciado sesión como {username}')
                 # Y le redireccionamos a la portada
-                return redirect('/')
+                return redirect('index')
+            else:
+                messages.success(request,f'Ha ocurrido un error inesperado')
+
 
     # Si llegamos al final renderizamos el formulario
     return render(request, "auth/login.html", {'form': form, 'footer': footer})

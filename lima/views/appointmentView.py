@@ -20,6 +20,7 @@ from twilio.rest import Client
 from django.conf import settings
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from django_mail_admin import mail, models
 
 @login_required(login_url='login')
 def listas(request, centro=0, pk=0):
@@ -85,8 +86,9 @@ def edit_lista(request, paciente=0,pk=0):
                                     'FechaActual' : timezone.now(),
                                     'HoraInicioCita': lista.hora_inicio,
                                     'HoraFinCita': lista.hora_fin,
-                                    'Servicio': lista.servicios.nombre_servicio
-                        })
+                                    'Servicio': lista.servicios.nombre_servicio,
+                                    'CitaURL': f'https://{request.get_host()}/website/appointment/{cliente.centro.pk}/{cliente.pk}/{request.user.tecnica.pk}'})
+
                         mensaje=mensaje.render(c)
                         subject = f'Resguardo de cita con {footer.nombre_comercial}'
                         template=mensaje
@@ -96,15 +98,23 @@ def edit_lista(request, paciente=0,pk=0):
                         # to = cliente.email
                         # mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
                         try:
-                            message = Mail(
-                                from_email=footer.email_sistema,
-                                to_emails=cliente.email,
-                                subject=subject,
-                                html_content=html_message)
+                            # message = Mail(
+                            #     from_email=footer.email_sistema,
+                            #     to_emails=cliente.email,
+                            #     subject=subject,
+                            #     html_content=html_message)
 
-                            sg = SendGridAPIClient(footer.twilio_SENDGRID_API_KEY)
-                            sg.send(message)
-                            print(f"Email Enviado a {cliente.email} ")
+                            # sg = SendGridAPIClient(footer.twilio_SENDGRID_API_KEY)
+                            # sg.send(message)
+                            # print(f"Email Enviado a {cliente.email} ")
+                            mail.send(
+                                footer.email_sistema,
+                                cliente.email, # List of email addresses also accepted
+                                subject=subject,
+                                message=plain_message,
+                                priority=models.PRIORITY.now,
+                                html_message=html_message,
+                            )
                             messages.success(request,f'Email Enviado a {cliente.email} ')
                         except Exception as e:
                             messages.error(request,f"A ocurrido el siguiente error {e}")
@@ -147,8 +157,8 @@ def edit_lista(request, paciente=0,pk=0):
                                     'FechaActual' : timezone.now(),
                                     'HoraInicioCita': lista.hora_inicio,
                                     'HoraFinCita': lista.hora_fin,
-                                    'Servicio': lista.servicios.nombre_servicio
-                        })
+                                    'Servicio': lista.servicios.nombre_servicio,
+                                    'CitaURL': f'https://{request.get_host()}/website/appointment/{cliente.centro.pk}/{cliente.pk}/{request.user.tecnica.pk}'})
                         mensaje=mensaje.render(c)
                         subject = f'Resguardo de cita con {footer.nombre_comercial}'
                         template=mensaje
@@ -159,14 +169,22 @@ def edit_lista(request, paciente=0,pk=0):
                         # mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
                         # print(f"Email Enviado a {cliente.email} ")
                         try:
-                            message = Mail(
-                                from_email=footer.email_sistema,
-                                to_emails=cliente.email,
-                                subject=subject,
-                                html_content=html_message)
+                            # message = Mail(
+                            #     from_email=footer.email_sistema,
+                            #     to_emails=cliente.email,
+                            #     subject=subject,
+                            #     html_content=html_message)
 
-                            sg = SendGridAPIClient(footer.twilio_SENDGRID_API_KEY)
-                            sg.send(message)
+                            # sg = SendGridAPIClient(footer.twilio_SENDGRID_API_KEY)
+                            # sg.send(message)
+                            mail.send(
+                                footer.email_sistema,
+                                cliente.email, # List of email addresses also accepted
+                                subject=subject,
+                                message=plain_message,
+                                priority=models.PRIORITY.now,
+                                html_message=html_message,
+                            )
                             messages.success(request,f'Email Enviado a {cliente.email} ')
                         except Exception as e:
                             messages.error(request,f"A ocurrido el siguiente error {e}")

@@ -1,0 +1,69 @@
+<div class="p-10" style="position:absolute; top:4rem ; right:1rem;z-index:20;">
+
+  <div class="dropdown inline-block relative">
+    <button class="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center">
+      <span class="mr-1">{{request.session.cliente_nombre}}</span>
+      <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20"><path d="M9.293 12.95l.707.707L15.657 8l-1.414-1.414L10 10.828 5.757 6.586 4.343 8z"/> </svg>
+    </button>
+    <ul class="dropdown-menu absolute hidden text-gray-700 pt-1">
+      <li class="">
+          <a class="rounded-t  py-2 px-4 block whitespace-no-wrap" href="#">
+          
+           <div  class="text-gray-700 block w-full text-left px-4 py-2 text-sm" style="position:absolute; top:-4rem ; right:-15rem;z-index:20;min-width: 30rem;">
+
+
+		<!-- defualt theme -->
+		<div class="max-w-2xl w-full mx-auto z-10000">
+		<div class="flex flex-col">
+			<div class="bg-white border border-white shadow-lg  rounded-3xl p-1 m-1">
+				<div class="flex-none sm:flex">
+					<div class=" relative h-22 w-22   sm:mb-0 mb-1">
+						<img src="{{request.session.cliente_img}}" alt="{{request.session.cliente_nombre}}" class=" w-12 h-12 object-cover rounded-2xl">
+						<a href="{%url 'edit_cliente' pk=request.session.cliente_pk %}"
+							class="absolute -right-2 bottom-2   -ml-3  text-white p-1 text-xs bg-green-400 hover:bg-green-500 font-medium tracking-wider rounded-full transition ease-in duration-300">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor"
+								class="h-4 w-4">
+								<path
+									d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z">
+								</path>
+							</svg>
+						</a>
+					</div>
+					<div class="flex-auto sm:ml-5 justify-evenly">
+						<div class="flex items-center justify-between sm:mt-2">
+							<div class="flex items-center">
+								<div class="flex flex-col">
+									<div class="w-full flex-none text-lg text-gray-800 font-bold leading-none"><a href="{% url 'cliente_details_citas' pk=request.session.cliente_pk %}">{{request.session.cliente_nombre | title}}</a></div>
+									<div class="flex-auto text-gray-500 my-1">
+										<span class="mr-3 ">{{request.session.cliente_centro | title }}</span>
+									</div>
+									<div class="flex-auto text-gray-500 my-1">
+										<span class="mr-3 ">{{request.session.cliente_email}}</span><span class="mr-3 border-r border-gray-200  max-h-0"></span><span>{{request.session.cliente_telefono}} </span>
+									</div>
+									<div class="flex-auto text-gray-500 my-1">
+										<span class="mr-3 ">
+                                        	<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-geo-alt-fill" viewBox="0 0 16 16">
+                                          <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z"/>
+                                        </svg> {{request.session.cliente_direccion}}</span>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+			</a>
+      </li>
+     
+    </ul>
+  </div>
+
+</div>
+           
+					
+					<style>
+					    .dropdown:hover .dropdown-menu {
+  display: block;
+}
+					</style>
+

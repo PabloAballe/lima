@@ -2,5 +2,5 @@
 <div class="tabs">
   <a class="tab tab-lifted {% if request.resolver_match.url_name == "cliente_details_citas" %}tab-active{%endif%}" href="{% url 'cliente_details_citas' pk=cliente.pk %}">Citas</a>
   <a class="tab tab-lifted {% if request.resolver_match.url_name == "cliente_details_tratamientos" %}tab-active{%endif%}" href="{% url 'cliente_details_tratamientos' pk=cliente.pk %}">Sesiones de Tratamientos</a>
-  <a class="tab tab-lifted {% if request.resolver_match.url_name == "cliente_details_zonas" %}tab-active{%endif%}-" href="{% url 'cliente_details_zonas' pk=cliente.pk %}">Zonas</a>
+  <a class="tab tab-lifted {% if request.resolver_match.url_name == "cliente_details_zonas" %}tab-active{%endif%}" href="{% url 'cliente_details_zonas' pk=cliente.pk %}">Zonas</a>
 </div>

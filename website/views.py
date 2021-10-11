@@ -21,6 +21,7 @@ from django.template.loader import render_to_string
 from io import BytesIO
 from django.template.loader import get_template
 from xhtml2pdf import pisa
+from django_mail_admin import mail, models
 
 def config_website(request):
     conf=ConfiguracionWEB.objects.all().last()
@@ -172,14 +173,22 @@ def website_appointment(request, centro, cliente, tecnica):
                     html_message = render_to_string('core/blanc.html', {'mensaje': template, 'footer': footer})
                     plain_message = strip_tags(html_message)
                     try:
-                        message = Mail(
-                            from_email=footer.email_sistema,
-                            to_emails=cliente.email,
-                            subject=subject,
-                            html_content=html_message)
+                        # message = Mail(
+                        #     from_email=footer.email_sistema,
+                        #     to_emails=cliente.email,
+                        #     subject=subject,
+                        #     html_content=html_message)
 
-                        sg = SendGridAPIClient(footer.twilio_SENDGRID_API_KEY)
-                        sg.send(message)
+                        # sg = SendGridAPIClient(footer.twilio_SENDGRID_API_KEY)
+                        # sg.send(message)
+                        mail.send(
+                                footer.email_sistema,
+                                cliente.email, # List of email addresses also accepted
+                                subject=subject,
+                                message=plain_message,
+                                priority=models.PRIORITY.now,
+                                html_message=html_message,
+                            )
                         messages.success(request,f'Email Enviado a {cliente.email} ')
                     except Exception as e:
                         messages.error(request,f"A ocurrido el siguiente error {e}")

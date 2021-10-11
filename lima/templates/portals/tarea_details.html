@@ -35,7 +35,7 @@
 
 <!--mensaje-->
 <br>
-  <form method="post" style="    position: absolute; bottom: 0rem; width: 50rem; ">
+  <form method="post" style="    position: absolute; bottom: -10rem; width: 50rem; " novalidate>
 
     {% csrf_token %}
       {{ formMensaje|crispy }}
@@ -52,46 +52,6 @@
 
 
 </div>
-<script>
 
- $(document).ready(function() {
-  $('#summernote').summernote({
-    toolbar: [
-        // [groupName, [list of button]]
-        ['img', ['picture']],
-        ['style', ['style', 'clear' ]],
-        ['fontstyle', ['bold', 'italic', 'ul', 'ol', 'link', 'paragraph']],
-        ['fontstyleextra', ['strikethrough', 'underline', 'hr', 'color', 'superscript', 'subscript']],
-        ['extra', ['video', 'table', 'height']],
-        ['misc', ['undo', 'redo', 'codeview', 'fullscreen','help']],
-        ['customOptions', ['AddCheckList',]],
-
-
-    ],
-    buttons: {
-                    AddCheckList: addCheckList
-                },
-      placeholder: 'Escribe aquí...',
-      height: 100,
-
-  });
-});
- function addCheckList(context) {
-            var ui = $.summernote.ui;
-            var button = ui.button({
-                contents: '☑︁',
-                tooltip: 'Insert a Checklist',
-                click: function() {
-                    context.invoke('editor.pasteHTML', '<div class="checkbox-field col s12" id="id_autorizacion_container"><label></label><label><input class="filled-in " id="id_autorizacion" name="autorizacion" type="checkbox"><span for="id_autorizacion">&nbsp;</span></label></div>');
-
-                }
-            });
-            return button.render();
-        }
-$('#summernote').validate({
-  ignore: ".ql-container *"
-  // continue validation
-});
-</script>
 
 {%endblock%}

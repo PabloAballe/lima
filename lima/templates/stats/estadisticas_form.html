@@ -8,17 +8,20 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
 
 <div>
+    <br><br>
      <form class="form-inline my-2 my-lg-0" method="get">
       {% csrf_token %}
        {{ form|crispy }}
+
        <div class="buttons">
-      <button class="button is-primary is-rounded" type="submit">
+
+      <button class="btn" type="submit">
 
             Buscar
 
       </button>
-      <br/>
-      <button class="button is-danger is-rounded" type="reset" >
+      <br/><br/>
+      <button class="btn" type="reset" >
 
         Limpiar
 

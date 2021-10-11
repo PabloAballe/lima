@@ -85,7 +85,8 @@ def send_SMS(request):
                             'dni': usuario.dni,
                             'poblacion': usuario.poblacion,
                             'direccion': usuario.direccion,
-                            'FechaActual' : timezone.now(),})
+                            'FechaActual' : timezone.now(),
+                            'CitaURL': f'https://{request.get_host()}/website/appointment/{usuario.centro.pk}/{usuario.pk}/{request.user.tecnica.pk}'})
                 msg=msg.render(c)
                 # replace this number with your own WhatsApp Messaging number
                 to_number=f'+{usuario.telefono_paciente}'

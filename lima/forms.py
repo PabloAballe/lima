@@ -35,9 +35,9 @@ class TareaForm(forms.ModelForm):
 class MensajeForm(forms.ModelForm):
     class Meta:
         model=Mensajes
-        widgets = {
-            'cuerpo_mensaje': forms.TextInput(attrs={'class':'textarea h-24', 'id':''}),
-        }
+        # widgets = {
+        #     'cuerpo_mensaje': forms.TextInput(attrs={'class':'textarea h-24', 'id':''}),
+        # }
         fields=('cuerpo_mensaje',)
 
 class CitaForm(forms.ModelForm):
@@ -48,7 +48,8 @@ class CitaForm(forms.ModelForm):
 class ClienteForm(forms.ModelForm):
     class Meta:
         model = Paciente
-        fields = ('nombre_paciente','apellidos_paciente','telefono_paciente','dni','email','fecha_nacimiento','estado','etiqueta','notas_paciente', 'documento_de_autorizacion','documento_proteccion_de_datos', 'autorizacion_envio_informacion_comercial','poblacion', 'direccion', )
+        fields=('__all__' )
+        exclude = ['id_paciente', 'history']
 
 class TratamientoFormAdmin(forms.ModelForm):
     class Meta:
@@ -160,12 +161,15 @@ class EmailForm(forms.Form):
     asunto=forms.CharField(label='Asunto del Email:', max_length=100)
     destinatario=forms.CharField(label='Destinatario del Email:', max_length=100)
     plantilla=forms.ModelChoiceField(queryset=EmailTemplates.objects.all().order_by("nombre"))
+    enviar_a_las=forms.DateTimeField()
+
+
 
 class WhatsappForm(forms.Form):
-    widgets = {
-            'mensaje': forms.Textarea(attrs={'class':'some_class', 'id':'editor'}),
-        }
-    mensaje=forms.CharField(label='Mensaje a enviar:', max_length=500,widget=forms.Textarea)
+    # widgets = {
+    #         'mensaje': forms.Textarea(attrs={'class':'some_class', 'id':'editor'}),
+    #     }
+    mensaje=forms.CharField(label='Mensaje a enviar:', max_length=500)
 
 class EstadisticasAdminForm(forms.Form):
     fecha_inico=forms.DateTimeField(label='Fecha de inicio')

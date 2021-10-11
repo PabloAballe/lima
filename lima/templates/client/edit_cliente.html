@@ -16,7 +16,7 @@
   <br>
   <h2>Editando el Cliente</h2>
   <br>
-  <form method="post">
+  <form method="post" enctype="multipart/form-data">
     {% csrf_token %}
    {{ form|crispy }}
     <div class="buttons">

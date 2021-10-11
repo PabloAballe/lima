@@ -22,6 +22,8 @@ from twilio.rest import Client
 from django.conf import settings
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from django_mail_admin import mail, models
+
 
 @login_required(login_url='login')
 def emails_templates(request):
@@ -131,6 +133,8 @@ def send_emails(request):
         if form.is_valid():
             asunto=form.cleaned_data["asunto"]
             destinatario=form.cleaned_data["destinatario"]
+            enviar_a_las=form.cleaned_data["enviar_a_las"]
+            enviar_a_las=time.mktime(datetime.datetime.strptime(enviar_a_las, "%Y-%m-%d").timetuple())
             mensaje=form.cleaned_data["plantilla"].plantilla
             for usuario in user_filter.qs:
                 msj=Template(mensaje)
@@ -143,7 +147,8 @@ def send_emails(request):
                             'dni': usuario.dni,
                             'poblacion': usuario.poblacion,
                             'direccion': usuario.direccion,
-                            'FechaActual' : timezone.now(),})
+                            'FechaActual' : timezone.now(),
+                            'CitaURL': f'https://{request.get_host()}/website/appointment/{usuario.centro.pk}/{usuario.pk}/{request.user.tecnica.pk}'})
                 msj=msj.render(c)
                 subject = asunto
                 html_message = render_to_string('blanc.html', {'mensaje': msj, 'footer': footer})
@@ -152,10 +157,12 @@ def send_emails(request):
                 # to = usuario.email
                 # mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
                 try:
+
                     message = Mail(
                         from_email=footer.email_sistema,
                         to_emails=usuario.email,
                         subject=subject,
+                        send_at=enviar_a_las,
                         html_content=html_message)
 
                     sg = SendGridAPIClient(footer.twilio_SENDGRID_API_KEY)

@@ -1,0 +1,55 @@
+<link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
+<link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+
+<section class="pt-16 bg-blueGray-50" style="margin-top:-0rem">
+<div class="w-full lg:w-12/12 px-4 mx-auto">
+  <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-1">
+    <div class="px-6">
+      <div class="flex flex-wrap justify-center">
+        <div class="w-full px-4 flex justify-center">
+          <div class="relative">
+            <img alt="{{cliente.nombre_paciente}} {{cliente.apellidos_paciente}}" src="{{cliente.imagen.url}}" class="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px">
+           {% if perms.lima.view_paciente %}
+            <div style="">
+                <a href="{%url 'edit_cliente' pk=cliente.id_paciente %}">
+                    <svg style="    position: absolute;left: 30rem;top: 2rem;" xmlns="http://www.w3.org/2000/svg" width="2rem" height="1rem" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                      <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
+                      <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
+                    </svg>
+                </a>
+            </div>
+            {%endif%}
+          </div>
+        </div>
+        <div class="w-full px-4 text-center mt-20">
+          <div class="flex justify-center py-4 lg:pt-4 pt-8">
+            <div class="mr-4 p-3 text-center">
+              <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
+                {{c_citas}}
+              </span>
+              <span class="text-sm text-blueGray-400">Citas </span>
+            </div>
+            <div class="mr-4 p-3 text-center">
+              <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
+               {{c_tratamientos}}
+              </span>
+              <span class="text-sm text-blueGray-400">Tratamientos</span>
+            </div>
+            <div class="lg:mr-4 p-3 text-center">
+              <span class="text-xl font-bold block uppercase tracking-wide text-blueGray-600">
+                {{c_zonas}}
+              </span>
+              <span class="text-sm text-blueGray-400">Zonas</span>
+            </div>
+          </div>
+        </div>
+        <div class="text-center mt-2">
+        <h3 class="text-xl font-semibold leading-normal mb-2 text-blueGray-700 mb-2">
+            {{cliente.nombre_paciente}} {{cliente.apellidos_paciente}}
+        </h3>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</section>
