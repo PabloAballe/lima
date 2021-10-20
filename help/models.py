@@ -24,7 +24,7 @@ from multiselectfield import MultiSelectField
 
 # Create your models here.
 class HelpClases(models.Model):
-    id=models.AutoField(primary_key=True, auto_created = True)
+    id=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre_catogoria=models.CharField(max_length=100,help_text="Ingrese el nombre de la catergoria" )
     creada_el=models.DateTimeField(null=False, auto_now_add=True,)
     icon= FAIconField(default="", blank=True)
@@ -37,21 +37,16 @@ class HelpClases(models.Model):
 
 
 class HelpPost(models.Model):
-    id_post=models.AutoField(primary_key=True, auto_created = True)
+    id_post=models.AutoField(primary_key=True, auto_created = True,editable = False)
     imagen=ResizedImageField(size=[500, 500],upload_to='images/website/', default='logo.png')
     titulo=models.CharField(max_length=50,help_text="Ingrese el título del post")
     categoria=models.ForeignKey(HelpClases, on_delete=models.RESTRICT, null=False, default="1")
     post=models.TextField()
     autor=models.CharField(max_length=50,help_text="Ingrese el nombre de la/el autor")
     creado_el=models.DateTimeField(null=False, default=now)
-    slug_post=models.CharField(max_length=200, blank=True)
 
     class Meta:
         verbose_name_plural = "Ayuda del sistema"
 
     def __str__(self):
         return self.titulo
-
-    def save(self, *args, **kwargs):
-       self.slug_post = slugify(self.titulo)
-       super(Blog, self).save(*args, **kwargs)

@@ -78,7 +78,7 @@ def index(request):
         form = SheachForm()
 
     page = request.GET.get('page', 1)
-    paginator = Paginator(centro, 5)
+    paginator = Paginator(centro, 10)
     try:
         cen = paginator.page(page)
     except PageNotAnInteger:

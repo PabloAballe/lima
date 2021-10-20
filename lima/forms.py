@@ -49,7 +49,7 @@ class ClienteForm(forms.ModelForm):
     class Meta:
         model = Paciente
         fields=('__all__' )
-        exclude = ['id_paciente', 'history']
+        exclude = ['id_paciente', 'history', 'fecha_alta']
 
 class TratamientoFormAdmin(forms.ModelForm):
     class Meta:

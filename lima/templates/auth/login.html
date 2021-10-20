@@ -21,7 +21,7 @@
       <p class="mb-5">
             Bienvenido
           </p>
-          <form method="POST">
+          <form method="POST" style="grid-template-columns: repeat(1, minmax(0, 1fr));">
     {% csrf_token %}
     {{ form|crispy }}
     <button type="submit" class="btn btn-warning">Inicia Sesión</button>

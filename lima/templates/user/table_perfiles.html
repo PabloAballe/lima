@@ -15,8 +15,8 @@
          {%for tecnica in tecnica%}
         {% if tecnica.habilitado %}
           <tr class="text-gray-700" >
-               <td class="px-4 py-3 text-ms font-semibold border">{{ tecnica.pk }}</td>
-            <td class="px-4 py-3 border">
+               <td class="">{{ tecnica.pk }}</td>
+            <td class="px-4 py-3 ">
               <div class="flex items-center text-sm">
                 <div class="relative w-8 h-8 mr-3 rounded-full md:block">
                   <img class="object-cover w-full h-full rounded-full" src="{{tecnica.imagen.url}}" alt="{{tecnica.nombre_tecnica}}" loading="lazy" />
@@ -28,7 +28,7 @@
               </div>
             </td>
 
-            <td class="px-4 py-3 text-ms font-semibold border">
+            <td class="">
 
                 <div class="buttons">
   <a href="{%url 'ver_horario_visual' pk=tecnica.id_tecnica %}" style="margin-right:30px;">

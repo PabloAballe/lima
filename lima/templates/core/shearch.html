@@ -1,20 +1,21 @@
 {% load tailwind_filters %}
-<div class="shearch" style="z-index:10">
 
+<div class="shearch" style="z-index:30">
+<br>
 
-    <form class="form-inline my-2 my-lg-0" method="get">
+    <form class="form-inline my-2 my-lg-0" method="get" style="grid-template-columns: repeat(2, minmax(0, 1fr)); gap: -10px;">
       {% csrf_token %}
       {{ form|crispy }}
-      <button class="btn" type="submit" style="width: 100px;">
+      <button class="btn" type="submit" style="width: 100px;" title="Realizar busqueda">
 
 Buscar
 
       </button>
-      <button class="btn" type="reset" style="width: 100px;">
+      <!--<button class="btn" type="reset" style="width: 100px;" title="Limpiar el cuadro de busqueda">-->
 
-        Limpiar
+      <!--  Limpiar-->
 
-       </button>
+      <!-- </button>-->
 
 
 

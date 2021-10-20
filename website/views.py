@@ -99,8 +99,8 @@ def website_pdf(request, cita):
                 'FechaActual' : timezone.now(),
                 'HoraInicioCita': lista.hora_inicio,
                 'HoraFinCita': lista.hora_fin,
-                'Servicio': lista.servicios.nombre_servicio
-    })
+                'Servicio': lista.servicios.nombre_servicio,
+                'CitaURL': f'https://{request.get_host()}/website/appointment/{cliente.centro.pk}94840{cliente.pk}042f02cf{request.user.tecnica.pk}29d55a'})
     mensaje=mensaje.render(c)
     template=mensaje
     html_message = render_to_string('core/blanc.html', {'mensaje': template, 'footer': footer})
@@ -130,28 +130,32 @@ def website_appointment(request, centro, cliente, tecnica):
     form=AppointmentWEBForm()
     cliente=get_object_or_404(Paciente, pk=cliente)
     tec=get_object_or_404(Tecnica, pk=tecnica)
+
     if request.method == 'POST':
         form = AppointmentWEBForm(request.POST)
-        if form.is_valid():
-            date = form.cleaned_data['hora_inicio']
-            if date < dt.datetime.now():
-                messages.error(request,f'Debe ingresar una fecha a futuro para la cita')
-                return redirect("website_appointment", centro=cliente.centro.pk, cliente=cliente.pk, tecnica=tec.pk)
-            lista=form.save(commit=False)
-            lista.centro=cliente.centro
-            lista.tecnica=tec
-            lista.cliente=cliente
-            fecha = (lista.hora_inicio +  dt.timedelta(minutes=lista.servicios.duracion_sevicio))
-            lista.hora_fin=fecha
-            flag=Lista.objects.raw(f"SELECT lima_lista.id_lista, COUNT(*) AS flag FROM 	lima_lista WHERE  	lima_lista.centro_id={centro} 	AND ( (	lima_lista.hora_inicio >= '{lista.hora_inicio}' AND lima_lista.hora_inicio<='{lista.hora_fin}') OR (lima_lista.hora_fin> '{lista.hora_inicio}' AND lima_lista.hora_fin < '{lista.hora_fin}'))")
-            if flag[0].flag!=0:
-                #messages.error(request,f'No se ha podido guardar la cita {flag[0].flag} de tipo {type(flag[0].flag)}')
-                messages.error(request,f'No se ha podido guardar la cita porque no se encuentra este espacio y técnica disponible actualmente de {lista.hora_inicio} a {lista.hora_fin}')
-                return redirect("website_appointment", centro=cliente.centro.pk, cliente=cliente.pk, tecnica=tec.pk)
-            else:
-                lista.save()
-                messages.success(request,f'Se ha agendado la cita ')
-                if footer.enviar_email_nuevas_listas and footer.plantilla_lista :
+        if 1==9:
+            messages.warning(request,f'Ya tiene una cita agendada por favor contacte con el centro si ha perdido su resguardo')
+            return redirect("website_index")
+        else:
+            if form.is_valid():
+                date = form.cleaned_data['hora_inicio']
+                if date < dt.datetime.now():
+                    messages.error(request,f'Debe ingresar una fecha a futuro para la cita')
+                    return redirect("website_appointment", centro=cliente.centro.pk, cliente=cliente.pk, tecnica=tec.pk)
+                lista=form.save(commit=False)
+                lista.centro=cliente.centro
+                lista.tecnica=tec
+                lista.cliente=cliente
+                fecha = (lista.hora_inicio +  dt.timedelta(minutes=lista.servicios.duracion_sevicio))
+                lista.hora_fin=fecha
+                flag=Lista.objects.raw(f"SELECT lima_lista.id_lista, COUNT(*) AS flag FROM 	lima_lista WHERE  	lima_lista.centro_id={centro} 	AND ( (	lima_lista.hora_inicio >= '{lista.hora_inicio}' AND lima_lista.hora_inicio<='{lista.hora_fin}') OR (lima_lista.hora_fin> '{lista.hora_inicio}' AND lima_lista.hora_fin < '{lista.hora_fin}'))")
+                if flag[0].flag!=0:
+                    #messages.error(request,f'No se ha podido guardar la cita {flag[0].flag} de tipo {type(flag[0].flag)}')
+                    messages.error(request,f'No se ha podido guardar la cita porque no se encuentra este espacio y técnica disponible actualmente de {lista.hora_inicio} a {lista.hora_fin}')
+                    return redirect("website_appointment", centro=cliente.centro.pk, cliente=cliente.pk, tecnica=tec.pk)
+                else:
+                    lista.save()
+                    messages.success(request,f'Se ha agendado la cita ')
                     mensaje=Template(msg)
                     c = Context({'usuario': f'{cliente.nombre_paciente} {cliente.apellidos_paciente}',
                                 'centro': cliente.centro.nombre_centro, 'localizacion_centro': cliente.centro.localizacion,
@@ -165,8 +169,8 @@ def website_appointment(request, centro, cliente, tecnica):
                                 'FechaActual' : timezone.now(),
                                 'HoraInicioCita': lista.hora_inicio,
                                 'HoraFinCita': lista.hora_fin,
-                                'Servicio': lista.servicios.nombre_servicio
-                    })
+                                'Servicio': lista.servicios.nombre_servicio,
+                                'CitaURL': f'https://{request.get_host()}/website/appointment/{cliente.centro.pk}94840{cliente.pk}042f02cf{request.user.tecnica.pk}29d55a'})
                     mensaje=mensaje.render(c)
                     subject = f'Resguardo de cita con {footer.nombre_comercial}'
                     template=mensaje
@@ -192,5 +196,5 @@ def website_appointment(request, centro, cliente, tecnica):
                         messages.success(request,f'Email Enviado a {cliente.email} ')
                     except Exception as e:
                         messages.error(request,f"A ocurrido el siguiente error {e}")
-                return redirect("website_pdf" , cita=lista.pk)
+                    return redirect("website_pdf" , cita=lista.pk)
     return render(request, "appointments.html", {'web': conf, 'nav': nav, 'bloqueos': bloqueos,'footer': footer,'form': form, 'cen': cen,'cliente': cliente})

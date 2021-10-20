@@ -1,20 +1,7 @@
 #importamoss las vistas y las urls
 from django.urls import path
 from . import views
-from django.conf.urls import (
-handler400, handler403, handler404, handler500
-)
-
-
-
-# handler400 = 'lima.views.handler404'
-# handler403 = 'lima.views.permission_denied'
-# handler404 = 'lima.views.page_not_found'
-# handler500 = 'lima.views.server_error'
 import django
-
-def custom_page_not_found(request):
-    return django.views.defaults.page_not_found(request, None)
 
 urlpatterns = [
     path('admin', views.admin, name='admin'),
@@ -63,13 +50,13 @@ urlpatterns = [
     path('suscripcion', views.suscripcion, name="suscripcion"),
     path('doc_email/<int:pk>/', views.doc_email, name="doc_email"),
     #stock
-    path('stock_list', views.stock_list, name="stock_list"),
+    path('stock_list/', views.stock_list, name="stock_list"),
     path('stock/<int:pk>/', views.stock, name="stock"),
     #caja
     path('caja_list/<int:centro>/', views.caja_list, name="caja_list"),
     path('caja/<int:pk>/', views.caja, name="caja"),
     #estadisticas
-    path('estatisticas', views.estatisticas, name="estatisticas"),
+    path('estatisticas/', views.estatisticas, name="estatisticas"),
     path('estadisticas_horario_tecnica/<int:pk>/', views.estadisticas_horario_tecnica, name="estadisticas_horario_tecnica"),
     #listas
     path('listas/<int:centro>/<int:pk>/', views.listas, name="listas"),
@@ -97,7 +84,4 @@ urlpatterns = [
     path('send_whatsApp', views.send_whatsApp, name="send_whatsApp"),
     ### sms marketing
     path('send_SMS', views.send_SMS, name="send_SMS"),
-    ### errors
-    path("404/", views.handler404),
-    path("404/", views.handler500),
 ]

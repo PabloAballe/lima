@@ -1,6 +1,6 @@
 
-<div class="tabs">
-  <a class="tab tab-lifted {% if request.resolver_match.url_name == "cliente_details_citas" %}tab-active{%endif%}" href="{% url 'cliente_details_citas' pk=cliente.pk %}">Citas</a>
-  <a class="tab tab-lifted {% if request.resolver_match.url_name == "cliente_details_tratamientos" %}tab-active{%endif%}" href="{% url 'cliente_details_tratamientos' pk=cliente.pk %}">Sesiones de Tratamientos</a>
-  <a class="tab tab-lifted {% if request.resolver_match.url_name == "cliente_details_zonas" %}tab-active{%endif%}" href="{% url 'cliente_details_zonas' pk=cliente.pk %}">Zonas</a>
+<div class="tabs" style="width: 80%; margin: auto; padding: 1rem;">
+  <a title="Ver las citas del cliente" class="tab tab-lifted {% if request.resolver_match.url_name == "cliente_details_citas" %}tab-active{%endif%}" href="{% url 'cliente_details_citas' pk=cliente.pk %}">Citas</a>
+  <a title="Ver las sesiones de tratamientos del cliente" class="tab tab-lifted {% if request.resolver_match.url_name == "cliente_details_tratamientos" %}tab-active{%endif%}" href="{% url 'cliente_details_tratamientos' pk=cliente.pk %}">Sesiones de Tratamientos</a>
+  <a title="Ver las zonas del cliente" class="tab tab-lifted {% if request.resolver_match.url_name == "cliente_details_zonas" %}tab-active{%endif%}" href="{% url 'cliente_details_zonas' pk=cliente.pk %}">Zonas</a>
 </div>

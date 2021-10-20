@@ -11,7 +11,7 @@ from django_editorjs import EditorJsField
 phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="El teléfono debe de terner el formato: '+999999999'. Están permitidos hasta 15 dígitos.")
 
 class Blog(models.Model):
-    id_post=models.AutoField(primary_key=True, auto_created = True)
+    id_post=models.AutoField(primary_key=True, auto_created = True,editable = False)
     imagen=ResizedImageField(size=[500, 500],upload_to='images/website/', default='logo.png')
     titulo=models.CharField(max_length=50,help_text="Ingrese el título del post")
     post=models.TextField()
@@ -38,7 +38,7 @@ OPCIONES_PAGINAS = (
 )
 
 class Pages(models.Model):
-    id_pagina=models.AutoField(primary_key=True, auto_created = True)
+    id_pagina=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre_pagina=models.CharField(max_length=50,help_text="Ingrese el nombre de la página")
     cuerpo_pagina=models.TextField()
     slug_pagina=models.CharField(max_length=200, blank=True)
@@ -56,7 +56,7 @@ class Pages(models.Model):
         super(Pages, self).save(*args, **kwargs)
 
 class Conctact(models.Model):
-    id_contacto=models.AutoField(primary_key=True, auto_created = True)
+    id_contacto=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre_contacto=models.CharField(max_length=50,help_text="Ingrese el nombre de la página")
     telefono_contacto=models.CharField(max_length=50,help_text="Ingrese su nombre", default="",validators=[phone_regex] )
     email_contacto=models.EmailField(help_text="Ingrese su correo de contacto", blank=True, default="")
@@ -72,7 +72,7 @@ class Conctact(models.Model):
 
 
 class ConfiguracionWEB(models.Model):
-    id_configuracion=models.AutoField(primary_key=True, auto_created = True)
+    id_configuracion=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre_web_app=models.CharField(max_length=50,help_text="Ingrese el nombre de la web/app")
     logo_web_app=ResizedImageField(size=[500, 500],upload_to='images/website/', default='logo.png')
     localizacion=models.CharField(max_length=50,help_text="Ingrese la localización de su negocio")

@@ -1,4 +1,4 @@
-<div class="p-10" style="position:absolute; top:4rem ; right:1rem;z-index:20;">
+<div class="p-10" style="position:absolute; top:4rem ; right:1rem;z-index:200;">
 
   <div class="dropdown inline-block relative">
     <button class="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center">
@@ -8,7 +8,7 @@
     <ul class="dropdown-menu absolute hidden text-gray-700 pt-1">
       <li class="">
           <a class="rounded-t  py-2 px-4 block whitespace-no-wrap" href="#">
-          
+
            <div  class="text-gray-700 block w-full text-left px-4 py-2 text-sm" style="position:absolute; top:-4rem ; right:-15rem;z-index:20;min-width: 30rem;">
 
 
@@ -29,11 +29,11 @@
 							</svg>
 						</a>
 					</div>
-					<div class="flex-auto sm:ml-5 justify-evenly">
+					<div class="flex-auto sm:ml-5 justify-evenly" style="z-index:99">
 						<div class="flex items-center justify-between sm:mt-2">
 							<div class="flex items-center">
 								<div class="flex flex-col">
-									<div class="w-full flex-none text-lg text-gray-800 font-bold leading-none"><a href="{% url 'cliente_details_citas' pk=request.session.cliente_pk %}">{{request.session.cliente_nombre | title}}</a></div>
+									<div class="w-full flex-none text-lg text-gray-800 font-bold leading-none"><a href="{% url 'cliente_details_tratamientos' pk=request.session.cliente_pk %}">{{request.session.cliente_nombre | title}}</a></div>
 									<div class="flex-auto text-gray-500 my-1">
 										<span class="mr-3 ">{{request.session.cliente_centro | title }}</span>
 									</div>
@@ -54,13 +54,13 @@
 			</div>
 			</a>
       </li>
-     
+
     </ul>
   </div>
 
 </div>
-           
-					
+
+
 					<style>
 					    .dropdown:hover .dropdown-menu {
   display: block;

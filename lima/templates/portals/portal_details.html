@@ -1,5 +1,5 @@
 {%extends 'core/base.html'%}
-
+{% load humanize %}
 {%block content%}
 {%include 'core/nav.html'%}
 
@@ -37,7 +37,7 @@
          <!-- component -->
              <td style="background:{{estado.color}}; opacity: 0.9;" class="fondo">
              {%for tarea in estado.tareas_set.select_related.all %}
-<article style="width:20rem;" class="border w-2/4 mx-auto border-gray-400 rounded-lg md:p-4 bg-white sm:py-3 py-4 px-2 m-10" data-article-path="/hagnerd/setting-up-tailwind-with-create-react-app-4jd" data-content-user-id="112962">
+<article style="width:40rem;" class="border w-2/4 mx-auto border-gray-400 rounded-lg md:p-4 bg-white sm:py-3 py-4 px-2 m-10" data-article-path="/hagnerd/setting-up-tailwind-with-create-react-app-4jd" data-content-user-id="112962">
   <div role="presentation">
       <div>
         <div class="m-2">
@@ -49,24 +49,24 @@
               </div>
               <div>
                 <p>
-                  <a href="/hagnerd" class="text text-gray-700 text-sm hover:text-black">{{tarea.propietario.nombre_tecnica}}</a>
+                  <a href="/hagnerd" class="text text-gray-700 text-sm hover:text-black">{{tarea.propietario.nombre_tecnica | capfirst}}</a>
                 </p>
                 <a href="/hagnerd/setting-up-tailwind-with-create-react-app-4jd" class="text-xs text-gray-600 hover:text-black">
-                  <time datetime="2019-08-02T13:58:42.196Z">{{tarea.fecha_creacion}} </time>
+                  <time datetime="2019-08-02T13:58:42.196Z">{{tarea.fecha_creacion |naturaltime}} </time>
                 </a>
               </div>
           </div>
         </div>
-        <div class="pl-12 md:pl-10 xs:pl-10">
-          <h2 class="text-2xl font-bold mb-2 hover:text-blue-600 leading-7">
-            <a href="{% url 'tarea_details' pk=tarea.pk %}" id="article-link-151230" class="truncate  ">
-            <p class="truncate  ">  {{tarea.nombre_tarea | title}}</p>
+        <div class="pl-12 md:pl-10 xl:pl-10">
+          <h2 class="text-1xl font-bold mb-1 hover:text-blue-600 leading-7 break-all">
+            <a href="{% url 'tarea_details' pk=tarea.pk %}" id="article-link-151230" class="break-all  ">
+            <p class="break-all  ">  {{tarea.nombre_tarea | capfirst }}</p>
             </a>
           </h2>
           <div class="mb-2">
               {% for tag in tarea.etiquetas.all %}
 
-                 <a href="#" class="text-sm text-gray-600 p-1 hover:text-black truncate">
+                 <a href="#" class="text-sm text-gray-600 p-1 hover:text-black overflow-ellipsis">
                 <span class="text-opacity-50">#</span>
                 {{tag.nombre_etiqueta}}
               </a>
@@ -74,7 +74,7 @@
 
 
           </div>
-<p class="truncate  ">{{tarea.descripcion_tarea}}</p>
+<p class="overflow-ellipsis  ">{{tarea.descripcion_tarea | safe}}</p>
         </div>
     </div>
   </div>

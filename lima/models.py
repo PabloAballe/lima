@@ -22,10 +22,10 @@ import sys
 from django.core.validators import RegexValidator
 from multiselectfield import MultiSelectField
 
-phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="Phone number must be entered in the format: '+999999999'. Up to 15 digits allowed.")
+phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="El teléfono debe tener el siguiente formato: '+999999999'. Están permidos hasta 15 dígitos.")
 
 class Servicios(models.Model):
-    id_servicio=models.AutoField(primary_key=True, auto_created = True)
+    id_servicio=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre_servicio=models.CharField(max_length=100,help_text="Ingrese el nombre del servicio" )
     duracion_sevicio=models.IntegerField(default="15")
     icon = FAIconField(default="", blank=True)
@@ -46,7 +46,7 @@ DAYS_OF_WEEK = (('lunes', 'Lunes'),
               ('domingo', 'Domingo'))
 
 class Centro(models.Model):
-    id_centro=models.AutoField(primary_key=True, auto_created = True)
+    id_centro=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre_centro=models.CharField(max_length=50,help_text="Ingrese el nombre del centro", null=False)
     propietaria=models.CharField(max_length=50,help_text="Ingrese el nombre de la/el propietari@")
     imagen=ResizedImageField(size=[500, 500],upload_to='images/', default='img/porfile.png')
@@ -56,7 +56,6 @@ class Centro(models.Model):
     localizacion=models.CharField(max_length=100,help_text="Ingrese la hubicación del centro")
     dias_abre_centro = MultiSelectField(choices=DAYS_OF_WEEK, default="lunes")
     habilitado=models.BooleanField(default=True)
-    history = HistoricalRecords()
     icon = FAIconField(default="", blank=True)
 
     class Meta:
@@ -70,7 +69,7 @@ class Centro(models.Model):
 
 
 class EstadosClientes(models.Model):
-    id_estado=models.AutoField(primary_key=True, auto_created = True)
+    id_estado=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre_estado=models.CharField(max_length=50,help_text="Ingrese el nombre del estado", null=False, default="Nuevo")
     color = ColorField(default='#FF0000',help_text="Color del estado")
     icon = FAIconField(default="", blank=True)
@@ -95,7 +94,7 @@ def create_user_profile(sender, instance, created, **kwargs):
 post_save.connect(create_user_profile, sender=User)
 
 class Paneles(models.Model):
-    id_panel=models.AutoField(primary_key=True, auto_created = True)
+    id_panel=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre_panel=models.CharField(max_length=50,help_text="Ingrese el nombre del estado", null=False)
     descripcion_panel=models.TextField(help_text="Ingrese la descripción del panel")
     icon = FAIconField(default="", blank=True)
@@ -111,7 +110,7 @@ class Paneles(models.Model):
 
 
 class Estados(models.Model):
-    id_estado=models.AutoField(primary_key=True, auto_created = True)
+    id_estado=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre_estado=models.CharField(max_length=50,help_text="Ingrese el nombre del estado", null=False)
     color = ColorField(default='#FF0000',help_text="Color del estado")
     panel=models.ForeignKey(Paneles, on_delete=models.RESTRICT, null=False, default="1")
@@ -138,7 +137,7 @@ THEMES = [
 ]
 
 class Tecnica(models.Model):
-    id_tecnica=models.AutoField(primary_key=True, auto_created = True)
+    id_tecnica=models.AutoField(primary_key=True, auto_created = True,editable = False)
     imagen=ResizedImageField(size=[500, 500],upload_to='images/', default='img/porfile.png')
     nombre_tecnica=models.CharField(max_length=50,help_text="Ingrese el nombre de la/el tecnic@")
     apellidos_tecnica=models.CharField(max_length=50,help_text="Ingrese los apellidos de la/el técnic@")
@@ -147,7 +146,6 @@ class Tecnica(models.Model):
     color = ColorField(default='#FF0000')
     tema=models.CharField(max_length=20, choices=THEMES, default='light')
     habilitado=models.BooleanField(default=True)
-    history = HistoricalRecords()
     user = models.OneToOneField(User, on_delete=models.RESTRICT)
     icon = FAIconField(default="", blank=True)
 
@@ -159,10 +157,9 @@ class Tecnica(models.Model):
 
 
 class Tags(models.Model):
-    id_tag=models.AutoField(primary_key=True, auto_created = True)
+    id_tag=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre_etiqueta=models.CharField(max_length=50,help_text="Ingrese el nombre de la etiqueta", null=False)
     color = ColorField(default='#FF0000',help_text="Color de la etiqueta")
-    history = HistoricalRecords()
     icon = FAIconField(default="", blank=True)
 
     class Meta:
@@ -172,10 +169,10 @@ class Tags(models.Model):
         return self.nombre_etiqueta
 
 class Tareas(models.Model):
-    id_tarea=models.AutoField(primary_key=True, auto_created = True)
+    id_tarea=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre_tarea=models.CharField(max_length=50,help_text="Ingrese el nombre del estado", null=False)
     color = ColorField(default='#FF0000',help_text="Color del estado")
-    descripcion_tarea=models.CharField(help_text="Ingrese la descripción de la tarea", blank=True, default="",max_length=1000,)
+    descripcion_tarea=models.TextField(help_text="Ingrese la descripción de la tarea", blank=True, default="")
     fecha_creacion=models.DateTimeField(null=False, default=now)
     estado=models.ForeignKey(Estados, on_delete=models.RESTRICT, null=False, default="1")
     etiquetas=models.ManyToManyField(Tags, default="1", blank=True)
@@ -190,7 +187,7 @@ class Tareas(models.Model):
 
 
 class Anuncios(models.Model):
-    id_anuncio=models.AutoField(primary_key=True, auto_created = True)
+    id_anuncio=models.AutoField(primary_key=True, auto_created = True,editable = False)
     cuerpo_anuncio=models.CharField(max_length=100,help_text="Ingrese el anuncio", null=False)
     link_anuncio=models.CharField(help_text="Ingrese el link del anuncio",  default="", blank=True,max_length=10000)
     centro=models.ForeignKey(Centro, on_delete=models.RESTRICT, default="1")
@@ -211,7 +208,7 @@ def allEstados():
 
 
 class Paciente(models.Model):
-    id_paciente=models.AutoField(primary_key=True, auto_created = True, null=False)
+    id_paciente=models.AutoField(primary_key=True, auto_created = True, null=False,editable = False)
     nombre_paciente=models.CharField(max_length=50,help_text="Ingrese el nombre de la/el paciente", null=False)
     apellidos_paciente=models.CharField(max_length=50,help_text="Ingrese los apellidos de la/el paciente", blank=True, default="")
     imagen=ResizedImageField(size=[500, 500],upload_to='images/', default='img/porfile.png')
@@ -229,7 +226,6 @@ class Paciente(models.Model):
     etiqueta=models.ManyToManyField(Tags, default="1", blank=True)
     autorizacion_envio_informacion_comercial=models.BooleanField(default=False)
     fecha_alta=models.DateTimeField(null=False, default=now)
-    history = HistoricalRecords()
     icon = FAIconField(default="", blank=True)
 
     class Meta:
@@ -239,12 +235,11 @@ class Paciente(models.Model):
         return self.nombre_paciente
 
 class Mensajes(models.Model):
-    id_mensaje=models.AutoField(primary_key=True, auto_created = True)
+    id_mensaje=models.AutoField(primary_key=True, auto_created = True,editable = False)
     enviado_por=models.ForeignKey(Tecnica, on_delete=models.RESTRICT, null=False)
     tarea=models.ForeignKey(Tareas, on_delete=models.RESTRICT, null=False, default="1")
     cuerpo_mensaje=models.TextField(help_text="Ingrese la descripción aquí")
     fecha_creacion=models.DateTimeField(null=False, default=now)
-    history = HistoricalRecords()
 
     class Meta:
         verbose_name_plural = "Paneles del sistema"
@@ -253,7 +248,7 @@ class Mensajes(models.Model):
         return self.nombre_panel
 
 class Cita(models.Model):
-    id_cita=models.AutoField(primary_key=True, auto_created = True)
+    id_cita=models.AutoField(primary_key=True, auto_created = True,editable = False)
     tecnica=models.ForeignKey(Tecnica, on_delete=models.RESTRICT, null=False)
     paciente=models.ForeignKey(Paciente, on_delete=models.RESTRICT , null=False)
     fecha=models.DateTimeField(null=False)
@@ -262,7 +257,6 @@ class Cita(models.Model):
     hertz=models.IntegerField(help_text="Ingrese la potencia en hertz", default=0 , null=False)
     milisegundos=models.IntegerField(help_text="Ingrese la potencia en milisegundos",  default=0, null=False)
     julios=models.IntegerField( help_text="Ingrese la potencia en julios",  default=0, null=False)
-    history = HistoricalRecords()
     icon = FAIconField(default="", blank=True)
 
     def save(self):
@@ -279,11 +273,10 @@ class Cita(models.Model):
         return f"Zona : {self.fecha}"
 
 class ControlHorario(models.Model):
-    tecnica=models.ForeignKey(Tecnica, on_delete=models.RESTRICT,auto_created = True, default="lima")
+    tecnica=models.ForeignKey(Tecnica, on_delete=models.RESTRICT,auto_created = True, default="lima",editable = False)
     fecha=models.DateField()
     entrada=models.TimeField()
     salida=models.TimeField(default=None, blank=True, null=True)
-    history = HistoricalRecords()
     trabajado=models.TimeField(default="00:00")
     icon = FAIconField(default="", blank=True)
 
@@ -304,7 +297,7 @@ class ControlHorario(models.Model):
 
 your_date = datetime.datetime.now()
 class Turnos(models.Model):
-    id_turno=models.AutoField(primary_key=True, auto_created = True)
+    id_turno=models.AutoField(primary_key=True, auto_created = True,editable = False)
     tecnica=models.ForeignKey(Tecnica, on_delete=models.RESTRICT,auto_created = True, default="lima")
     centro=models.ForeignKey(Centro, on_delete=models.RESTRICT)
     turno_inicio=models.DateTimeField(null=False, default=timezone.now)
@@ -318,10 +311,9 @@ class Turnos(models.Model):
         return f"Turno de la técnica : {self.tecnica}"
 
 class EmailTemplates(models.Model):
-    id=models.AutoField(primary_key=True, auto_created = True)
+    id=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre=models.CharField(max_length=100,help_text="Ingrese el nombre de la plantilla" )
     plantilla=models.TextField(help_text="Confifure su plantilla")
-    history = HistoricalRecords()
     icon = FAIconField(default="", blank=True)
 
     class Meta:
@@ -331,11 +323,10 @@ class EmailTemplates(models.Model):
         return f"Plantilla : {self.nombre}"
 
 class DocTemplate(models.Model):
-    id=models.AutoField(primary_key=True, auto_created = True)
+    id=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre_doc=models.CharField(max_length=100,help_text="Ingrese el nombre de la plantilla" )
     plantilla_doc=models.TextField(help_text="Confifure su plantilla")
     creado_el=models.DateTimeField(null=False, auto_now_add=True,)
-    history = HistoricalRecords()
     icon = FAIconField(default="", blank=True)
 
     class Meta:
@@ -345,7 +336,7 @@ class DocTemplate(models.Model):
         return f"Plantilla Documento : {self.nombre_doc}"
 
 class DocSings(models.Model):
-    id=models.AutoField(primary_key=True, auto_created = True)
+    id=models.AutoField(primary_key=True, auto_created = True,editable = False)
     plantilla_doc=models.ForeignKey(DocTemplate, on_delete=models.RESTRICT)
     plantilla_render=models.TextField(default="")
     cliente=models.ForeignKey(Paciente, on_delete=models.RESTRICT , null=False)
@@ -362,7 +353,7 @@ class DocSings(models.Model):
 
 
 class Configuracion(models.Model):
-    id=models.AutoField(primary_key=True, auto_created = True)
+    id=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre_comercial=models.CharField(max_length=100,help_text="Ingrese el nombre comercial del negocio" , null=False)
     propietario=models.CharField(max_length=100,help_text="Ingrese el nombre del propietario del negocio" , null=False)
     telefono=models.CharField(max_length=100,help_text="Ingrese el telefono del negocio", default="00000000" )
@@ -383,7 +374,6 @@ class Configuracion(models.Model):
     enviar_email_nuevas_listas=models.BooleanField(default=False)
     plantilla_email=models.ForeignKey(EmailTemplates, on_delete=models.RESTRICT ,default="1",related_name ="plantilla_email" )
     plantilla_lista=models.ForeignKey(EmailTemplates, on_delete=models.RESTRICT ,default="1",related_name ="plantilla_lista")
-    history = HistoricalRecords()
     icon = FAIconField(default="", blank=True)
 
     class Meta:
@@ -395,7 +385,7 @@ class Configuracion(models.Model):
 
 
 class Tratamientos(models.Model):
-    id_tratamiento=models.AutoField(primary_key=True, auto_created = True)
+    id_tratamiento=models.AutoField(primary_key=True, auto_created = True,editable = False)
     numero_de_sesion=models.IntegerField(help_text="Ingrese el número de sesión del tratamiento" , default=1)
     zona=models.ForeignKey(Servicios, on_delete=models.RESTRICT, default="1")
     hora_fin=models.DateTimeField(null=False,default=now)
@@ -424,7 +414,7 @@ class Suscription(models.Model):
     ('E', 'Extras'),
     ('O', 'Otras')  # hay que ser inclusivos
 )
-    id_sicription=models.AutoField(primary_key=True, auto_created = True)
+    id_sicription=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre_suscription=models.CharField(max_length=100,help_text="Ingrese el nombre de la suscripción" )
     clinicas_max=models.IntegerField(default='0', help_text="Ingrese el número máximo de clínicas en la suscripción")
     type=models.CharField(max_length=1, choices=OPCIONES_SUSCRIPTIONS, default="S")
@@ -437,7 +427,7 @@ class Suscription(models.Model):
 
 
 class Stock(models.Model):
-    id_stock=models.AutoField(primary_key=True, auto_created = True)
+    id_stock=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre_stock=models.CharField(max_length=100,help_text="Ingrese el producto" )
     tecnica=models.ForeignKey(Tecnica, on_delete=models.RESTRICT, default="1")
     cantidad=models.IntegerField(help_text="Ingrese la cantidad de stock del producto")
@@ -451,7 +441,7 @@ class Stock(models.Model):
         return f"Stockt del producto : {self.nombre_stock}"
 
 class Cajas(models.Model):
-    id_caja=models.AutoField(primary_key=True, auto_created = True)
+    id_caja=models.AutoField(primary_key=True, auto_created = True,editable = False)
     centro=models.ForeignKey(Centro, on_delete=models.RESTRICT)
     tecnica=models.ForeignKey(Tecnica, on_delete=models.RESTRICT)
     porcentaje=models.IntegerField(help_text="Ingrese el porcentaje del centro")
@@ -477,7 +467,7 @@ class Cajas(models.Model):
         return f"Caja del día : {self.fecha}"
 
 class Lista(models.Model):
-    id_lista=models.AutoField(primary_key=True, auto_created = True)
+    id_lista=models.AutoField(primary_key=True, auto_created = True,editable = False)
     centro=models.ForeignKey(Centro, on_delete=models.RESTRICT)
     cliente=models.ForeignKey(Paciente, on_delete=models.RESTRICT)
     tecnica=models.ForeignKey(Tecnica, on_delete=models.RESTRICT, default="1")
@@ -499,7 +489,7 @@ class Lista(models.Model):
         return f"Lista de cliente  : {self.centro.nombre_centro}"
 
 class ImagenesClientes(models.Model):
-    id_image_cliente=models.AutoField(primary_key=True, auto_created = True)
+    id_image_cliente=models.AutoField(primary_key=True, auto_created = True,editable = False)
     #imagen=models.ImageField(upload_to='images/clientes/')
     imagen=ResizedImageField(size=[500, 500], upload_to='images/clientes/')
     cliente=models.ForeignKey(Paciente, on_delete=models.RESTRICT , null=False)

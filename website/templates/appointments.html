@@ -31,16 +31,24 @@ document.addEventListener('DOMContentLoaded', function() {
     {% endfor %}
     ];
 
-let days_off=[];
-        if ('{{cen.dias_abre_centro}}'.includes("Lunes")){days_off.push(1);}
-        if ('{{cen.dias_abre_centro}}'.includes("Martes")){days_off.push(2);}
-        if ('{{cen.dias_abre_centro}}'.includes("Miercoles")){days_off.push(3);}
-        if ('{{cen.dias_abre_centro}}'.includes("Jueves")){days_off.push(4);}
-        if ('{{cen.dias_abre_centro}}'.includes("Viernes")){days_off.push(5);}
-        if ('{{cen.dias_abre_centro}}'.includes("Sabado")){days_off.push(6);}
-        if ('{{cen.dias_abre_centro}}'.includes("Domingo")){days_off.push(7);}
+let days_off=[1,2,3,4,5,6,7];
+
+function deleteArrayIndex(i){
+    let indice = days_off.indexOf(i);
+    days_off.splice(indice, 1);
+    console.info("Se ha eliminado el elemento "+i + "del array "+days_off)
+};
+
+
+        if ('{{cen.dias_abre_centro}}'.includes("Lunes")){deleteArrayIndex(1);}
+        if ('{{cen.dias_abre_centro}}'.includes("Martes")){deleteArrayIndex(2);}
+        if ('{{cen.dias_abre_centro}}'.includes("Miercoles")){deleteArrayIndex(3);}
+        if ('{{cen.dias_abre_centro}}'.includes("Jueves")){deleteArrayIndex(4);}
+        if ('{{cen.dias_abre_centro}}'.includes("Viernes")){deleteArrayIndex(5);}
+        if ('{{cen.dias_abre_centro}}'.includes("Sabado")){deleteArrayIndex(6);}
+        if ('{{cen.dias_abre_centro}}'.includes("Domingo")){deleteArrayIndex(7);}
     console.log(eventos);
-    console.log(days_off);
+    console.info(days_off);
   var calendar = new FullCalendar.Calendar(calendarEl, {
       dateClick: function(info) {
             calendar.gotoDate( info.dateStr )
@@ -73,9 +81,8 @@ let days_off=[];
 <br>
 <h1 class="text-3xl text-center">Agenda tu cita</h1>
 <br>
-<p class="text-2xl text-center"> ⚠️ Recuerda que el centro abre de  {{cen.dias_abre_centro}} de {{cen.horario_apertura}} a {{cen.horario_cierre}}
-
-</p>
+<p class="text-2xl text-center"> ⚠️ Recuerda que el centro abre de  {{cen.dias_abre_centro}} de {{cen.horario_apertura}} a {{cen.horario_cierre}}</p>
+<p class="text-2xl text-center"> 📱 Solo es posible reservar una cita desde este módulo. En caso de querer agendar más de una por favor contacte con el centro en el siguiente teléfono {{footer.telefono}}</p>
 <div class="grid grid-cols-1 ">
     <div class="form p-2">
    {% include 'website_cita_form.html'%}

@@ -87,7 +87,7 @@ def edit_lista(request, paciente=0,pk=0):
                                     'HoraInicioCita': lista.hora_inicio,
                                     'HoraFinCita': lista.hora_fin,
                                     'Servicio': lista.servicios.nombre_servicio,
-                                    'CitaURL': f'https://{request.get_host()}/website/appointment/{cliente.centro.pk}/{cliente.pk}/{request.user.tecnica.pk}'})
+                                    'CitaURL': f'https://{request.get_host()}/website/appointment/{cliente.centro.pk}94840{cliente.pk}042f02cf{request.user.tecnica.pk}29d55a'})
 
                         mensaje=mensaje.render(c)
                         subject = f'Resguardo de cita con {footer.nombre_comercial}'
@@ -158,7 +158,7 @@ def edit_lista(request, paciente=0,pk=0):
                                     'HoraInicioCita': lista.hora_inicio,
                                     'HoraFinCita': lista.hora_fin,
                                     'Servicio': lista.servicios.nombre_servicio,
-                                    'CitaURL': f'https://{request.get_host()}/website/appointment/{cliente.centro.pk}/{cliente.pk}/{request.user.tecnica.pk}'})
+                                    'CitaURL': f'https://{request.get_host()}/website/appointment/{cliente.centro.pk}94840{cliente.pk}042f02cf{request.user.tecnica.pk}29d55a'})
                         mensaje=mensaje.render(c)
                         subject = f'Resguardo de cita con {footer.nombre_comercial}'
                         template=mensaje

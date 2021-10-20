@@ -148,7 +148,7 @@ def send_emails(request):
                             'poblacion': usuario.poblacion,
                             'direccion': usuario.direccion,
                             'FechaActual' : timezone.now(),
-                            'CitaURL': f'https://{request.get_host()}/website/appointment/{usuario.centro.pk}/{usuario.pk}/{request.user.tecnica.pk}'})
+                            'CitaURL': f'https://{request.get_host()}/website/appointment/{usuario.centro.pk}94840{usuario.pk}042f02cf{request.user.tecnica.pk}29d55a'})
                 msj=msj.render(c)
                 subject = asunto
                 html_message = render_to_string('blanc.html', {'mensaje': msj, 'footer': footer})

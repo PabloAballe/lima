@@ -68,13 +68,7 @@ def cliente_details_citas(request, pk):
     c_citas=Lista.objects.filter(cliente=cliente1).order_by("-hora_inicio").count()
     c_tratamientos=Tratamientos.objects.all().order_by("-fecha").filter(cliente=cliente1).count()
     c_zonas=Cita.objects.all().order_by("fecha").filter(paciente=cliente1).count()
-    request.session['cliente_pk'] = cliente1.pk
-    request.session['cliente_img'] = cliente1.imagen.url
-    request.session['cliente_nombre'] = f'{cliente1.nombre_paciente} {cliente1.apellidos_paciente}'
-    request.session['cliente_direccion'] = cliente1.direccion
-    request.session['cliente_telefono'] = cliente1.telefono_paciente
-    request.session['cliente_email'] = cliente1.email
-    request.session['cliente_centro'] = cliente1.centro.nombre_centro
+
     return render(request, "client/cliente_details_cita.html", {'cliente': cliente1, 'footer': footer, 'lista': lista, 'c_citas': c_citas, 'c_tratamientos': c_tratamientos, 'c_zonas': c_zonas})
 
 @login_required(login_url='login')
@@ -92,6 +86,13 @@ def cliente_details_tratamientos(request, pk):
     c_citas=Lista.objects.filter(cliente=cliente1).order_by("-hora_inicio").count()
     c_tratamientos=Tratamientos.objects.all().order_by("-fecha").filter(cliente=cliente1).count()
     c_zonas=Cita.objects.all().order_by("fecha").filter(paciente=cliente1).count()
+    request.session['cliente_pk'] = cliente1.pk
+    request.session['cliente_img'] = cliente1.imagen.url
+    request.session['cliente_nombre'] = f'{cliente1.nombre_paciente} {cliente1.apellidos_paciente}'
+    request.session['cliente_direccion'] = cliente1.direccion
+    request.session['cliente_telefono'] = cliente1.telefono_paciente
+    request.session['cliente_email'] = cliente1.email
+    request.session['cliente_centro'] = cliente1.centro.nombre_centro
     return render(request, "client/cliente_details_tratamientos.html", {'cliente': cliente1, 'footer': footer, 'tratamientos': tratamientos , 'c_citas': c_citas, 'c_tratamientos': c_tratamientos, 'c_zonas': c_zonas})
 
 @login_required(login_url='login')

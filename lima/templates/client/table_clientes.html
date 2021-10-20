@@ -13,7 +13,7 @@
         <th><abbr title="Email">Etiquetas</abbr></th>
         <th><abbr title="Autorizacion">Autorizacion</abbr></th>
         <th><abbr title="Protección de datos">Protección de datos</abbr></th>
-        <th><abbr title="Localización">Autorización envío de información comercial</abbr></th>
+        <th><abbr title="Localización">Envío de información comercial</abbr></th>
         <th><abbr title="Población">Población</abbr></th>
         <th><abbr title="Dirección">Dirección</abbr></th>
         <th><abbr title="Acción">Acción</abbr></th>
@@ -25,9 +25,9 @@
     </tfoot>
     <tbody>
       {%for cl in cliente%}
-      <tr onclick="window.location='{% url 'cliente_details_citas' pk=cl.id_paciente %}';">
+      <tr onclick="window.location='{% url 'cliente_details_tratamientos' pk=cl.id_paciente %}';">
         <th>{{ cl.pk }}</th>
-        <td><a href="{% url 'cliente_details_citas' pk=cl.id_paciente %}">{{cl.nombre_paciente}}</a> <strong></strong>
+        <td><a href="{% url 'cliente_details_tratamientos' pk=cl.id_paciente %}">{{cl.nombre_paciente}}</a> <strong></strong>
         </td>
         <td>{{cl.apellidos_paciente}}</td>
         <td>{{cl.telefono_paciente}}</td>

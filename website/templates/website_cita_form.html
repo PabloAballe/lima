@@ -8,7 +8,7 @@
 
 
 
-<img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem" style="width: 40%;margin: auto;">
+<img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem" style="margin: auto;">
   <h2>Cita </h2>
   <hr>
   <br>
@@ -25,20 +25,20 @@
 
   $(function () {
     jQuery.datetimepicker.setLocale('es');
-    $("#id_hora_inicio").datetimepicker({ beforeShowDay: noMondays, format:'Y-m-d H:i'});
+    $("#id_hora_inicio").datetimepicker({ beforeShowDay: noMondays, format:'Y-m-d H:i', step: {{footer.slots}}, });
   });
 
 
 
   function noMondays(date){
-      if ('{{cen.dias_abre_centro}}'.includes("Lunes")) { if (date.getDay() === 1) {return [ false, "closed", "Closed on Monday" ]}}
-      if ('{{cen.dias_abre_centro}}'.includes("Martes")) { if (date.getDay() === 2) {return [ false, "closed", "Closed on Monday" ]}}
-      if ('{{cen.dias_abre_centro}}'.includes("Miercoles")) { if (date.getDay() === 3) {return [ false, "closed", "Closed on Monday" ]}}
-      if ('{{cen.dias_abre_centro}}'.includes("Jueves")){ if (date.getDay() === 4) {return [ false, "closed", "Closed on Monday" ]}}
-      if ('{{cen.dias_abre_centro}}'.includes("Viernes")) { if (date.getDay() === 5) {return [ false, "closed", "Closed on Monday" ]}}
-      if ('{{cen.dias_abre_centro}}'.includes("Sabado")){ if (date.getDay() === 6) {return [ false, "closed", "Closed on Monday" ]}}
-      if ('{{cen.dias_abre_centro}}'.includes("Domingo")){ if (date.getDay() === 7) {return [ false, "closed", "Closed on Monday" ]}}
-      else {return [ true, "", "" ]}
+      if ('{{cen.dias_abre_centro}}'.includes("Lunes")) { if (date.getDay() === 1) {return [ true, "closed", "Closed on Monday" ]}}
+      if ('{{cen.dias_abre_centro}}'.includes("Martes")) { if (date.getDay() === 2) {return [ true, "closed", "Closed on Monday" ]}}
+      if ('{{cen.dias_abre_centro}}'.includes("Miercoles")) { if (date.getDay() === 3) {return [ true, "closed", "Closed on Monday" ]}}
+      if ('{{cen.dias_abre_centro}}'.includes("Jueves")){ if (date.getDay() === 4) {return [ true, "closed", "Closed on Monday" ]}}
+      if ('{{cen.dias_abre_centro}}'.includes("Viernes")) { if (date.getDay() === 5) {return [ true, "closed", "Closed on Monday" ]}}
+      if ('{{cen.dias_abre_centro}}'.includes("Sabado")){ if (date.getDay() === 6) {return [ true, "closed", "Closed on Monday" ]}}
+      if ('{{cen.dias_abre_centro}}'.includes("Domingo")){ if (date.getDay() === 7) {return [ true, "closed", "Closed on Monday" ]}}
+      else {return [ false, "", "" ]}
 }
 
 

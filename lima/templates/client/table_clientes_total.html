@@ -29,7 +29,7 @@
         <th><abbr title="Email">Etiquetas</abbr></th>
         <th><abbr title="Localización">Documento de Autorizacion</abbr></th>
         <th><abbr title="Localización">Documento de Protección de datos</abbr></th>
-        <th><abbr title="Localización">Autorización envío de información comercial</abbr></th>
+        <th><abbr title="Localización">Envío de información comercial</abbr></th>
         <th><abbr title="Localización">Población</abbr></th>
         <th><abbr title="Localización">Dirección</abbr></th>
         <th><abbr title="Editar">Acción</abbr></th>
@@ -42,10 +42,10 @@
     <tbody>
 
          {% for cl in filter.qs %}
-      <tr onclick="window.location='{% url 'cliente_details_citas' pk=cl.id_paciente %}';">
+      <tr onclick="window.location='{% url 'cliente_details_tratamientos' pk=cl.id_paciente %}';">
         <th>{{ cl.pk }}</th>
           <th>{{ cl.centro.nombre_centro }}</th>
-        <td><a href="{% url 'cliente_details_citas' pk=cl.id_paciente %}">{{cl.nombre_paciente}}</a> <strong></strong>
+        <td><a href="{% url 'cliente_details_tratamientos' pk=cl.id_paciente %}">{{cl.nombre_paciente}}</a> <strong></strong>
         </td>
         <td>{{cl.apellidos_paciente}}</td>
         <td>{{cl.telefono_paciente}}</td>

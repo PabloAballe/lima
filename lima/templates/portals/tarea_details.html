@@ -13,7 +13,7 @@
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
 <div class="index">
 
-<h1> {{tarea.nombre_tarea | title }} </h1>
+<h1> {{tarea.nombre_tarea | capfirst }} </h1>
 <BR><BR>
 <div style="display:flex;">
     <div>
@@ -22,10 +22,10 @@
     {% csrf_token %}
       {{ form|crispy }}
        <div class="buttons">
-    <button type="submit" class="button is-warning is-rounded" >Guardar</button>
+    <button type="submit" class="btn" >Guardar</button>
 
   </form>
-<button class="button is-danger is-rounded" onClick="javascript:history.go(-1);">Cancelar</button>
+<button class="btn" onClick="javascript:history.go(-1);">Cancelar</button>
 </div>
 </div>
 <div style="width: 50rem; margin-left: 5rem">
@@ -40,10 +40,10 @@
     {% csrf_token %}
       {{ formMensaje|crispy }}
        <div class="buttons">
-    <button type="submit" class="button is-warning is-rounded" >Guardar</button>
+    <button type="submit" class="btn" >Guardar</button>
 
   </form>
-<button class="button is-danger is-rounded" onClick="javascript:history.go(-1);">Cancelar</button>
+<button class="btn" type="button" onClick="javascript:history.go(-1);">Cancelar</button>
 </div>
 
 </div>

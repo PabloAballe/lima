@@ -48,6 +48,8 @@ INSTALLED_APPS = [
     'django_mail_admin',
     'django.contrib.humanize',
     'multiselectfield',
+    #'subdomains',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
@@ -60,7 +62,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
     'admin_reorder.middleware.ModelAdminReorder',
-
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
 
 ]
 
@@ -83,7 +85,17 @@ TEMPLATES = [
     },
 ]
 
+INTERNAL_IPS = [
+    '37.14.105.28',
+]
 
+
+# def custom_show_toolbar(request):
+#     return True # Always show toolbar, for example purposes only.
+
+# DEBUG_TOOLBAR_CONFIG = {
+#     'SHOW_TOOLBAR_CALLBACK': custom_show_toolbar,
+# }
 
 WSGI_APPLICATION = 'limayneon.wsgi.application'
 
@@ -142,6 +154,8 @@ USE_L10N = True
 
 USE_TZ = False
 
+SESSION_EXPIRE_AT_BROWSER_CLOSE = False
+SESSION_COOKIE_AGE = 60 * 60 #
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
@@ -276,6 +290,5 @@ TINYMCE_DEFAULT_CONFIG = {
 
 TINYMCE_SPELLCHECKER = False
 TINYMCE_COMPRESSOR = True
-
 
 

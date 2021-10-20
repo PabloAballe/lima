@@ -1,0 +1,31 @@
+{% ifequal  notfound True %}
+{% include 'core/notfound.html'%}
+{% else %}
+<br>
+<br>
+{% for cat in categorias %}
+<div class="collapse w-150 border rounded-box border-base-300 collapse-arrow">
+  <input type="checkbox">
+  <div class="collapse-title text-sm font-medium">
+    {{cat.nombre_catogoria}}
+  </div>
+  <div class="collapse-content">
+    {%for art in cat.helppost_set.select_related.all %}
+    <div class="collapse w-150 border rounded-box border-base-300 collapse-arrow">
+  <input type="checkbox">
+  <div class="collapse-title text-sm font-medium">
+     {{art.titulo}}
+  </div>
+  <div class="collapse-content">
+      {{art.post | safe }}
+    </p>
+  </div>
+</div>
+<br>
+    {% endfor%}
+    </p>
+  </div>
+</div>
+<br>
+{% endfor%}
+{% endifequal %}

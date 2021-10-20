@@ -9,7 +9,10 @@
   <title>{{footer.nombre_comercial}}</title>
 {% unicorn_scripts %}
   <link rel="icon"  href="{{footer.logo.url}}">
-
+<meta http-equiv="refresh" content="500">
+<meta name="description" content="Portal de gestión de negocios de explotación compartida.">
+<meta name="keywords" content="Láser, Estética, Belleza, SAS, Gestión clientes, manager, marketing.">
+<meta name="author" content="Pablo Aballe">
    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
   <link href="https://cdn.jsdelivr.net/npm/daisyui@1.14.0/dist/full.css" rel="stylesheet" type="text/css" />
   <!--daisy ui-->
@@ -21,6 +24,7 @@
 <body style=" margin-bottom:0px;backdrop-filter: blur(5px);">
      {% csrf_token %}
     <style>
+
     .tox-notifications-container{
         display: none;
     }
@@ -81,13 +85,19 @@ backdrop-filter: saturate(100%) blur(20px);
   margin: 0 auto !important;
   overflow-x: auto;
   white-space: nowrap;
+  border-collapse:separate;
+  border-spacing:0em 1.5em;
+
 }
-.table{
+.table tr{
   background: rgba(255,255,255,0.7) !important ;
  color:#012D54  !important;
  backdrop-filter: saturate(100%) blur(20px)  !important;
- box-shadow: 0px 15px 20px rgba(25, 25, 25, 0.5) !important;
+ box-shadow: 0px 15px 20px rgba(25, 25, 25, 0.1) !important;
 
+}
+table *{
+    font-size: 1rem;
 }
 .button {
    border: 1px solid rgba(255,255,255,0.7) !important;
@@ -96,7 +106,7 @@ backdrop-filter: saturate(100%) blur(20px);
  }
  .table {
      overflow: auto;
-
+    min-width:70rem;
     max-height: 30rem;
  }
 
@@ -109,13 +119,13 @@ backdrop-filter: saturate(100%) blur(20px);
  .index,.login{
     position: absolute;
     top: 4rem;
-    left: 20rem;
+    left: 15rem;
     margin:0rem;
-    padding: 0rem;
-    max-width: 70%;
+    padding: 2rem;
+    max-width: 85%;
     overflow: auto;
     height: 50rem;
-
+    min-width:50rem;
  }
 
 
@@ -127,13 +137,13 @@ backdrop-filter: saturate(100%) blur(20px);
    display: flex
 }
 
-@media (min-width: 1500px) {
+@media (min-width: 1200px) {
 .movile-navigation *  {
     display:none;
 }
 
 }
-@media (max-width: 1500px) {
+@media (max-width: 1200px) {
 
  html{
   zoom : 140% !Important;
@@ -168,12 +178,9 @@ backdrop-filter: saturate(100%) blur(20px);
 /*}*/
 
 }
-</style>
-<div id="loading">
-          <div class="d-flex justify-content-center" id="loading-spinner">
-          <div class="spinner-border" role="status" style="width: 10rem; height: 10rem;">
-              <progress class="progress is-small is-primary" max="100">15%</progress>
-          </div>
+</style> <div id="loading">
+         <div class=" flex justify-center items-center" id="loading-spinner">
+          <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
         </div>
         </div>
 	<script  >
@@ -242,6 +249,8 @@ function(){
     console.log('The page is loaded');
 });
 
+
+
 </script>
 <div class="main-div">
     {%block content%}
@@ -306,8 +315,12 @@ function(){
             document.body.style.pointerEvents  = 'auto';
 
 
-         }, 3000);
+         }, 2000);
+
   });
+  $('table tr').addClass('hover');
+  $('table').addClass('table-compact');
+  $('form').addClass('grid grid-cols-3 md:grid-cols-3 gap-4 sm:grid-cols-1');
     </script>
 
 
@@ -319,7 +332,7 @@ function(){
 
   $(function () {
     jQuery.datetimepicker.setLocale('es');
-    $(".datetimeinput").datetimepicker({  format:'Y-m-d',timepicker:false});
+    $(".datetimeinput").datetimepicker({  format:'Y-m-d',timepicker:false, step: 15, });
   });
 </script>
 

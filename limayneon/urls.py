@@ -1,5 +1,7 @@
 from django.contrib import admin
 from django.urls import path, include
+import debug_toolbar
+
 
 urlpatterns = [
     path('website/', include('website.urls')),
@@ -9,8 +11,8 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('tinymce/', include('tinymce.urls')),
     path("unicorn/", include("django_unicorn.urls")),
-
-
+    path(r'^__debug__/', include(debug_toolbar.urls)),
+    path('help', include('help.urls')),
 ]
 
 

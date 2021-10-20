@@ -4,12 +4,12 @@
 {% load tailwind_filters %}
 {%block content%}
 {%include 'core/nav.html'%}
-<div class="login ">
+<div class="login " >
 <img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
   <br>
   <h2>Añade un centro nuevo</h2>
   <br>
-  <form method="post">
+  <form method="post" >
     {% csrf_token %}
       {{ form|crispy }}
        <div class="buttons">
