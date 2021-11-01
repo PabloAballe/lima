@@ -2,7 +2,13 @@
 
 {%block content%}
 {%include 'core/nav.html'%}
-<div class="index">
+<div class="grid grid-cols-5 gap-4">
+<div class="aside-bar">
+    {% include 'core/aside.html'%}
+</div>
+
+     <div class="col-span-4">
+         <div class="index">
 <h1>Listado de Documentos </h1>
     {% if perms.lima.add_emailtemplates %}
 <a href="{% url 'new_doc_template' %}" class="top-menu">
@@ -18,6 +24,9 @@
 {%include 'core/pagination.html'%}
 
 </div>
+</div>
+</div>
+
 
 
 

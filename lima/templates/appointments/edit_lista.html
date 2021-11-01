@@ -10,8 +10,13 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
 
+<div class="grid grid-cols-5 gap-4">
+<div class="aside-bar">
+    {% include 'core/aside.html'%}
+</div>
 
-<div class="login ">
+     <div class="col-span-4">
+         <div class="login ">
 <img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
   <h2>Cita </h2>
   <hr>
@@ -26,7 +31,10 @@
 
   </form>
   <button class="btn" type="button" onClick="javascript:history.go(-1);">Cancelar</button>
-</div></div>
+</div>
+</div>
+         </div>
+
 <script>
 
   $(function () {

@@ -7,6 +7,7 @@ urlpatterns = [
     path('website/', include('website.urls')),
     path('dashboard/', include('dashboard.urls')),
     path('', include('lima.urls')),
+    path('app_admin/', include('app_admin.urls')),
     path('faicon/', include('faicon.urls')),
     path('admin/', admin.site.urls),
     path('tinymce/', include('tinymce.urls')),

@@ -3,14 +3,19 @@
 {% load crispy_forms_tags %}
 {%block content%}
 {%include 'core/nav.html'%}
+<div class="grid grid-cols-5 gap-4">
+<div class="aside-bar">
+    {% include 'core/aside.html'%}
+</div>
 
-<div class="login " style="width: 80%; margin:auto">
+     <div class="col-span-4">
+         <div class="login " style="width: 80%; margin:auto">
 
   <br>
   <h2>Plantilla de Documento</h2>
   {% include 'marketing/variables_email.html'%}
   <br>
-  <form method="post" >
+  <form method="post" style="grid-template-columns: repeat(1, minmax(0, 1fr));">
     {% csrf_token %}
     {{ form|crispy }}
     <div class="buttons">
@@ -19,6 +24,9 @@
   </form>
 <button class="btn" type="button" onClick="javascript:history.go(-1);">Cancelar</button>
 </div></div>
+</div>
+</div>
+
 
 
 

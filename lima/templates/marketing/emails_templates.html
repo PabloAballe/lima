@@ -2,7 +2,14 @@
 
 {%block content%}
 {%include 'core/nav.html'%}
-<div class="index">
+ <div class="grid grid-cols-5 gap-4">
+<div class="aside-bar">
+    {% include 'core/aside.html'%}
+</div>
+
+     <div class="col-span-4">
+         <div class="index1">
+             <div class="index">
 <h1>Listado de plantillas de Emails </h1>
 <a href="{% url 'new_emails_template' %}" class="top-menu">
 <button class="btn" style="margin-left: 5%;">Añadir una nueva plantilla</button>
@@ -13,6 +20,9 @@
 {%include 'core/pagination.html'%}
 
 </div>
+    </div>
+</div>
+
 
 
 

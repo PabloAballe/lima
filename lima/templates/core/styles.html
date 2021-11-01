@@ -1,0 +1,297 @@
+<style>
+
+
+ /*.pagination {*/
+ /*       position:absolute;*/
+ /*       bottom: -20rem;*/
+ /*       left : 30rem;*/
+ /*   }*/
+    /* width */
+.login{
+    width:100%;
+    margin:auto;
+    height:100%;
+}
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+.shearch{
+  position: absolute;
+  top: 5rem;
+  width: auto;
+}
+.login h1, .index h1, .index1 h1,.login h2, .index h2, .index1 h2{
+    font-size:2rem !Important;
+    text-align:center !Important;
+}
+/* Track */
+::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: #edf2f7;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 100vh;
+  border: 3px solid #edf2f7;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+    .tox-notifications-container{
+        display: none;
+    }
+     button {
+        margin-left: 0px !Important;
+        line-height: 1rem !Important ;
+    }
+    /*html {*/
+    /*  pointer-events: none;*/
+    /*  cursor: wait;*/
+
+    /*}*/
+    button {
+        margin: 0.5rem;
+    }
+    td:before {
+  content: '';
+  display: block;
+  width: 0em;
+}
+table tr  { cursor: pointer; }
+    #loading {
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  position: fixed;
+  display: block;
+  opacity: 0.5;
+  background-color: #fff;
+  z-index: 99;
+  text-align: center;
+}
+
+#loading-spinner {
+  position: absolute;
+  top: 50%;;
+  left: 50%;;
+  z-index: 100;
+}
+
+.modal-movile-block{
+    display:none !Important;
+}
+ nav_ {
+  background:rgba(255, 255, 255, 0.5) !important;
+  color:#012D54;
+
+  border-bottom:1px solid rgba(255, 255, 255, 0.5);
+ -webkit-backdrop-filter:saturate(180%) blur(20px);
+backdrop-filter: saturate(180%) blur(20px);
+}
+ .navbar-dropdown_{
+  background:rgba(255, 255, 255, 0.7) !important;
+  color:#012D54;
+
+  border-bottom:1px solid rgba(255, 255, 255, 0.5);
+ -webkit-backdrop-filter:saturate(100%) blur(20px);
+backdrop-filter: saturate(100%) blur(20px);
+}
+.table {
+  overflow-x: auto;
+  white-space: nowrap;
+  border-collapse:separate;
+  border-spacing:0em 1.5em;
+  width:100%;
+display: inherit;
+}
+.elfsight-app-a37ed3b6-a1d5-4881-8a87-101e93cf0def ,.eapps-widget .eapps-widget-show-toolbar{
+    display:none;
+}
+.table tr, .user{
+  background: rgba(255,255,255,0.7) !important ;
+ color:#012D54  !important;
+ backdrop-filter: saturate(100%) blur(20px)  !important;
+ box-shadow: 0px 15px 20px rgba(25, 25, 25, 0.1) !important;
+
+}
+
+.noselect, *{
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Old versions of Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome, Edge, Opera and Firefox */
+}
+
+.users{
+    position:absolute; bottom: -5rem;left:2rem;max-width:20rem; max-height:20rem;overflow:auto;
+}
+
+
+body *{
+    -webkit-animation: fadein 0.5s; /* Safari, Chrome and Opera > 12.1 */
+       -moz-animation: fadein 0.5s; /* Firefox < 16 */
+        -ms-animation: fadein 0.5s; /* Internet Explorer */
+         -o-animation: fadein 0.5s; /* Opera < 12.1 */
+            animation: fadein 0.5s;
+}
+
+@keyframes fadein {
+    from { opacity: 0.5; }
+    to   { opacity: 1; }
+}
+
+/* Firefox < 16 */
+@-moz-keyframes fadein {
+    from { opacity: 0.5; }
+    to   { opacity: 1; }
+}
+
+/* Safari, Chrome and Opera > 12.1 */
+@-webkit-keyframes fadein {
+    from { opacity: 0.5; }
+    to   { opacity: 1; }
+}
+
+/* Internet Explorer */
+@-ms-keyframes fadein {
+    from { opacity: 0.5; }
+    to   { opacity: 1; }
+}
+
+/* Opera < 12.1 */
+@-o-keyframes fadein {
+    from { opacity: 0.5; }
+    to   { opacity: 1; }
+}
+
+table body *{
+    font-size: 1rem;
+}
+.button {
+   border: 1px solid rgba(255,255,255,0.7) !important;
+   backdrop-filter: blur(30px) !important;
+ color: rgba(255,255,255,0.8) !important;
+ }
+ .table {
+     overflow: auto;
+ }
+
+.button:hover {
+    border: 1px solid rgba(25,25,25,25,0.1) !important;
+    box-shadow: 0px 15px 20px rgba(25, 25, 25, 0.1) !important;
+     /*transform: translateY(-1px) !important;*/
+    transform: scale(0.9) !important;
+ }
+ .index,.login{
+    top: 4rem;
+    left: 15rem;
+    margin:0rem !important;
+    padding: 2rem;
+    max-width: 100%;
+    overflow: auto;
+    min-width:50rem;
+    height:40rem;
+    width:100% !Important;
+ }
+
+/*efecto bidrio*/
+.glass, .aside{
+/* From https://css.glass */
+background: rgba(191, 151, 151, 0.27);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+border: 1px solid rgba(191, 151, 151, 0.3);
+}
+
+@supports (-webkit-backdrop-filter: blur(30px) saturate(160%) contrast(45%) brightness(140%)) or
+  (backdrop-filter: blur(30px) saturate(160%) contrast(45%) brightness(140%)) {
+  .aside ,.floating {
+    transition: all 0.5s ease-in-out;
+    padding-top: 15px;
+    padding-bottom: 15px;
+    background-color: rgba(255, 255, 255, 0.2);
+    backdrop-filter: blur(20px) saturate(160%) contrast(45%) brightness(140%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%) contrast(45%) brightness(140%);
+  }
+}
+
+ .login::-webkit-scrollbar,.index::-webkit-scrollbar {
+  display: none;
+}
+ .main-div > div:first-child {
+   display: flex
+}
+
+@media (min-width: 1200px) {
+.movile-navigation *  {
+    display:none;
+}
+   .modal-movile-block{
+    display:none !Important;
+}
+}
+@media (max-width: 1200px) {
+.modal-movile-block{
+    display:block !Important;
+}
+.movile-navigation *  {
+    display:none;
+}
+    /*.pagination {*/
+    /*    position:absolute;*/
+    /*    bottom: -30rem;*/
+    /*    left : 5rem;*/
+    /*}*/
+
+/*.eapp-whatsapp-chat-root-layout-component{*/
+/*    display:none;*/
+/*}*/
+/*.index, .login{*/
+/*    height: 100%;*/
+/*    width:100%;*/
+/*;*/
+/*}*/
+/*td:before {*/
+/*  min-width: 0;*/
+/*}*/
+/* html{*/
+/*  zoom : 140% !Important;*/
+/* }*/
+/*.users{*/
+/*    display:none;*/
+/*}*/
+/*  .aside-bar {*/
+/*display:none;*/
+/*  }*/
+/* .map-centro{*/
+/*    position:relative;*/
+/*    top: 0rem;*/
+/*    left: 0rem;*/
+/*    overflow-x: auto;*/
+/* }*/
+/* .shearch{*/
+/*  position: absolute;*/
+/*  top: 10rem;*/
+/*  width: auto;*/
+/*}*/
+/*.movile-navigation  {*/
+/*    position:absolute;*/
+/*    bottom: 0px;*/
+/*    margin-bottom: -10rem;*/
+/*    z-index : 100;*/
+/*    height: 10rem;*/
+/*}*/
+
+}
+</style>

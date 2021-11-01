@@ -2,7 +2,14 @@
 
 {%block content%}
 {%include 'core/nav.html'%}
-<div class="index">
+<div class="grid grid-cols-5 gap-4">
+<div class="aside-bar">
+    {% include 'core/aside.html'%}
+</div>
+
+ <div class="col-span-4">
+    <div class="index1">
+        <div class="index">
 <h1>Listado de cajas </h1>
     {% if perms.lima.add_cajas %}
 <a href="{% url 'caja' pk=0 %}" class="top-menu">
@@ -20,7 +27,7 @@
 {%include 'cashDesk/table_caja_list.html'%}
 {%include 'core/pagination.html'%}
 </div>
-
+        </div>
 
 
 {%endblock%}

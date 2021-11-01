@@ -1,0 +1,10 @@
+<ion-list style="overflow-y:auto">
+    {% for cen in cen %}
+    <ion-item >
+      <ion-icon slot="start" name="storefront-outline"></ion-icon>
+      <ion-label>
+        <h3>{{cen.nombre_centro}}</h3>
+      </ion-label>
+    </ion-item>
+    {% endfor %}
+</ion-list>

@@ -39,17 +39,14 @@ INSTALLED_APPS = [
     #custom admin
     'simple_history',
     'import_export',
-    'jsignature',
+    'app_admin',
     'django_filters',
     'faicon',
     'tinymce',
     'admin_reorder',
-    "django_unicorn",
-    'django_mail_admin',
     'django.contrib.humanize',
     'multiselectfield',
-    #'subdomains',
-    'debug_toolbar',
+    'jsignature',
 ]
 
 MIDDLEWARE = [
@@ -62,7 +59,6 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
     'admin_reorder.middleware.ModelAdminReorder',
-    'debug_toolbar.middleware.DebugToolbarMiddleware',
 
 ]
 
@@ -89,7 +85,7 @@ INTERNAL_IPS = [
     '37.14.105.28',
 ]
 
-
+SESSION_EXPIRE_AT_BROWSER_CLOSE = True
 # def custom_show_toolbar(request):
 #     return True # Always show toolbar, for example purposes only.
 
@@ -175,21 +171,14 @@ try:
 except ImportError:
     pass
 
-# For Django Email Backend
-# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
-# EMAIL_HOST = 'smtp.gmail.com'
-# EMAIL_PORT = 587
-# EMAIL_HOST_USER = 'thewavecompany.app@gmail.com'
-# EMAIL_HOST_PASSWORD = 'bworedjxndeiivbw'  # os.environ['password_key'] suggested
-# EMAIL_USE_TLS = True
+#For Django Email Backend
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'thewavecompany.app@gmail.com'
+EMAIL_HOST_PASSWORD = 'bworedjxndeiivbw'  # os.environ['password_key'] suggested
+EMAIL_USE_TLS = True
 
-DJANGO_MAIL_ADMIN = {
-    'BACKENDS': {
-        'default': 'django_mail_admin.backends.CustomEmailBackend',
-        'smtp': 'django.core.mail.backends.smtp.EmailBackend',
-        'ses': 'django_ses.SESBackend',
-    }
-}
 
 
 #firma
@@ -224,12 +213,19 @@ ADMIN_REORDER = (
     },
     # Clientes
     {'app': 'lima', 'label': 'Clientes',
-     'models': ('lima.Paciente','lima.Tratamientos','lima.Lista', 'lima.Cita', 'lima.ImagenesClientes', 'lima.Tags','lima.EstadosClientes')
+     'models': ('lima.Paciente','lima.Tratamientos','lima.Lista', 'lima.Cita', 'lima.ImagenesClientes', 'lima.Tags','lima.EstadosClientes',
+     'lima.DocSings')
     },
         # Centros
     {'app': 'lima', 'label': 'Centros',
      'models': ('lima.Centro',)
     },
+    #Plantilla de documentos
+     {'app': 'lima', 'label': 'Plantillas de Documentos',
+     'models': ('lima.DocTemplate',)
+    },
+
+
      # Ayuda
     {'app': 'help', 'label': 'Ayuda y Tutoriales',
      'models': ('help.HelpClases','help.HelpPost',)
@@ -258,8 +254,6 @@ ADMIN_REORDER = (
     #WEB
     {'app': 'website', 'label': 'Sitio Web / APP',
      'models': ('website.Blog','website.Conctact','website.Pages')},
-     #Email
-     {'app': 'django_mail_admin', 'label': 'Emails'},
     # Tema
     {'app': 'admin_interface', 'label': 'Temas del Configurador'},
 )

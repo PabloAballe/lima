@@ -3,7 +3,14 @@
 {%block content%}
 {%include 'core/nav.html'%}
  {% load tz %}
-<div class="index">
+  <div class="grid grid-cols-5 gap-4">
+<div class="aside-bar">
+    {% include 'core/aside.html'%}
+</div>
+
+     <div class="col-span-4">
+         <div class="index1">
+             <div class="index">
 <h1>Sesiones de Tratamientos {{tecnica.nombre_tecnica}}</h1>
 
 <link href="{% static 'fullcalendar/main.css' %}" rel='stylesheet' />
@@ -75,6 +82,9 @@ document.addEventListener('DOMContentLoaded', function() {
 
 </script>
 </div>
+    </div>
+</div>
+
 
 
 

@@ -53,35 +53,30 @@ from sendgrid.helpers.mail import Mail
 
 @login_required(login_url='login')
 def sing(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     sign_=get_object_or_404(DocSings, pk=pk)
+    client=get_object_or_404(Paciente, pk=sign_.cliente.pk)
     form = SingForm()
     formatted_date = dateformat.format(timezone.now(), 'Y-m-d H:i:s')
-    baseurl='https://wavecompany.pythonanywhere.com/media'
     if request.method == 'POST':
-        form = SingForm(request.POST or None, instance=sign_)
+        form = SingForm(request.POST, request.FILES)
         if form.is_valid():
+            #messages.success(request,f'ha pasado por el valido')
             signature = form.cleaned_data.get('firma')
             if signature:
+                sign_.imagen=signature
                 # as an image
-                signature_picture = draw_signature(signature)
-                signature_file_path = draw_signature(signature, as_file=True)
-                try:
-                     filename=f'tmp_sign_{formatted_date}-{sign_.cliente.pk}.png'
-                     file = signature_picture.save(f'{settings.MEDIA_ROOT}/sings_user/{filename}' , mode='RGB')
-                     sign_.firma_imagen = f'{baseurl}/sings_user/{filename}'
-                except Exception as e:
-                    return HttpResponse(f"Error {e}")
-                form.save()
+                # signature_picture = draw_signature(signature)
+                # signature_file_path = draw_signature(signature, as_file=True)
+                # try:
+                #      filename=f'tmp_sign_{formatted_date}-{sign_.cliente.pk}.png'
+                #      file = signature_picture.save(f'{settings.MEDIA_ROOT}/sings_user/{filename}' , mode='RGB')
+                #      sign_.firma_imagen = f'{baseurl}/sings_user/{filename}'
+                # except Exception as e:
+                #     return HttpResponse(f"Error {e}")
+                sign_.save()
             messages.success(request,f'Se ha guardado la firma')
             return redirect("cliente_details_citas", pk=sign_.cliente.pk)
         else:
            pass
-    return render(request, 'sing.html', {'footer': footer, 'form': form})
+    return render(request, 'signature/sing.html', {'footer': footer, 'form': form, 'client': client})

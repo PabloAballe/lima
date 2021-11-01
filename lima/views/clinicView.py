@@ -25,16 +25,9 @@ from sendgrid.helpers.mail import Mail
 
 @login_required(login_url='login')
 def centro_details(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     centro=get_object_or_404(Centro, id_centro=pk)
-    anuncio=Anuncios.objects.filter(centro=centro).order_by("-fecha_creacion")
+    anuncio=Anuncios.objects.filter(centro=centro).order_by("-fecha_creacion") | Anuncios.objects.filter(todos_los_centros=True).order_by("-fecha_creacion")
     notfound=False
     cliente=Paciente.objects.all().order_by("nombre_paciente").filter(centro=centro)
     #shearch cliente
@@ -68,14 +61,6 @@ def centro_details(request, pk):
 
 @login_required(login_url='login')
 def new_centro(request):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     form=CentroForm()
     if request.method == 'POST':
@@ -94,13 +79,6 @@ def new_centro(request):
 
 @login_required(login_url='login')
 def edit_centro(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     post = get_object_or_404(Centro, pk=pk)
     if request.method == "POST":
@@ -116,13 +94,6 @@ def edit_centro(request, pk):
 
 @login_required(login_url='login')
 def delete_centro(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     centro=get_object_or_404(Centro, pk=pk).delete()
     messages.error(request,f'Se ha borrado el centro')

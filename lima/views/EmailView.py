@@ -22,18 +22,10 @@ from twilio.rest import Client
 from django.conf import settings
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-from django_mail_admin import mail, models
 
 
 @login_required(login_url='login')
 def emails_templates(request):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     emails=EmailTemplates.objects.all()
     #shearch emails
@@ -55,13 +47,6 @@ def emails_templates(request):
 
 @login_required(login_url='login')
 def emails_template(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     email=get_object_or_404(EmailTemplates, pk=pk)
     form = EmailTemplateEditForm(instance=email)
@@ -78,14 +63,6 @@ def emails_template(request, pk):
 
 @login_required(login_url='login')
 def new_emails_template(request):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     form=EmailTemplateNewForm()
     if request.method == 'POST':
@@ -100,13 +77,6 @@ def new_emails_template(request):
 
 @login_required(login_url='login')
 def delete_email(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     email=get_object_or_404(EmailTemplates, pk=pk).delete()
     messages.error(request,f'Se ha borrado la plantilla')
@@ -116,13 +86,6 @@ def delete_email(request, pk):
 
 @login_required(login_url='login')
 def send_emails(request):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     users=Paciente.objects.exclude(email='')
     title="Enviar Emails de Marketing"

@@ -51,13 +51,6 @@ from sendgrid.helpers.mail import Mail
 
 @login_required(login_url='login')
 def perfil(request):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     user=request.user
     meses=ControlHorario.objects.filter(tecnica=user.tecnica).order_by("-fecha", "-entrada")
@@ -84,13 +77,6 @@ def perfil(request):
 
 @login_required(login_url='login')
 def view_perfiles(request):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     tecnica= Tecnica.objects.all().order_by("-nombre_tecnica")
     notfound=False
@@ -122,13 +108,6 @@ def view_perfiles(request):
 
 @login_required(login_url='login')
 def ver_horario(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     salida=False
     #checkea si ha enytrado o salido
@@ -146,13 +125,6 @@ def ver_horario(request, pk):
 
 @login_required(login_url='login')
 def ver_horario_visual(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     today = dt.datetime.now()
     salida=False
@@ -169,13 +141,6 @@ def ver_horario_visual(request, pk):
 
 @login_required(login_url='login')
 def ver_visual_tecnica(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     today = dt.datetime.now()
     salida=False
@@ -203,13 +168,6 @@ def ver_visual_tecnica(request, pk):
 
 @login_required(login_url='login')
 def edit_turno(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     today = dt.datetime.now()
     salida=False

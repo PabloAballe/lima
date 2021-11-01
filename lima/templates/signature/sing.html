@@ -1,41 +1,219 @@
-{%extends 'base.html'%}
-{%load static%}
-<!--{% load crispy_forms_tags %}-->
-{%block content%}
-{%include 'nav.html'%}
-
-<!-- include libraries(jQuery, bootstrap) -->
-<link href="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css" rel="stylesheet">
-<script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
-<script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 
 
-<!--<script src="{%static 'js/jSignature/flashcanvas.js'%}"></script>-->
-<!--<script src="{%static 'js/jSignature/jSignature.min.js'%}"></script>-->
-<div class="login ">
+<script src="https://cdn.jsdelivr.net/npm/signature_pad@2.3.2/dist/signature_pad.min.js"></script>
+<div class="">
 
-<img async  src="{%static 'img/login.png'%}" alt="Lima y Neon" width="350" >
   <br>
   <h2>Firma aquí</h2>
-    {{ form.media }}
-<form action="" method="post" enctype="multipart/form-data">
-    {{ form }}
 
-    <button  type="submit" class="button is-link cancel" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-vector-pen" viewBox="0 0 16 16">
-  <path fill-rule="evenodd" d="M10.646.646a.5.5 0 0 1 .708 0l4 4a.5.5 0 0 1 0 .708l-1.902 1.902-.829 3.313a1.5 1.5 0 0 1-1.024 1.073L1.254 14.746 4.358 4.4A1.5 1.5 0 0 1 5.43 3.377l3.313-.828L10.646.646zm-1.8 2.908-3.173.793a.5.5 0 0 0-.358.342l-2.57 8.565 8.567-2.57a.5.5 0 0 0 .34-.357l.794-3.174-3.6-3.6z"/>
-  <path fill-rule="evenodd" d="M2.832 13.228 8 9a1 1 0 1 0-1-1l-4.228 5.168-.026.086.086-.026z"/>
-</svg> &nbsp; Guardar Firma</button>
-    {% csrf_token %}
+<form action="" method="post" id="firma_form" enctype="multipart/form-data" style="grid-template-columns: repeat(1, minmax(0, 1fr));max-width:40rem;margin:auto">
+     {% csrf_token %}
+    {{ firma_form }}
+<button  type="submit" class="btn" ><svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-vector-pen" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M10.646.646a.5.5 0 0 1 .708 0l4 4a.5.5 0 0 1 0 .708l-1.902 1.902-.829 3.313a1.5 1.5 0 0 1-1.024 1.073L1.254 14.746 4.358 4.4A1.5 1.5 0 0 1 5.43 3.377l3.313-.828L10.646.646zm-1.8 2.908-3.173.793a.5.5 0 0 0-.358.342l-2.57 8.565 8.567-2.57a.5.5 0 0 0 .34-.357l.794-3.174-3.6-3.6z"/>
+          <path fill-rule="evenodd" d="M2.832 13.228 8 9a1 1 0 1 0-1-1l-4.228 5.168-.026.086.086-.026z"/>
+        </svg> &nbsp; Guardar Documento</button>
+ <div id="signature-pad" class="signature-pad" >
+    <div class="signature-pad--body bg-white border border-white shadow-xl  rounded-3xl p-1 m-1 shadow-2xl" style="width:40rem;height: 20rem;">
+      <canvas style="width:100%;height: 100%;padding-left:5rem" class="" ></canvas>
+    </div>
+    <div class="signature-pad--footer">
+
+      <div class="signature-pad--actions">
+        <div>
+          <button type="button" class="btn save" data-action="save-png">Descargar en PNG</button>
+          <button type="button" class="btn clear" data-action="clear">Limpiar</button>
+          <button type="button" class="btn" data-action="change-color">Cambiar color</button>
+          <button type="button" class="btn" data-action="undo">Atras</button>
+        </div>
+        <div>
+
+          <!--<button type="button" class="btn save" data-action="save-jpg">Guardar como JPG</button>-->
+          <!--<button type="button" class="btn save" data-action="save-svg">Guardar como SVG</button>-->
+
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
 </form>
 
 <hr>
 
-<script>
-$(document).ready(function() {
-	        $("#signature").jSignature()
 
-	    })
+<script>
+var wrapper = document.getElementById("signature-pad");
+var clearButton = wrapper.querySelector("[data-action=clear]");
+var changeColorButton = wrapper.querySelector("[data-action=change-color]");
+var undoButton = wrapper.querySelector("[data-action=undo]");
+var savePNGButton = wrapper.querySelector("[data-action=save-png]");
+var saveJPGButton = wrapper.querySelector("[data-action=save-jpg]");
+var saveSVGButton = wrapper.querySelector("[data-action=save-svg]");
+var canvas = wrapper.querySelector("canvas");
+var signaturePad = new SignaturePad(canvas, {
+  // It's Necessary to use an opaque color when saving image as JPEG;
+  // this option can be omitted if only saving as PNG or SVG
+  backgroundColor: 'rgb(255, 255, 255)'
+});
+
+// Adjust canvas coordinate space taking into account pixel ratio,
+// to make it look crisp on mobile devices.
+// This also causes canvas to be cleared.
+function resizeCanvas() {
+  // When zoomed out to less than 100%, for some very strange reason,
+  // some browsers report devicePixelRatio as less than 1
+  // and only part of the canvas is cleared then.
+  var ratio =  Math.max(window.devicePixelRatio || 1, 1);
+
+  // This part causes the canvas to be cleared
+  canvas.width = canvas.offsetWidth * ratio;
+  canvas.height = canvas.offsetHeight * ratio;
+  canvas.getContext("2d").scale(ratio, ratio);
+
+  // This library does not listen for canvas changes, so after the canvas is automatically
+  // cleared by the browser, SignaturePad#isEmpty might still return false, even though the
+  // canvas looks empty, because the internal data of this library wasn't cleared. To make sure
+  // that the state of this library is consistent with visual state of the canvas, you
+  // have to clear it manually.
+  signaturePad.clear();
+}
+
+// On mobile devices it might make more sense to listen to orientation change,
+// rather than window resize events.
+window.onresize = resizeCanvas;
+resizeCanvas();
+
+function download(dataURL, filename) {
+  if (navigator.userAgent.indexOf("Safari") > -1 && navigator.userAgent.indexOf("Chrome") === -1) {
+    window.open(dataURL);
+  } else {
+    var blob = dataURLToBlob(dataURL);
+    var url = window.URL.createObjectURL(blob);
+
+    var a = document.createElement("a");
+    a.style = "display: none";
+    a.href = url;
+    a.download = filename;
+
+    document.body.appendChild(a);
+    a.click();
+
+    window.URL.revokeObjectURL(url);
+  }
+}
+
+function store(data){
+   // let formData = new FormData();
+    var blob = dataURLToBlob(data);
+    var url = window.URL.createObjectURL(blob);
+    //var img = document.createElement('img');
+    //img.src = url;
+    //document.getElementById('id_firma').appendChild(img);
+    alert(url)
+    //formData.append("firma", data);
+    let defaultFileImage = null;
+
+    // convert url image to File object
+    fetch(url)
+      .then(res => res.blob())
+      .then(blob => {
+        defaultFileImage = new File([blob], 'image.jpg', blob)
+      });
+
+      // submit form
+      document.getElementById('firma_form').addEventListener('submit', (e) => {
+        //e.preventDefault();
+
+        var myform = document.forms.myform;
+        var formData = new FormData(myform);
+        var firma = formData.get('firma');
+        formData.append("firma1", defaultFileImage);
+          console.info(defaultFileImage)
+
+      });
+    }
+
+
+
+// One could simply use Canvas#toBlob method instead, but it's just to show
+// that it can be done using result of SignaturePad#toDataURL.
+function dataURLToBlob(dataURL) {
+  // Code taken from https://github.com/ebidel/filer.js
+  var parts = dataURL.split(';base64,');
+  var contentType = parts[0].split(":")[1];
+  var raw = window.atob(parts[1]);
+  var rawLength = raw.length;
+  var uInt8Array = new Uint8Array(rawLength);
+
+  for (var i = 0; i < rawLength; ++i) {
+    uInt8Array[i] = raw.charCodeAt(i);
+  }
+
+  return new Blob([uInt8Array], { type: contentType });
+}
+
+clearButton.addEventListener("click", function (event) {
+  signaturePad.clear();
+});
+
+undoButton.addEventListener("click", function (event) {
+  var data = signaturePad.toData();
+
+  if (data) {
+    data.pop(); // remove the last dot or line
+    signaturePad.fromData(data);
+  }
+});
+
+changeColorButton.addEventListener("click", function (event) {
+  var r = Math.round(Math.random() * 255);
+  var g = Math.round(Math.random() * 255);
+  var b = Math.round(Math.random() * 255);
+  var color = "rgb(" + r + "," + g + "," + b +")";
+
+  signaturePad.penColor = color;
+});
+
+
+
+
+
+savePNGButton.addEventListener("click", function (event) {
+  if (signaturePad.isEmpty()) {
+    alert("Ingrese una firma.");
+  } else {
+    var dataURL = signaturePad.toDataURL();
+    console.info("La firma es ", dataURL)
+    var today = new Date();
+    var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+    var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+    var dateTime = date+' '+time;
+    //document.getElementById("id_firma").value = dataURL;
+    //store(dataURL);
+    download(dataURL, "{{client.nombre_paciente}} {{client.apellidos_paciente}} //"+dateTime+ ".png");
+  }
+});
+
+saveJPGButton.addEventListener("click", function (event) {
+  if (signaturePad.isEmpty()) {
+    alert("Please provide a signature first.");
+  } else {
+    var dataURL = signaturePad.toDataURL("image/jpeg");
+    download(dataURL, "signature.jpg");
+  }
+});
+
+saveSVGButton.addEventListener("click", function (event) {
+  if (signaturePad.isEmpty()) {
+    alert("Please provide a signature first.");
+  } else {
+    var dataURL = signaturePad.toDataURL('image/svg+xml');
+    download(dataURL, "signature.svg");
+  }
+});
 </script>
 
 
-{%endblock%}
+

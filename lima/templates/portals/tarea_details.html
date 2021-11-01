@@ -11,14 +11,22 @@
 <script src="https://stackpath.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/summernote@0.8.18/dist/summernote.min.js"></script>
-<div class="index">
+
+ <div class="grid grid-cols-5 gap-4">
+<div class="aside-bar">
+    {% include 'core/aside.html'%}
+</div>
+
+     <div class="col-span-4">
+         <div class="index1">
+             <div class="index">
 
 <h1> {{tarea.nombre_tarea | capfirst }} </h1>
 <BR><BR>
 <div style="display:flex;">
     <div>
     <br>
-  <form method="post">
+  <form method="post" style="	grid-template-columns: repeat(1, minmax(0, 1fr));">
     {% csrf_token %}
       {{ form|crispy }}
        <div class="buttons">
@@ -35,7 +43,7 @@
 
 <!--mensaje-->
 <br>
-  <form method="post" style="    position: absolute; bottom: -10rem; width: 50rem; " novalidate>
+  <form method="post" style="    position: absolute; bottom: -10rem; width: 50rem; 	grid-template-columns: repeat(1, minmax(0, 1fr));" novalidate>
 
     {% csrf_token %}
       {{ formMensaje|crispy }}
@@ -52,6 +60,9 @@
 
 
 </div>
+    </div>
+</div>
+
 
 
 {%endblock%}

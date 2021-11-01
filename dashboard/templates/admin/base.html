@@ -22,12 +22,43 @@
 
 <body class="{% if is_popup %}popup {% endif %}{% block bodyclass %}{% endblock %}"
   data-admin-utc-offset="{% now "Z" %}">
-
+{% include 'core/message.html'%}
 
 <style>
      .tox-notifications-container{
         display: none;
     }
+::-webkit-scrollbar {
+  width: 16px;
+  height: 16px;
+}
+    /* Track */
+::-webkit-scrollbar-track {
+  border-radius: 100vh;
+  background: #edf2f7;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: #cbd5e0;
+  border-radius: 100vh;
+  border: 3px solid #edf2f7;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: #a0aec0;
+}
+/*efecto bidrio*/
+.glass, caption{
+/* From https://css.glass */
+background: rgba(191, 151, 151, 0.27);
+border-radius: 16px;
+box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+backdrop-filter: blur(5px);
+-webkit-backdrop-filter: blur(5px);
+border: 1px solid rgba(191, 151, 151, 0.3);
+}
 </style>
 
 <!-- Container -->

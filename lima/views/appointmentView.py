@@ -14,23 +14,15 @@ from django.template.loader import render_to_string
 from django.template import Context, Template
 from django.contrib import messages
 from ..filters import *
-
+from django.core.mail import send_mail
 from twilio.rest import Client
 #mailchimp
 from django.conf import settings
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-from django_mail_admin import mail, models
 
 @login_required(login_url='login')
 def listas(request, centro=0, pk=0):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     if centro==0 and pk==0:
         lista=Lista.objects.all().order_by("-hora_inicio")
@@ -45,13 +37,6 @@ def listas(request, centro=0, pk=0):
 
 @login_required(login_url='login')
 def edit_lista(request, paciente=0,pk=0):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     msg=footer.plantilla_lista.plantilla
     if pk!=0:
@@ -94,27 +79,11 @@ def edit_lista(request, paciente=0,pk=0):
                         template=mensaje
                         html_message = render_to_string('blanc.html', {'mensaje': template, 'footer': footer})
                         plain_message = strip_tags(html_message)
-                        # from_email = f'Enviado por {footer.propietario}'
-                        # to = cliente.email
-                        # mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
-                        try:
-                            # message = Mail(
-                            #     from_email=footer.email_sistema,
-                            #     to_emails=cliente.email,
-                            #     subject=subject,
-                            #     html_content=html_message)
 
-                            # sg = SendGridAPIClient(footer.twilio_SENDGRID_API_KEY)
-                            # sg.send(message)
-                            # print(f"Email Enviado a {cliente.email} ")
-                            mail.send(
-                                footer.email_sistema,
-                                cliente.email, # List of email addresses also accepted
-                                subject=subject,
-                                message=plain_message,
-                                priority=models.PRIORITY.now,
-                                html_message=html_message,
-                            )
+                        try:
+                            from_email = f'Enviado por {footer.propietario}'
+                            to = cliente.email
+                            mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
                             messages.success(request,f'Email Enviado a {cliente.email} ')
                         except Exception as e:
                             messages.error(request,f"A ocurrido el siguiente error {e}")
@@ -164,27 +133,10 @@ def edit_lista(request, paciente=0,pk=0):
                         template=mensaje
                         html_message = render_to_string('blanc.html', {'mensaje': template, 'footer': footer})
                         plain_message = strip_tags(html_message)
-                        # from_email = f'Enviado por {footer.propietario}'
-                        # to = cliente.email
-                        # mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
-                        # print(f"Email Enviado a {cliente.email} ")
                         try:
-                            # message = Mail(
-                            #     from_email=footer.email_sistema,
-                            #     to_emails=cliente.email,
-                            #     subject=subject,
-                            #     html_content=html_message)
-
-                            # sg = SendGridAPIClient(footer.twilio_SENDGRID_API_KEY)
-                            # sg.send(message)
-                            mail.send(
-                                footer.email_sistema,
-                                cliente.email, # List of email addresses also accepted
-                                subject=subject,
-                                message=plain_message,
-                                priority=models.PRIORITY.now,
-                                html_message=html_message,
-                            )
+                            from_email = f'Enviado por {footer.propietario}'
+                            to = cliente.email
+                            mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
                             messages.success(request,f'Email Enviado a {cliente.email} ')
                         except Exception as e:
                             messages.error(request,f"A ocurrido el siguiente error {e}")

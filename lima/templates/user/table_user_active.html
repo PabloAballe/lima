@@ -1,0 +1,27 @@
+{%load static%}
+ {% load humanize %}
+<div class="container mx-auto max-w-sm  flex flex-col space-y-4 justify-center items-center ">
+     <p class="text-lg">Usuarios actividad reciente {{perfiles.count}} </p>
+{% for perfil in perfiles %}
+  <div class="bg-white w-full flex items-center p-2 rounded-xl shadow user">
+    <div class="flex items-center space-x-4">
+      <img src="{{perfil.tecnica.imagen.url}}" alt="{{perfil.tecnica.nombre_tecnica}}" class="w-16 h-16 rounded-full">
+    </div>
+    <div class="flex-grow p-3">
+      <div class="font-semibold text-gray-700">
+       {{perfil.tecnica.nombre_tecnica}}
+      </div>
+      <div class="text-sm text-gray-500">
+        {{perfil.last_login | timesince }}
+      </div>
+    </div>
+    <div class="p-2">
+     <svg xmlns="http://www.w3.org/2000/svg" width="1rem" height="1rem" fill="#00D1B2" class="bi bi-app-indicator" viewBox="0 0 16 16">
+  <path d="M5.5 2A3.5 3.5 0 0 0 2 5.5v5A3.5 3.5 0 0 0 5.5 14h5a3.5 3.5 0 0 0 3.5-3.5V8a.5.5 0 0 1 1 0v2.5a4.5 4.5 0 0 1-4.5 4.5h-5A4.5 4.5 0 0 1 1 10.5v-5A4.5 4.5 0 0 1 5.5 1H8a.5.5 0 0 1 0 1H5.5z"/>
+  <path d="M16 3a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/>
+</svg>
+    </div>
+  </div>
+  {% endfor %}
+
+</div>

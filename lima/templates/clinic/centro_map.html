@@ -3,16 +3,21 @@
 {%block content%}
 
 {%include 'core/nav.html'%}
+<div class="grid grid-cols-5 gap-4">
+<div class="aside-bar">
+    {% include 'core/aside.html'%}
+</div>
 
-<div class="map-centro">
+     <div class="col-span-4">
+         <div class="map-centro">
 {%include 'core/maps.html'%}
 </div>
+</div>
+</div>
+
 
 <style>
     .map-centro{
-        position:absolute;
-        top: 5rem;
-        left: 20rem;
         overflow-x: auto;
     }
 </style>

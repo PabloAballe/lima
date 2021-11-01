@@ -4,7 +4,14 @@
 {% load tailwind_filters %}
 {%block content%}
 {%include 'core/nav.html'%}
-<div class="login " >
+
+<div class="grid grid-cols-5 gap-4">
+<div class="aside-bar">
+    {% include 'core/aside.html'%}
+</div>
+
+     <div class="col-span-4">
+         <div class="login " >
 <img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
   <br>
   <h2>Añade un centro nuevo</h2>
@@ -20,6 +27,10 @@
 </div>
 
 </div>
+</div>
+</div>
+
+
 
 
 

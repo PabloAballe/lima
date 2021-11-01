@@ -52,14 +52,6 @@ from sendgrid.helpers.mail import Mail
 
 @login_required(login_url='login')
 def portales(request):
-    # Subscription Logic
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     paneles=Paneles.objects.all().order_by('nombre_panel').filter(portales__id_tecnica=request.user.tecnica.id_tecnica)
     return render(request, "portals/portales.html", {'footer': footer,'paneles':paneles})
@@ -81,28 +73,12 @@ def portales_details(request,pk):
 
 @login_required(login_url='login')
 def estados(request):
-    # Subscription Logic
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     paneles=Paneles.objects.all().order_by('nombre_panel').filter(portales__id_tecnica=request.user.tecnica.id_tecnica)
     return render(request, "portals/portales.html", {'footer': footer,'paneles':paneles})
 
 @login_required(login_url='login')
 def tarea_details(request, pk):
-    # Subscription Logic
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     mensajes=Mensajes.objects.filter(tarea=pk)
     tarea=get_object_or_404(Tareas, id_tarea=pk)
@@ -130,14 +106,6 @@ def tarea_details(request, pk):
 
 @login_required(login_url='login')
 def new_tarea(request, pk):
-    # Subscription Logic
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     form=TareaForm()
     portal=get_object_or_404(Paneles, pk=pk)

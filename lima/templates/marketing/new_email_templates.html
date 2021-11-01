@@ -4,14 +4,20 @@
 {% load tailwind_filters %}
 {%block content%}
 {%include 'core/nav.html'%}
+ <div class="grid grid-cols-5 gap-4">
+<div class="aside-bar">
+    {% include 'core/aside.html'%}
+</div>
 
-<div class="login " style="width: 80%; margin:auto">
+     <div class="col-span-4">
+         <div class="index1">
+             <div class="login " style="width: 80%; margin:auto">
     <img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
   <br>
   <h2>Añade una nueva plantilla</h2>
   <br>
   {% include 'marketing/variables_email.html'%}
-  <form method="post" >
+  <form method="post" style="	grid-template-columns: repeat(1, minmax(0, 1fr));" >
     {% csrf_token %}
     {{ form|crispy }}
     <div class="buttons">
@@ -20,6 +26,9 @@
   </form>
   <button class="btn" type="button" onClick="javascript:history.go(-1);">Cancelar</button>
 </div></div>
+    </div>
+</div>
+
 
 
 

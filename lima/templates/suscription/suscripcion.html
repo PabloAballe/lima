@@ -3,7 +3,14 @@
 {%load static%}
 {%block content%}
 {%include 'core/nav.html'%}
-<div class="login ">
+ <div class="grid grid-cols-5 gap-4">
+<div class="aside-bar">
+    {% include 'core/aside.html'%}
+</div>
+
+     <div class="col-span-4">
+         <div class="index1">
+             <div class="login ">
   <br>
   <h2 style="font-size:30px; font-weight: bold; text-align: center ;">Mi suscripción</h2>
   <br>
@@ -36,6 +43,9 @@
 <i>Todos los servicios tienen un perido de prueba de 7 días desde su compra </i>
 
 </div>
+    </div>
+</div>
+
 
 
 

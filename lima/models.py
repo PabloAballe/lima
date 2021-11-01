@@ -191,6 +191,7 @@ class Anuncios(models.Model):
     cuerpo_anuncio=models.CharField(max_length=100,help_text="Ingrese el anuncio", null=False)
     link_anuncio=models.CharField(help_text="Ingrese el link del anuncio",  default="", blank=True,max_length=10000)
     centro=models.ForeignKey(Centro, on_delete=models.RESTRICT, default="1")
+    todos_los_centros=models.BooleanField(default=False,help_text="Enviar anuncio a todos los centro")
     imagen=ResizedImageField(size=[500, 500],upload_to='images/')
     fecha_creacion=models.DateTimeField(null=False, default=now)
 
@@ -211,18 +212,18 @@ class Paciente(models.Model):
     id_paciente=models.AutoField(primary_key=True, auto_created = True, null=False,editable = False)
     nombre_paciente=models.CharField(max_length=50,help_text="Ingrese el nombre de la/el paciente", null=False)
     apellidos_paciente=models.CharField(max_length=50,help_text="Ingrese los apellidos de la/el paciente", blank=True, default="")
-    imagen=ResizedImageField(size=[500, 500],upload_to='images/', default='img/porfile.png')
+    imagen=ResizedImageField(size=[500, 500],upload_to='images/', default='img/porfile.png',blank=True)
     telefono_paciente=models.CharField(max_length=17,help_text="Ingrese el teléfono de la/el paciente", default=0,validators=[phone_regex], blank=True )
     email=models.EmailField(help_text="Ingrese el correo electronico de la/el paciente", blank=True, default="")
     dni=models.CharField(max_length=50,help_text="Ingrese el DNI del cliente", default="", blank=True)
     documento_de_autorizacion=models.BooleanField(default=False)
     documento_proteccion_de_datos=models.BooleanField(default=False)
     centro=models.ForeignKey(Centro, on_delete=models.RESTRICT)
-    poblacion=models.CharField(max_length=50,help_text="Ingrese la población del/la paciente",  default='Valencia')
-    direccion=models.CharField(max_length=50,help_text="Ingrese la dirección del/la paciente",  default='Valencia')
+    poblacion=models.CharField(max_length=50,help_text="Ingrese la población del/la paciente",  default='Valencia',blank=True)
+    direccion=models.CharField(max_length=50,help_text="Ingrese la dirección del/la paciente",  default='Valencia',blank=True)
     notas_paciente=models.TextField(help_text="Ingrese notas sobre el cliente aquí", default="", blank=True)
-    fecha_nacimiento=models.DateTimeField(null=False, default='2000-01-01')
-    estado=models.ForeignKey(EstadosClientes, default=1,  on_delete=models.RESTRICT)
+    fecha_nacimiento=models.DateTimeField(null=False, default='2000-01-01',blank=True)
+    estado=models.ForeignKey(EstadosClientes, default=1,  on_delete=models.RESTRICT,blank=True)
     etiqueta=models.ManyToManyField(Tags, default="1", blank=True)
     autorizacion_envio_informacion_comercial=models.BooleanField(default=False)
     fecha_alta=models.DateTimeField(null=False, default=now)
@@ -314,7 +315,6 @@ class EmailTemplates(models.Model):
     id=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre=models.CharField(max_length=100,help_text="Ingrese el nombre de la plantilla" )
     plantilla=models.TextField(help_text="Confifure su plantilla")
-    icon = FAIconField(default="", blank=True)
 
     class Meta:
         verbose_name_plural = "Plantillas de email"
@@ -325,9 +325,9 @@ class EmailTemplates(models.Model):
 class DocTemplate(models.Model):
     id=models.AutoField(primary_key=True, auto_created = True,editable = False)
     nombre_doc=models.CharField(max_length=100,help_text="Ingrese el nombre de la plantilla" )
-    plantilla_doc=models.TextField(help_text="Confifure su plantilla")
+    plantilla_doc=models.TextField(help_text="Configure su plantilla")
     creado_el=models.DateTimeField(null=False, auto_now_add=True,)
-    icon = FAIconField(default="", blank=True)
+
 
     class Meta:
         verbose_name_plural = "Plantillas de documentos"
@@ -338,12 +338,11 @@ class DocTemplate(models.Model):
 class DocSings(models.Model):
     id=models.AutoField(primary_key=True, auto_created = True,editable = False)
     plantilla_doc=models.ForeignKey(DocTemplate, on_delete=models.RESTRICT)
-    plantilla_render=models.TextField(default="")
     cliente=models.ForeignKey(Paciente, on_delete=models.RESTRICT , null=False)
+    plantilla_document=models.TextField(help_text="Configure su plantilla",default='')
+    firma=ResizedImageField(size=[500, 500],upload_to='images/signatures/', default='')
     firmado_el=models.DateTimeField(null=False, auto_now_add=True)
-    firma=JSignatureField(null=True , blank=True)
-    firma_imagen=models.CharField(max_length=100,help_text="Ingrese la url de la firma" )
-    icon = FAIconField(default="", blank=True)
+
 
     class Meta:
         verbose_name_plural = "Documentos firmados"
@@ -370,7 +369,6 @@ class Configuracion(models.Model):
     twilio_NUMBER=models.CharField(max_length=17,help_text="Ingrese el Número verificado en Twilio", default=0,validators=[phone_regex], blank=True )
     enviar_email_nuevos_clientes=models.BooleanField(default=False)
     enviar_email_nueva_caja=models.BooleanField(default=False)
-    enviar_email_nuevo_fichaje=models.BooleanField(default=False)
     enviar_email_nuevas_listas=models.BooleanField(default=False)
     plantilla_email=models.ForeignKey(EmailTemplates, on_delete=models.RESTRICT ,default="1",related_name ="plantilla_email" )
     plantilla_lista=models.ForeignKey(EmailTemplates, on_delete=models.RESTRICT ,default="1",related_name ="plantilla_lista")
@@ -395,6 +393,7 @@ class Tratamientos(models.Model):
     jl=models.IntegerField(help_text="Ingrese los J/L" )
     tecnica=models.ForeignKey(Tecnica, on_delete=models.RESTRICT)
     comentario=models.CharField(max_length=100,help_text="Ingrese el comentario del tratamiento", blank=True, default="" )
+    firma=ResizedImageField(size=[500, 500],upload_to='images/signatures/', default='',blank=True)
     icon = FAIconField(default="", blank=True)
 
     def save(self):

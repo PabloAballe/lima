@@ -4,7 +4,13 @@
 {% load tailwind_filters %}
 {%block content%}
 {% include 'core/nav.html'%}
-<div class="login " >
+<div class="grid grid-cols-5 gap-4">
+<div class="aside-bar">
+    {% include 'core/aside.html'%}
+</div>
+
+    <div class="col-span-4">
+         <div class="login " >
 
 <img async  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" style="height: 300px;" />
   <br>
@@ -21,6 +27,9 @@
 
 
 </div></div>
+</div>
+</div>
+
 
 
 

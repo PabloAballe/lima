@@ -20,12 +20,11 @@ from django.conf import settings
 from mailchimp_marketing.api_client import ApiClientError
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
-
+from django.core.mail import send_mail
 
 @login_required(login_url='login')
 def caja_list(request, centro):
     footer=Configuracion.objects.all().last()
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
     if request.user.has_perm('lima.view_all_cajas') and centro==0:
         cajas=Cajas.objects.raw(f'SELECT * FROM lima_cajas   ORDER BY lima_cajas.fecha DESC LIMIT 50')
     elif centro!=0:
@@ -56,13 +55,6 @@ def caja_list(request, centro):
 
 @login_required(login_url='login')
 def caja(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     if request.user.is_staff:
         if pk!=0:
@@ -93,20 +85,13 @@ def caja(request, pk):
                         template=mensaje
                         html_message = render_to_string('caja_mail.html', {'caja': caja})
                         plain_message = strip_tags(html_message)
-                        # from_email = f'Enviado desde {footer.nombre_comercial}'
-                        # to = footer.email_nueva_caja
-                        # mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
-                        try:
-                            message = Mail(
-                                from_email=footer.email_sistema,
-                                to_emails=footer.email_nueva_caja,
-                                subject=subject,
-                                html_content=html_message)
-
-                            sg = SendGridAPIClient(footer.twilio_SENDGRID_API_KEY)
-                            sg.send(message)
-                        except Exception as e:
-                            messages.error(request,f"A ocurrido el siguiente error {e}")
+                    try:
+                        from_email = footer.email_sistema
+                        to = footer.email_nueva_caja
+                        mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+                        messages.success(request,f'Email Enviado a {cliente.email} ')
+                    except Exception as e:
+                        messages.error(request,f"A ocurrido el siguiente error {e}")
                     return redirect("caja_list" , centro=0)
     else:
         if pk!=0:
@@ -138,19 +123,12 @@ def caja(request, pk):
                         template=mensaje
                         html_message = render_to_string('caja_mail.html', {'caja': caja})
                         plain_message = strip_tags(html_message)
-                        # from_email = f'Enviado desde {footer.nombre_comercial}'
-                        # to = footer.email_nueva_caja
-                        # mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
-                        try:
-                            message = Mail(
-                                from_email=footer.email_sistema,
-                                to_emails=footer.email_nueva_caja,
-                                subject=subject,
-                                html_content=html_message)
-
-                            sg = SendGridAPIClient(footer.twilio_SENDGRID_API_KEY)
-                            sg.send(message)
-                        except Exception as e:
-                            messages.error(request,f"A ocurrido el siguiente error {e}")
+                    try:
+                        from_email = footer.email_sistema
+                        to = footer.email_nueva_caja
+                        mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+                        messages.success(request,f'Email Enviado a {cliente.email} ')
+                    except Exception as e:
+                        messages.error(request,f"A ocurrido el siguiente error {e}")
                     return redirect("caja_list", centro=pk)
     return render(request, 'cashDesk/caja.html', {'footer': footer,'form': form })

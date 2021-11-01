@@ -12,8 +12,8 @@ class CentroAdmin(ImportExportModelAdmin):
     list_filter =  ['nombre_centro', 'propietaria', 'localizacion']
 
 class PacienteAdmin(ImportExportModelAdmin):
-    list_display= ['nombre_paciente', 'apellidos_paciente', 'telefono_paciente', 'email', 'documento_de_autorizacion','estado','documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion', 'direccion' ]
-    search_fields =['nombre_paciente', 'apellidos_paciente', 'telefono_paciente', 'email', 'documento_de_autorizacion','estado', 'documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion', 'direccion' ]
+    list_display= ['id_paciente','nombre_paciente', 'apellidos_paciente', 'telefono_paciente', 'email', 'documento_de_autorizacion','estado','documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion', 'direccion' ]
+    search_fields =['id_paciente','nombre_paciente', 'apellidos_paciente', 'telefono_paciente', 'email', 'poblacion', 'direccion' ]
     list_filter = ['centro__nombre_centro','fecha_alta','estado__nombre_estado','documento_de_autorizacion', 'documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion' ]
 
 class TecnicaAdmin(ImportExportModelAdmin):
@@ -80,11 +80,13 @@ class ImagenesClientesAdmin(ImportExportModelAdmin):
     list_display= ['cliente', 'tecnica', 'comentario', 'fecha']
     search_fields = ['cliente__nombre_paciente', 'tecnica__nombre_tecnica', 'comentario', 'fecha']
     list_filter =  ['cliente__nombre_paciente', 'tecnica__nombre_tecnica', 'comentario', 'fecha']
+    readonly_fields=('fecha',)
 
 class CajasAdmin(ImportExportModelAdmin):
     list_display= ['centro', 'tecnica','porcentaje', 'cantidad_total', 'cantidad_total_centro']
     search_fields = ['centro__nombre_centro','tecnica','porcentaje', 'cantidad_total', 'cantidad_total_centro']
     list_filter =   ['centro__nombre_centro', 'tecnica','porcentaje', 'cantidad_total', 'cantidad_total_centro']
+    readonly_fields=('cantidad_total_centro', 'cantidad_total_sistema', 'fecha')
 
 class EstadosClientesAdmin(ImportExportModelAdmin):
     list_display= ['nombre_estado', 'color']
@@ -111,12 +113,23 @@ class TagsAdmin(ImportExportModelAdmin):
     search_fields = ['nombre_etiqueta']
     list_filter =  ['nombre_etiqueta']
 
+class DocTemplateAdmin(ImportExportModelAdmin):
+    list_display= ['nombre_doc','creado_el']
+    search_fields =  ['nombre_doc','creado_el']
+    list_filter =  ['nombre_doc','creado_el']
+
+class DocSingsAdmin(ImportExportModelAdmin):
+    list_display= ['cliente','firmado_el']
+    search_fields =  ['cliente__nombre_paciente','firmado_el']
+    list_filter =  ['cliente__nombre_paciente','firmado_el']
+
 admin.site.site_header = "My Manager"
 admin.site.site_title = "My Manager"
 admin.site.index_title = "My Manager"
 
 
-
+admin.site.register(DocTemplate, DocTemplateAdmin)
+admin.site.register(DocSings, DocSingsAdmin)
 admin.site.register(EstadosClientes, EstadosClientesAdmin)
 admin.site.register(Paneles, PanelesAdmin)
 admin.site.register(Anuncios, AnuncioAdmin)

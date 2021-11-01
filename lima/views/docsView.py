@@ -54,13 +54,6 @@ from sendgrid.helpers.mail import Mail
 #documentos firmables
 @login_required(login_url='login')
 def docs_list(request):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     docs=DocTemplate.objects.all()
 
@@ -82,13 +75,6 @@ def docs_list(request):
     return render(request, 'docs/docs_list.html', {'footer': footer, 'docs': docs, 'form': form ,'notfound': notfound})
 @login_required(login_url='login')
 def docs_template(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     doc=get_object_or_404(DocTemplate, pk=pk)
     form = DocTemplateEditForm(instance=doc)
@@ -106,13 +92,6 @@ def docs_template(request, pk):
 
 @login_required(login_url='login')
 def delete_doc(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     doc=get_object_or_404(DocTemplate, pk=pk).delete()
     messages.error(request,f'Se ha borrado el docuemento')
@@ -141,76 +120,52 @@ def new_doc_template(request):
 
 @login_required(login_url='login')
 def doc_prerender(request, user,doc):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     doc_=get_object_or_404(DocTemplate, pk=doc)
     user_=get_object_or_404(Paciente, pk=user)
-    sign = DocSings.objects.get_or_create(cliente=user_, plantilla_doc=doc_)
-    sign_=get_object_or_404(DocSings, cliente=user_, plantilla_doc=doc_)
-    if sign_.plantilla_render=='':
-        sign_.plantilla_render=doc_.plantilla_doc
-    firm=' <img   width="20%"  src="{{ sign_.firma_imagen }}" alt=" {{sign_.plantilla_doc.nombre_doc}} " />'
-    mensaje= sign_.plantilla_render
-    mensaje=Template(mensaje)
+    #sign__ = DocSings.objects.get_or_create(cliente=user_, plantilla_doc=doc_)
+    sign=DocSings.objects.filter(cliente=user_, plantilla_doc=doc_).first()
+    firm='<img   width="10rem"  src="{{ sign.firma.url }}" alt=" {{sign.plantilla_doc.nombre_doc}} " />'
+    if sign.plantilla_doc=='':
+        sign.plantilla_document=doc_.plantilla_doc
+        sign.save()
+    mensaje=Template(sign.plantilla_doc)
     c = Context({
                 'usuario': f'{user_.nombre_paciente} {user_.apellidos_paciente}',
                 'centro': user_.centro.nombre_centro, 'localizacion_centro': user_.centro.localizacion,
                 'nombre_comercial': footer.nombre_comercial, 'propietario': footer.propietario,
                 'telefono': footer.telefono,
-                'firma' : firm, 'sign_': sign_ ,
+                'firma' : firm,
                 'TelefonoUsuario':  user_.telefono_paciente,
                 'EmailUsuario': user_.email,
                 'dni': user_.dni,
                 'poblacion': user_.poblacion,
                 'direccion': user_.direccion,
                 'FechaActual' : timezone.now(),
-
+                'CitaURL': f'https://{request.get_host()}/website/appointment/{user_.centro.pk}94840{user_.pk}042f02cf{request.user.tecnica.pk}29d55a',
                 })
-    sign_.plantilla_render=mensaje.render(c)
-    mensaje=Template(sign_.plantilla_render)
-    c = Context({
-                'usuario': f'{user_.nombre_paciente} {user_.apellidos_paciente}',
-                'centro': user_.centro.nombre_centro, 'localizacion_centro': user_.centro.localizacion,
-                'nombre_comercial': footer.nombre_comercial, 'propietario': footer.propietario,
-                'telefono': footer.telefono,
-                'firma' : firm, 'sign_': sign_ ,
-                'TelefonoUsuario':  user_.telefono_paciente,
-                'EmailUsuario': user_.email,
-                'dni': user_.dni,
-                'poblacion': user_.poblacion,
-                'direccion': user_.direccion,
-                'FechaActual' : timezone.now(),
-
-                })
-    sign_.plantilla_render=mensaje.render(c)
-    form=PrerenderForm(instance=sign_)
+    render_doc=mensaje.render(c)
+    form=PrerenderForm(initial={'plantilla_doc': render_doc})
+    firma_form = SingForm()
     if request.method == 'POST':
-        form = PrerenderForm(request.POST, instance=sign_)
-        if form.is_valid():
-            sign = form.save(commit=False)
-            sign.plantilla_doc = doc_
-            sign.cliente=user_
-            sign.save()
-            return redirect("sing", pk=sign_.pk)
+        firma_form = SingForm(request.POST,request.FILES)
+        if firma_form.is_valid():
+            try:
+                sign.delete()
+                firma=firma_form.save(commit=False)
+                firma.cliente=user_
+                firma.save()
+                messages.success(request,f'Se ha guardado el documento')
+                #return redirect("client_details_tratamientos", pk=user_.pk)
+            except ValueError as e:
+                messages.error(request,f'Ha ocurrido el siguiente error: ', e)
     else:
-        form=PrerenderForm(instance=sign_)
-
-    return render(request, "docs/doc_prerender.html", {'form': form, 'footer': footer, 'doc': doc_, 'user_':user_ ,'firma': sign_.firma_imagen, 'sign': sign_})
+        form=PrerenderForm(initial={'plantilla_doc': render_doc})
+        firma_form = SingForm()
+    return render(request, "docs/doc_prerender.html" , {'form': form, 'footer': footer, 'doc': doc_,'sign': sign, 'client': user_, 'firma_form':firma_form })
+    #return HttpResponse('ok')
 @login_required(login_url='login')
 def docs_sign_list(request, user=0):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     docs=DocTemplate.objects.all()
     #shearch emails
@@ -256,28 +211,9 @@ def doc_email(request, pk):
     template=mensaje
     html_message = render_to_string('blanc.html', {'mensaje': template, 'footer': footer})
     plain_message = strip_tags(html_message)
-    # from_email = f'Enviado por {footer.propietario}'
-    # to = cliente.email
-    # mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
-    # mail.send_mail(subject, plain_message, from_email, [footer.email_sistema], html_message=html_message)
-    try:
-        message = Mail(
-                        from_email=footer.email_sistema,
-                        to_emails=cliente.email,
-                        subject=subject,
-                        html_content=html_message)
+    from_email = f'Enviado por {footer.propietario}'
+    to = cliente.email
+    mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+    mail.send_mail(subject, plain_message, from_email, [footer.email_sistema], html_message=html_message)
 
-        sg = SendGridAPIClient(footer.twilio_SENDGRID_API_KEY)
-        sg.send(message)
-        message = Mail(
-                        from_email=footer.email_sistema,
-                        to_emails=footer.email_sistema,
-                        subject=subject,
-                        html_content=html_message)
-
-        sg = SendGridAPIClient(footer.twilio_SENDGRID_API_KEY)
-        sg.send(message)
-        messages.success(request,f"Email Enviado a {cliente.email}")
-    except Exception as e:
-                    messages.error(request,f"A ocurrido el siguiente error {e}")
-    return redirect("cliente_details_citas", pk=doc.cliente.pk)
+    return redirect("cliente_details_tratamientos", pk=doc.cliente.pk)

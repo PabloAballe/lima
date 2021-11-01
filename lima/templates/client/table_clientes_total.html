@@ -2,6 +2,13 @@
 {% load crispy_forms_tags %}
 {%block content%}
 {%include 'core/nav.html'%}
+ <div class="grid grid-cols-5 gap-4">
+<div class="aside-bar">
+    {% include 'core/aside.html'%}
+</div>
+
+     <div class="col-span-4">
+         <div class="index1">
 <div class="index">
 <h1>Buscador de clientes</h1>
 
@@ -136,7 +143,8 @@
 
 
 </div>
-
+</div>
+</div>
 
 
 {%endblock%}

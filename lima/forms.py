@@ -6,7 +6,7 @@ from django.template import Context, Template
 from jsignature.forms import JSignatureField
 
 class SheachForm(forms.Form):
-    shearch = forms.CharField( label="", max_length=1000 , widget= forms.TextInput(attrs={'class':'form-control mr-sm-2'}))
+    shearch = forms.CharField( label="Buscar",help_text="Ingrese su termino de busqueda", max_length=1000 , widget= forms.TextInput(attrs={'class':''}))
 
 class CentroForm(ModelForm):
     class Meta:
@@ -54,12 +54,14 @@ class ClienteForm(forms.ModelForm):
 class TratamientoFormAdmin(forms.ModelForm):
     class Meta:
         model=Tratamientos
-        fields=('numero_de_sesion', 'zona','fecha', 'js', 'jl','tecnica', 'comentario' )
+        fields=('__all__' )
+        exclude = ['id_tratamiento', 'icon','cliente', 'hora_fin']
 
 class TratamientoForm(forms.ModelForm):
     class Meta:
         model=Tratamientos
-        fields=('numero_de_sesion', 'zona','fecha', 'js', 'jl', 'comentario' )
+        fields=('__all__' )
+        exclude = ['id_tratamiento', 'icon','cliente', 'tecnica', 'hora_fin']
 
 class EmailTemplateEditForm(forms.ModelForm):
     class Meta:
@@ -100,6 +102,10 @@ class SingForm(forms.ModelForm):
     class Meta:
         model=DocSings
         fields=('firma', )
+
+
+class SingForm_(forms.Form):
+    firma=forms.ImageField(label='Firma', required=False)
 
 
 class CajaFormAdmin(forms.ModelForm):
@@ -148,14 +154,8 @@ class SingForm__(forms.Form):
     signature = JSignatureField()
 
 
-class PrerenderForm(forms.ModelForm):
-
-    class Meta:
-        model=DocSings
-        widgets = {
-            'plantilla_render': forms.Textarea(attrs={'class':'some_class', 'id':'editor'}),
-        }
-        fields=('plantilla_render', )
+class PrerenderForm(forms.Form):
+    plantilla_doc=forms.CharField(help_text="Documento a firmar", required=False,widget=forms.Textarea(attrs={'readonly':'readonly'}))
 
 class EmailForm(forms.Form):
     asunto=forms.CharField(label='Asunto del Email:', max_length=100)

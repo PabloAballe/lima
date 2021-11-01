@@ -21,10 +21,10 @@ from django.template.loader import render_to_string
 from io import BytesIO
 from django.template.loader import get_template
 from xhtml2pdf import pisa
-from django_mail_admin import mail, models
 
 def config_website(request):
     conf=ConfiguracionWEB.objects.all().last()
+    footer=Configuracion.objects.all().last()
     form=ConfigWebAdmin(instance=conf)
     if request.method == 'POST':
              form=ConfigWebAdmin(request.POST, request.FILES,instance=conf)
@@ -36,7 +36,7 @@ def config_website(request):
              else:
                  #messages.error(request,f'Ha sucedido el siguiente error {form.errors }')
                  pass
-    return render(request, "webConfig.html", {'form': form,})
+    return render(request, "webConfig.html", {'form': form,'footer': footer})
 
 def website_index(request):
     conf=ConfiguracionWEB.objects.all().last()
@@ -118,6 +118,7 @@ def website_appointment(request, centro, cliente, tecnica):
     nav=Pages.objects.filter(pertenece_a="A")
     footer=Configuracion.objects.all().last()
     cen=get_object_or_404(Centro , pk=centro)
+    msg=footer.plantilla_lista.plantilla
     days_off={}
     if ('Lunes' in cen.dias_abre_centro):days_off.append(2)
     if ('Martes' in cen.dias_abre_centro):days_off.append(3)
@@ -156,45 +157,29 @@ def website_appointment(request, centro, cliente, tecnica):
                 else:
                     lista.save()
                     messages.success(request,f'Se ha agendado la cita ')
-                    mensaje=Template(msg)
-                    c = Context({'usuario': f'{cliente.nombre_paciente} {cliente.apellidos_paciente}',
-                                'centro': cliente.centro.nombre_centro, 'localizacion_centro': cliente.centro.localizacion,
-                                'nombre_comercial': footer.nombre_comercial, 'propietario': footer.propietario,
-                                'telefono': footer.telefono,
-                                'TelefonoUsuario':  cliente.telefono_paciente,
-                                'EmailUsuario': cliente.email,
-                                'dni': cliente.dni,
-                                'poblacion': cliente.poblacion,
-                                'direccion': cliente.direccion,
-                                'FechaActual' : timezone.now(),
-                                'HoraInicioCita': lista.hora_inicio,
-                                'HoraFinCita': lista.hora_fin,
-                                'Servicio': lista.servicios.nombre_servicio,
-                                'CitaURL': f'https://{request.get_host()}/website/appointment/{cliente.centro.pk}94840{cliente.pk}042f02cf{request.user.tecnica.pk}29d55a'})
-                    mensaje=mensaje.render(c)
-                    subject = f'Resguardo de cita con {footer.nombre_comercial}'
-                    template=mensaje
-                    html_message = render_to_string('core/blanc.html', {'mensaje': template, 'footer': footer})
-                    plain_message = strip_tags(html_message)
-                    try:
-                        # message = Mail(
-                        #     from_email=footer.email_sistema,
-                        #     to_emails=cliente.email,
-                        #     subject=subject,
-                        #     html_content=html_message)
-
-                        # sg = SendGridAPIClient(footer.twilio_SENDGRID_API_KEY)
-                        # sg.send(message)
-                        mail.send(
-                                footer.email_sistema,
-                                cliente.email, # List of email addresses also accepted
-                                subject=subject,
-                                message=plain_message,
-                                priority=models.PRIORITY.now,
-                                html_message=html_message,
-                            )
-                        messages.success(request,f'Email Enviado a {cliente.email} ')
-                    except Exception as e:
-                        messages.error(request,f"A ocurrido el siguiente error {e}")
+                    # mensaje=Template(msg)
+                    # c = Context({'usuario': f'{cliente.nombre_paciente} {cliente.apellidos_paciente}',
+                    #             'centro': cliente.centro.nombre_centro, 'localizacion_centro': cliente.centro.localizacion,
+                    #             'nombre_comercial': footer.nombre_comercial, 'propietario': footer.propietario,
+                    #             'telefono': footer.telefono,
+                    #             'TelefonoUsuario':  cliente.telefono_paciente,
+                    #             'EmailUsuario': cliente.email,
+                    #             'dni': cliente.dni,
+                    #             'poblacion': cliente.poblacion,
+                    #             'direccion': cliente.direccion,
+                    #             'FechaActual' : timezone.now(),
+                    #             'HoraInicioCita': lista.hora_inicio,
+                    #             'HoraFinCita': lista.hora_fin,
+                    #             'Servicio': lista.servicios.nombre_servicio,
+                    #             'CitaURL': f'https://{request.get_host()}/website/appointment/{cliente.centro.pk}94840{cliente.pk}042f02cf{request.user.tecnica.pk}29d55a'})
+                    # mensaje=mensaje.render(c)
+                    # subject = f'Resguardo de cita en{footer.nombre_comercial}'
+                    # template=mensaje
+                    # html_message = render_to_string('core/blanc.html', {'mensaje': template, 'footer': footer})
+                    # plain_message = strip_tags(html_message)
+                    # try:
+                    #     messages.success(request,f'Email Enviado a {cliente.email} ')
+                    # except Exception as e:
+                    #     messages.error(request,f"A ocurrido el siguiente error {e}")
                     return redirect("website_pdf" , cita=lista.pk)
     return render(request, "appointments.html", {'web': conf, 'nav': nav, 'bloqueos': bloqueos,'footer': footer,'form': form, 'cen': cen,'cliente': cliente})

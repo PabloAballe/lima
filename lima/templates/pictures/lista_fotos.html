@@ -2,7 +2,14 @@
 
 {%block content%}
 {%include 'core/nav.html'%}
-<div class="index">
+ <div class="grid grid-cols-5 gap-4">
+<div class="aside-bar">
+    {% include 'core/aside.html'%}
+</div>
+
+     <div class="col-span-4">
+         <div class="index1">
+             <div class="index">
 <h1>
     <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" fill="currentColor" class="bi bi-images" viewBox="0 0 16 16">
   <path d="M4.502 9a1.5 1.5 0 1 0 0-3 1.5 1.5 0 0 0 0 3z"/>
@@ -64,5 +71,8 @@
 
   </div>
   </div>
+    </div>
+</div>
+
 
 {%endblock%}

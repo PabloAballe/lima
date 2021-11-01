@@ -3,7 +3,6 @@
 from django.shortcuts import render, redirect
 from django.template import RequestContext
 from django.contrib.auth.decorators import login_required
-from django.core.mail import send_mail
 from django.contrib.auth import logout as do_logout
 from django.contrib.auth import authenticate
 from django.contrib.auth.forms import AuthenticationForm
@@ -48,7 +47,16 @@ from django.conf import settings
 from mailchimp_marketing.api_client import ApiClientError
 from sendgrid import SendGridAPIClient
 from sendgrid.helpers.mail import Mail
+from django.contrib.sessions.models import Session
 
+def get_current_users():
+    active_sessions = Session.objects.filter(expire_date__gte=timezone.now())
+    user_id_list = []
+    for session in active_sessions:
+        data = session.get_decoded()
+        user_id_list.append(data.get('_auth_user_id', None))
+    # Query all logged in users based on id list
+    return User.objects.filter(id__in=user_id_list)
 
 @login_required(login_url='login')
 def index(request):
@@ -61,6 +69,7 @@ def index(request):
         return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     centro=Centro.objects.all().order_by('nombre_centro').filter(tecnica__id_tecnica=request.user.tecnica.id_tecnica)
+    perfiles= get_current_users()
     notfound=False
     #shearch centro
     if request.method == "GET":
@@ -100,4 +109,4 @@ def index(request):
     #fin del bloque
      # determino si el centro está trabajando o no
     now=dt.datetime.now()
-    return render(request, 'index.html',{'cen': cen, 'form': form ,'notfound': notfound ,'salida': salida, 'footer': footer,'cTime':now})
+    return render(request, 'index.html',{'cen': cen, 'form': form ,'notfound': notfound ,'salida': salida, 'footer': footer,'cTime':now,'perfiles': perfiles})
