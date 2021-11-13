@@ -10,18 +10,18 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
 
-<div class="grid grid-cols-5 gap-4">
+<div class="{% if request.user_agent.is_mobile %}{%else%}grid grid-cols-5 gap-4{%endif %} ">
 <div class="aside-bar">
     {% include 'core/aside.html'%}
 </div>
 
      <div class="col-span-4">
-         <div class="login ">
+         <div class="{% if request.user_agent.is_mobile %}index1{% else %}login{%endif%}">
 <img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
   <br>
   <h2>Añade un cliente nuevo</h2>
   <br>
-  <form method="post" enctype="multipart/form-data">
+  <form method="post" enctype="multipart/form-data" style="{% if request.user_agent.is_mobile %}grid-template-columns: repeat(1, minmax(0, 1fr));{% else %}grid-template-columns: repeat(3, minmax(0, 1fr));{%endif%}">
     {% csrf_token %}
    {{ form|crispy }}
      <div class="buttons">
@@ -41,5 +41,5 @@
   });
 </script>
 
-
+<br><br><br><br>
 {%endblock%}

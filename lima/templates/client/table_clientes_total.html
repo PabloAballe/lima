@@ -28,6 +28,7 @@
     <thead>
       <tr>
         <th><abbr title="ID">ID</abbr></th>
+        <th><abbr title="ID">Imágen</abbr></th>
         <th><abbr title="ID">Centro</abbr></th>
         <th><abbr title="Propietaria">Nombre</abbr></th>
         <th><abbr title="Localización">Apellidos</abbr></th>
@@ -51,6 +52,7 @@
          {% for cl in filter.qs %}
       <tr onclick="window.location='{% url 'cliente_details_tratamientos' pk=cl.id_paciente %}';">
         <th>{{ cl.pk }}</th>
+        <th>{{ cl.image_tag }}</th>
           <th>{{ cl.centro.nombre_centro }}</th>
         <td><a href="{% url 'cliente_details_tratamientos' pk=cl.id_paciente %}">{{cl.nombre_paciente}}</a> <strong></strong>
         </td>

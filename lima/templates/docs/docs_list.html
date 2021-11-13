@@ -2,13 +2,14 @@
 
 {%block content%}
 {%include 'core/nav.html'%}
-<div class="grid grid-cols-5 gap-4">
+<div class="{% if request.user_agent.is_mobile %}{%else%}grid grid-cols-5 gap-4{%endif %} ">
 <div class="aside-bar">
     {% include 'core/aside.html'%}
 </div>
 
      <div class="col-span-4">
-         <div class="index">
+         <div class="{% if request.user_agent.is_mobile %}index1{% else %}index{%endif%}">
+             <br><br>
 <h1>Listado de Documentos </h1>
     {% if perms.lima.add_emailtemplates %}
 <a href="{% url 'new_doc_template' %}" class="top-menu">
@@ -26,7 +27,7 @@
 </div>
 </div>
 </div>
-
+<br><br><br><br>
 
 
 

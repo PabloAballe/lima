@@ -2,7 +2,7 @@
 
 {%block content%}
 {%include 'core/nav.html'%}
-<div class="index">
+ <div class="{% if request.user_agent.is_mobile %}{% else %}index{%endif%}">
   <!--{%include 'aviso.html'%}-->
 <h1>Fichajes de {{tecnica.nombre_tecnica}}</h1>
 <br>

@@ -5,7 +5,7 @@
 <head>
 
   <meta charset="utf-8">
-  <!--<meta name="viewport" content="width=device-width, initial-scale=0.6">-->
+  <meta name="viewport" content="width=device-width">
   <title>{{footer.nombre_comercial}}</title>
   <link rel="icon"  href="{{footer.logo.url}}">
 <meta http-equiv="refresh" content="500">
@@ -14,12 +14,14 @@
 <meta name="author" content="Pablo Aballe">
    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.1/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
   <link href="https://cdn.jsdelivr.net/npm/daisyui@1.14.0/dist/full.css" rel="stylesheet" type="text/css" />
-
+<!--<link rel="stylesheet" href="{% static 'js/dist/dropzone.css' %}" />-->
   <!--daisy ui-->
   <link rel="stylesheet" type="text/css" href="{% static 'css/desktop.css' %}">
   <link rel="stylesheet" type="text/css" href="{% static 'css/mobile.css' %}">
 
+
  {% include 'core/styles.html'%}
+
  {{ form.media }}
 </head>
 
@@ -27,7 +29,7 @@
 <body style=" margin-bottom:0px;overflow:auto">
 
 
-{% include 'core/modal-movile-block.html'%}
+
 
      {% csrf_token %}
     <div id="loading">
@@ -37,7 +39,8 @@
         </div>
 
 	<script  >
-
+// 	regresa al dar esc en el teclado
+window.addEventListener("keyup", function(e){ if(e.keyCode == 27) history.back(); }, false);
 
 // Quick and simple export target #table_id into a csv
 function download_table_as_csv(table_id, separator = ';') {
@@ -185,9 +188,17 @@ function(){
 
   $(function () {
     jQuery.datetimepicker.setLocale('es');
-    $(".datetimeinput").datetimepicker({  format:'Y-m-d', step: 10, });
+    $("._datetimeinput").datetimepicker({  format:'Y-m-d', step: 10, });
   });
+
+
+
 </script>
+
+
+<!--revisar sino borrar-->
+<script src="{% static 'js/dist/dropzone.js' %}"></script>
+
 
 </body>
 

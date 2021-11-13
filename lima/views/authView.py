@@ -15,6 +15,8 @@ from django.contrib import messages
 
 
 def login(request):
+    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
+
     footer=Configuracion.objects.all().last()
     form = AuthenticationForm()
     if request.method == "POST":
@@ -34,6 +36,7 @@ def login(request):
                 # Hacemos el login manualmente
                 do_login(request, user)
                 messages.success(request,f'Has iniciado sesión como {username}')
+
                 # Y le redireccionamos a la portada
                 return redirect('index')
             else:

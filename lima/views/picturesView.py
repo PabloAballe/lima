@@ -76,4 +76,4 @@ def new_fotos(request, cliente):
 def delete_fotos(request,cliente, pk):
     cls=get_object_or_404(Paciente, pk=cliente)
     foto=get_object_or_404(ImagenesClientes, pk=pk).delete()
-    return redirect("pictures/lista_fotos", client=cls.pk)
+    return redirect("lista_fotos", client=cls.pk)

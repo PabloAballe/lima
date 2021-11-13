@@ -3,14 +3,14 @@
 {%load static%}
 {%block content%}
 {%include 'core/nav.html'%}
- <div class="grid grid-cols-5 gap-4">
+<div class="{% if request.user_agent.is_mobile %}{%else%}grid grid-cols-5 gap-4{%endif %} ">
 <div class="aside-bar">
     {% include 'core/aside.html'%}
 </div>
 
      <div class="col-span-4">
          <div class="index1">
-             <div class="login ">
+            <div class="{% if request.user_agent.is_mobile %}{% else %}login{%endif%}">
   <br>
   <h2 style="font-size:30px; font-weight: bold; text-align: center ;">Mi suscripción</h2>
   <br>
@@ -18,7 +18,7 @@
 <p style="font-size:20px; font-weight: bold; text-align: center ;">Caduca el {{suscription.enddate}}</p>
 <hr>
 <br/>
-<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top">
+<form action="https://www.paypal.com/cgi-bin/webscr" method="post" target="_top" style="grid-template-columns: repeat(1, minmax(0, 1fr));">
 <input type="hidden" name="cmd" value="_s-xclick">
 <input type="hidden" name="hosted_button_id" value="L3M27Z2RFP7A4">
 <table>

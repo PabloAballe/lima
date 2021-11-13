@@ -4,14 +4,15 @@
 {% load tailwind_filters %}
 {%include 'core/nav.html'%}
  {% load tz %}
-  <div class="grid grid-cols-5 gap-4">
+<div class="{% if request.user_agent.is_mobile %}{%else%}grid grid-cols-5 gap-4{%endif %} ">
 <div class="aside-bar">
     {% include 'core/aside.html'%}
 </div>
 
      <div class="col-span-4">
          <div class="index1">
-             <div class="index">
+               <div class="{% if request.user_agent.is_mobile %}{% else %}index{%endif%}">
+                   <br><br>
 <h1>Turnos de trabajo</h1>
 
 <link href="{% static 'fullcalendar/main.css' %}" rel='stylesheet' />
@@ -74,7 +75,7 @@ document.addEventListener('DOMContentLoaded', function() {
     </div>
 </div>
 
-
+<br><br><br><br>
 
 
 {%endblock%}

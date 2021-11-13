@@ -21,8 +21,10 @@ from django_resized import ResizedImageField
 import sys
 from django.core.validators import RegexValidator
 from multiselectfield import MultiSelectField
-
+from django.utils.html import mark_safe
 phone_regex = RegexValidator(regex=r'^\+?1?\d{9,15}$', message="El teléfono debe tener el siguiente formato: '+999999999'. Están permidos hasta 15 dígitos.")
+
+
 
 class Servicios(models.Model):
     id_servicio=models.AutoField(primary_key=True, auto_created = True,editable = False)
@@ -64,7 +66,10 @@ class Centro(models.Model):
     def __str__(self):
         return self.nombre_centro
 
+    def image_tag(self):
+        return mark_safe(f'<img src="{self.imagen.url}" width="50rem" height="50rem" style="border-radius:25%" />')
 
+    image_tag.short_description = 'Imagen'
 
 
 
@@ -155,6 +160,10 @@ class Tecnica(models.Model):
     def __str__(self):
         return self.nombre_tecnica
 
+    def image_tag(self):
+        return mark_safe(f'<img src="{self.imagen.url}" width="50rem" height="50rem" style="border-radius:25%" />')
+
+    image_tag.short_description = 'Imagen'
 
 class Tags(models.Model):
     id_tag=models.AutoField(primary_key=True, auto_created = True,editable = False)
@@ -193,6 +202,7 @@ class Anuncios(models.Model):
     centro=models.ForeignKey(Centro, on_delete=models.RESTRICT, default="1")
     todos_los_centros=models.BooleanField(default=False,help_text="Enviar anuncio a todos los centro")
     imagen=ResizedImageField(size=[500, 500],upload_to='images/')
+    activo=models.BooleanField(default=True,help_text="Determina si el auncio está activo")
     fecha_creacion=models.DateTimeField(null=False, default=now)
 
     class Meta:
@@ -201,12 +211,26 @@ class Anuncios(models.Model):
     def __str__(self):
         return self.cuerpo_anuncio
 
+    def image_tag(self):
+        return mark_safe(f'<img src="{self.imagen.url}" width="50rem" height="50rem" style="border-radius:25%" />')
 
+    image_tag.short_description = 'Imagen'
 
 def allEstados():
     estados = EstadosClientes.objects.all()
     return estados
 
+
+class Origenes(models.Model):
+    id=models.AutoField(primary_key=True, auto_created = True,editable = False)
+    origen=models.CharField(max_length=100,help_text="Ingrese el nombre del servicio" )
+    fecha_creacion=models.DateTimeField(null=False, default=now)
+
+    class Meta:
+        verbose_name_plural = "Origenes"
+
+    def __str__(self):
+        return self.origen
 
 class Paciente(models.Model):
     id_paciente=models.AutoField(primary_key=True, auto_created = True, null=False,editable = False)
@@ -219,14 +243,15 @@ class Paciente(models.Model):
     documento_de_autorizacion=models.BooleanField(default=False)
     documento_proteccion_de_datos=models.BooleanField(default=False)
     centro=models.ForeignKey(Centro, on_delete=models.RESTRICT)
-    poblacion=models.CharField(max_length=50,help_text="Ingrese la población del/la paciente",  default='Valencia',blank=True)
-    direccion=models.CharField(max_length=50,help_text="Ingrese la dirección del/la paciente",  default='Valencia',blank=True)
-    notas_paciente=models.TextField(help_text="Ingrese notas sobre el cliente aquí", default="", blank=True)
-    fecha_nacimiento=models.DateTimeField(null=False, default='2000-01-01',blank=True)
-    estado=models.ForeignKey(EstadosClientes, default=1,  on_delete=models.RESTRICT,blank=True)
-    etiqueta=models.ManyToManyField(Tags, default="1", blank=True)
-    autorizacion_envio_informacion_comercial=models.BooleanField(default=False)
+    poblacion=models.CharField(max_length=50,help_text="Ingrese la población del/la paciente",  default='Valencia',blank=True,null=True)
+    direccion=models.CharField(max_length=50,help_text="Ingrese la dirección del/la paciente",  default='Valencia',blank=True,null=True)
+    notas_paciente=models.TextField(help_text="Ingrese notas sobre el cliente aquí", default="", blank=True,null=True)
+    fecha_nacimiento=models.DateTimeField( default='2000-01-01',blank=True,null=True)
+    estado=models.ForeignKey(EstadosClientes, default="1",  on_delete=models.RESTRICT,blank=True,null=True)
+    etiqueta=models.ManyToManyField(Tags, default="1", blank=True,null=True)
+    autorizacion_envio_informacion_comercial=models.BooleanField(default=False,null=True)
     fecha_alta=models.DateTimeField(null=False, default=now)
+    origen=models.ForeignKey(Origenes, on_delete=models.RESTRICT, blank=True,null=True)
     icon = FAIconField(default="", blank=True)
 
     class Meta:
@@ -234,6 +259,13 @@ class Paciente(models.Model):
 
     def __str__(self):
         return self.nombre_paciente
+
+    def image_tag(self):
+        return mark_safe(f'<img src="{self.imagen.url}" width="50rem" height="50rem" style="border-radius:25%" />')
+
+    image_tag.short_description = 'Imagen'
+
+
 
 class Mensajes(models.Model):
     id_mensaje=models.AutoField(primary_key=True, auto_created = True,editable = False)
@@ -350,6 +382,10 @@ class DocSings(models.Model):
     def __str__(self):
         return f"Firmado el : {self.firmado_el}"
 
+    def image_tag(self):
+        return mark_safe(f'<img src="{self.firma.url}" width="50rem" height="50rem" style="border-radius:25%" />')
+
+    image_tag.short_description = 'Imagen'
 
 class Configuracion(models.Model):
     id=models.AutoField(primary_key=True, auto_created = True,editable = False)
@@ -362,12 +398,14 @@ class Configuracion(models.Model):
     logo=ResizedImageField(size=[500, 500],upload_to='images/', default='img/login.png')
     slots=models.IntegerField(default='15', help_text="Ingrese el tamaño de los slots")
     tiempo_expira_caja=models.IntegerField(default='15', help_text="Ingrese el tamaño de los slots")
+    numero_citas=models.IntegerField(default='1', help_text="Ingrese la cantidad de citas que se pueden agendar por el módulo online")
     politica=models.TextField(help_text="Ingrese la política  de la empresa que aparecera en la parte inferior de los textos", blank=True)
     twilio_SENDGRID_API_KEY=models.CharField(max_length=500,help_text="Ingrese la SENDGRID API KEY de Twilio", default="" , blank=True)
     twilio_ACCOUNT_SID=models.CharField(max_length=500,help_text="Ingrese la ACCOUNT SID de Twilio", default="" , blank=True)
     twilio_AUTH_TOKEN=models.CharField(max_length=500,help_text="Ingrese el AUTH TOKEN de Twilio", default="" , blank=True)
     twilio_NUMBER=models.CharField(max_length=17,help_text="Ingrese el Número verificado en Twilio", default=0,validators=[phone_regex], blank=True )
     enviar_email_nuevos_clientes=models.BooleanField(default=False)
+    enviar_email_nuevo_fichaje=models.BooleanField(default=False)
     enviar_email_nueva_caja=models.BooleanField(default=False)
     enviar_email_nuevas_listas=models.BooleanField(default=False)
     plantilla_email=models.ForeignKey(EmailTemplates, on_delete=models.RESTRICT ,default="1",related_name ="plantilla_email" )
@@ -380,6 +418,10 @@ class Configuracion(models.Model):
     def __str__(self):
         return f"Configuración {self.nombre_comercial}"
 
+    def image_tag(self):
+        return mark_safe(f'<img src="{self.logo.url}" width="50rem" height="50rem" style="border-radius:25%" />')
+
+    image_tag.short_description = 'Imagen'
 
 
 class Tratamientos(models.Model):
@@ -406,6 +448,10 @@ class Tratamientos(models.Model):
     def __str__(self):
         return f"Sesión de tratamiento con fecha : {self.fecha}"
 
+    def image_tag(self):
+        return mark_safe(f'<img src="{self.firma.url}" width="50rem" height="50rem" style="border-radius:25%" />')
+
+    image_tag.short_description = 'Imagen'
 
 class Suscription(models.Model):
     OPCIONES_SUSCRIPTIONS = (
@@ -437,7 +483,7 @@ class Stock(models.Model):
         verbose_name_plural = "Stock de productos"
 
     def __str__(self):
-        return f"Stockt del producto : {self.nombre_stock}"
+        return f"Stock del producto : {self.nombre_stock}"
 
 class Cajas(models.Model):
     id_caja=models.AutoField(primary_key=True, auto_created = True,editable = False)
@@ -473,6 +519,7 @@ class Lista(models.Model):
     servicios=models.ForeignKey(Servicios, on_delete=models.RESTRICT, default="1")
     hora_inicio=models.DateTimeField(null=False,default=now)
     hora_fin=models.DateTimeField(null=False,default=now)
+    is_app=models.BooleanField(default=False)
     icon = FAIconField(default="", blank=True)
 
     def clean_date(self):
@@ -497,7 +544,10 @@ class ImagenesClientes(models.Model):
     fecha=models.DateTimeField(null=False, auto_now_add=True)
     icon = FAIconField(default="", blank=True)
 
+    def image_tag(self):
+        return mark_safe(f'<img src="{self.imagen.url}" width="50rem" height="50rem" style="border-radius:25%" />')
 
+    image_tag.short_description = 'Imagen'
 
     class Meta:
         verbose_name_plural = "Listas de imágenes de clientes"

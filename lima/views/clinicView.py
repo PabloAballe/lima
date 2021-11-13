@@ -27,7 +27,7 @@ from sendgrid.helpers.mail import Mail
 def centro_details(request, pk):
     footer=Configuracion.objects.all().last()
     centro=get_object_or_404(Centro, id_centro=pk)
-    anuncio=Anuncios.objects.filter(centro=centro).order_by("-fecha_creacion") | Anuncios.objects.filter(todos_los_centros=True).order_by("-fecha_creacion")
+    anuncio=Anuncios.objects.filter(centro=centro,activo=True).order_by("-fecha_creacion") | Anuncios.objects.filter(todos_los_centros=True,activo=True).order_by("-fecha_creacion")
     notfound=False
     cliente=Paciente.objects.all().order_by("nombre_paciente").filter(centro=centro)
     #shearch cliente

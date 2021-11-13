@@ -2,7 +2,8 @@
   <table class="table overflow-auto">
     <thead>
       <tr>
-        <th><abbr title="ID">Número de sesión</abbr></th>
+        <th><abbr title="ID">Sesión</abbr></th>
+        <th><abbr title="ID">Firma</abbr></th>
         <th><abbr title="ID">Zona</abbr></th>
         <th><abbr title="Tecnica">Tecnica</abbr></th>
         <th><abbr title="Zona">J/S</abbr></th>
@@ -20,6 +21,7 @@
       {%for tratamiento in tratamientos %}
       <tr >
         <th>{{ tratamiento.numero_de_sesion }}</th>
+        <td>{{tratamiento.image_tag}}</td>
         <th>{{ tratamiento.zona }}</th>
         <td>{{tratamiento.tecnica}}</td>
         <td>{{tratamiento.js}}</td>

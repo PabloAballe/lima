@@ -1,18 +1,17 @@
-<link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/styles/tailwind.css">
-<link rel="stylesheet" href="https://demos.creative-tim.com/notus-js/assets/vendor/@fortawesome/fontawesome-free/css/all.min.css">
+
 
 <section class="pt-16 bg-blueGray-50 " style="margin-top:-0rem">
-<div class="w-full lg:w-12/12 px-4 mx-auto">
+<div class="w-full lg:w-12/12 px-4 mx-auto" style="max-width:30rem">
   <div class="relative flex flex-col min-w-0 break-words bg-white w-full mb-6 shadow-xl rounded-lg mt-1">
     <div class="px-6 ">
       <div class="flex flex-wrap justify-center">
         <div class="w-full px-4 flex justify-center">
-          <div class="relative">
-            <img title="Imágen del cliente" alt="{{cliente.nombre_paciente}} {{cliente.apellidos_paciente}}" src="{{cliente.imagen.url}}" class="shadow-xl rounded-full h-auto align-middle border-none absolute -m-16 -ml-20 lg:-ml-16 max-w-150-px">
+          <div class="">
+            <img title="Imágen del cliente" alt="{{cliente.nombre_paciente}} {{cliente.apellidos_paciente}}" src="{{cliente.imagen.url}}" class="shadow-xl rounded-full h-auto align-middle border-none  -m-14 -ml-14 lg:-ml-14 max-w-50-px" style="margin-left:1px;margin-top:1px;max-height:15rem">
            {% if perms.lima.view_paciente %}
             <div style="">
                 <a href="{%url 'edit_cliente' pk=cliente.id_paciente %}" title="Editar los datos del cliente">
-                    <svg style="    position: absolute;left: 30rem;top: 2rem;" xmlns="http://www.w3.org/2000/svg" width="2rem" height="1rem" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
+                    <svg style="{% if request.user_agent.is_mobile %}position: absolute;right: 0rem;top: 2rem;{% else %}position: absolute;right: 0rem;top: 2rem;{%endif%}  " xmlns="http://www.w3.org/2000/svg" width="2rem" height="1rem" fill="currentColor" class="bi bi-pencil-square" viewBox="0 0 16 16">
                       <path d="M15.502 1.94a.5.5 0 0 1 0 .706L14.459 3.69l-2-2L13.502.646a.5.5 0 0 1 .707 0l1.293 1.293zm-1.75 2.456-2-2L4.939 9.21a.5.5 0 0 0-.121.196l-.805 2.414a.25.25 0 0 0 .316.316l2.414-.805a.5.5 0 0 0 .196-.12l6.813-6.814z"/>
                       <path fill-rule="evenodd" d="M1 13.5A1.5 1.5 0 0 0 2.5 15h11a1.5 1.5 0 0 0 1.5-1.5v-6a.5.5 0 0 0-1 0v6a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5v-11a.5.5 0 0 1 .5-.5H9a.5.5 0 0 0 0-1H2.5A1.5 1.5 0 0 0 1 2.5v11z"/>
                     </svg>

@@ -57,7 +57,7 @@ def new_tratamiento(request, pk):
     if request.user.is_staff:
          form=TratamientoFormAdmin()
          if request.method == 'POST':
-             form = TratamientoFormAdmin(request.POST)
+             form = TratamientoFormAdmin(request.POST, request.FILES)
              if form.is_valid():
                  cita = form.save(commit=False)
                  cita.cliente=cliente1
@@ -70,7 +70,7 @@ def new_tratamiento(request, pk):
     else:
          form=TratamientoForm()
          if request.method == 'POST':
-             form = TratamientoForm(request.POST)
+             form = TratamientoForm(request.POST, request.FILES)
              if form.is_valid():
                  cita = form.save(commit=False)
                  cita.cliente=cliente1
@@ -81,7 +81,7 @@ def new_tratamiento(request, pk):
              else:
                 pass
 
-    return render(request, "treatments/new_tratamiento.html", {'form': form, 'footer': footer})
+    return render(request, "treatments/new_tratamiento.html", {'form': form, 'footer': footer, 'cliente': cliente1})
 
 @login_required(login_url='login')
 def edit_tratamiento(request, pk):
@@ -91,7 +91,7 @@ def edit_tratamiento(request, pk):
     if request.user.is_staff:
          form=TratamientoFormAdmin(instance=tratamiento)
          if request.method == 'POST':
-             form = TratamientoFormAdmin(request.POST, instance=tratamiento)
+             form = TratamientoFormAdmin(request.POST,request.FILES,instance=tratamiento)
              if form.is_valid():
                  cita = form.save(commit=False)
                  cita.cliente=cliente1
@@ -104,7 +104,7 @@ def edit_tratamiento(request, pk):
     else:
          form=TratamientoForm(instance=tratamiento)
          if request.method == 'POST':
-             form = TratamientoForm(request.POST, instance=tratamiento)
+             form = TratamientoForm(request.POST,request.FILES,instance=tratamiento)
              if form.is_valid():
                  cita = form.save(commit=False)
                  cita.cliente=cliente1

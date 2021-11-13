@@ -1,4 +1,4 @@
-<div class="p-10 " style="position:absolute; top:2rem ; right:1rem;z-index:200;">
+<div class="p-10 " style="{% if request.user_agent.is_mobile %}position:absolute; top:5rem ; right:1rem;z-index:200;{%else%}position:absolute; top:2rem ; right:1rem;z-index:200;{%endif %}">
 
   <div class="dropdown inline-block relative">
     <button class="bg-gray-300 text-gray-700 font-semibold py-2 px-4 rounded inline-flex items-center">
@@ -9,13 +9,13 @@
       <li class="">
           <a class="rounded-t  py-2 px-4 block whitespace-no-wrap" href="#">
 
-           <div  class="text-gray-700 block w-full text-left px-4 py-2 text-sm" style="position:absolute; top:-4rem ; right:-15rem;z-index:20;min-width: 30rem;">
+           <div  class="text-gray-700 block w-full text-left px-4 py-2 text-sm" {% if request.user_agent.is_mobile %}style="max-height:5rem;max-width:20rem;"{% else%}style="position:absolute;top:-4rem ; right:-15rem;z-index:20;min-width: 30rem;"{%endif%}>
 
 
 		<!-- defualt theme -->
 		<div class="max-w-2xl w-full mx-auto z-10000 ">
 		<div class="flex flex-col">
-			<div class="bg-white border border-white shadow-lg  rounded-3xl p-1 m-1">
+			<div class="bg-white border border-white shadow-lg  rounded-3xl p-1 m-1" >
 				<div class="flex-none sm:flex">
 					<div class=" relative h-22 w-22   sm:mb-0 mb-1">
 						<img src="{{request.session.cliente_img}}" alt="{{request.session.cliente_nombre}}" class=" w-12 h-12 object-cover rounded-2xl">

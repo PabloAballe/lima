@@ -121,7 +121,7 @@ display: inherit;
 
 }
 
-.noselect, *{
+.noselect{
   -webkit-touch-callout: none; /* iOS Safari */
     -webkit-user-select: none; /* Safari */
      -khtml-user-select: none; /* Konqueror HTML */
@@ -132,7 +132,7 @@ display: inherit;
 }
 
 .users{
-    position:absolute; bottom: -5rem;left:2rem;max-width:20rem; max-height:20rem;overflow:auto;
+    position:absolute; bottom: -15rem;left:2rem;max-width:20rem; max-height:20rem;overflow:auto;
 }
 
 
@@ -245,18 +245,29 @@ border: 1px solid rgba(191, 151, 151, 0.3);
 .modal-movile-block{
     display:block !Important;
 }
-.movile-navigation *  {
-    display:none;
+.aside-bar,.users,.eapp-whatsapp-chat-root-layout-component{
+    display:none ;
 }
-    /*.pagination {*/
-    /*    position:absolute;*/
-    /*    bottom: -30rem;*/
-    /*    left : 5rem;*/
-    /*}*/
-
-/*.eapp-whatsapp-chat-root-layout-component{*/
-/*    display:none;*/
-/*}*/
+.index,.login{
+    top: 4rem;
+    left: 15rem;
+    margin:0rem !important;
+    padding: 2rem;
+    max-width: 100%;
+    overflow: auto;
+    min-width:50rem;
+    height:auto;
+    width:100% !Important;
+ }
+.index1{
+    margin:1rem;
+}
+.table {
+    display: auto !Important;
+}
+.pagination{
+    margin-bottom: 5rem;
+}
 /*.index, .login{*/
 /*    height: 100%;*/
 /*    width:100%;*/

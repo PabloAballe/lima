@@ -62,8 +62,8 @@ def new_cita(request, pk):
                  cita = form.save(commit=False)
                  cita.paciente=cliente1
                  form.save()
-                 messages.success(request,f'Se ha guardado la cita del cliente {cita.paciente.nombre_paciente}')
-                 return redirect("cliente_details_zonas", pk=cliente1.id_paciente)
+                 messages.success(request,f'Se ha guardado la zona del cliente {cita.paciente.nombre_paciente}')
+                 return redirect("cliente_details_tratamientos", pk=cliente1.id_paciente)
              else:
                  messages.error(request,f'Ha sucedido el siguiente error {form.errors }')
                  form = CitaFormAdmin()
@@ -76,8 +76,8 @@ def new_cita(request, pk):
                  cita.paciente=cliente1
                  cita.tecnica=request.user.tecnica
                  form.save()
-                 messages.success(request,f'Se ha creado el cliente {cita.paciente.nombre_paciente}')
-                 return redirect("cliente_details_zonas", pk=cliente1.id_paciente)
+                 messages.success(request,f'Se ha creado la zona del cliente {cita.paciente.nombre_paciente}')
+                 return redirect("cliente_details_tratamientos", pk=cliente1.id_paciente)
              else:
                 #messages.error(request,f'Ha sucedido el siguiennte error {form.errors }')
                 form = CitaForm()
@@ -96,8 +96,8 @@ def edit_cita(request, pk):
                  cita = form.save(commit=False)
                  cita.paciente=cliente1
                  form.save()
-                 messages.success(request,f'Se ha guardado la cita')
-                 return redirect("cliente_details_zonas", pk=cliente1.id_paciente)
+                 messages.success(request,f'Se ha guardado la zona')
+                 return redirect("cliente_details_tratamientos", pk=cliente1.id_paciente)
              else:
                  #messages.error(request,f'Ha sucedido el siguiente error {form.errors }')
                  form = CitaFormAdmin()
@@ -110,8 +110,8 @@ def edit_cita(request, pk):
                  cita.paciente=cliente1
                  cita.tecnica=request.user.tecnica
                  form.save()
-                 messages.success(request,f'Se ha guardado la cita')
-                 return redirect("cliente_details_zonas", pk=cliente1.id_paciente)
+                 messages.success(request,f'Se ha guardado la zona')
+                 return redirect("cliente_details_tratamientos", pk=cliente1.id_paciente)
              else:
                 #messages.error(request,f'Ha sucedido el siguiente error {form.errors }')
                 form = CitaForm()
@@ -130,8 +130,8 @@ def edit_cita(request, pk):
         if form.is_valid():
             post = form.save(commit=False)
             post.save()
-            messages.success(request,f'Se ha guardado la cita')
-            return redirect("cliente_details_citas", pk=cita.paciente.id_paciente)
+            messages.success(request,f'Se ha guardado la zona')
+            return redirect("cliente_details_tratamientos", pk=cita.paciente.id_paciente)
     else:
         form = CitaForm(instance=cita)
     return render(request, 'treatmentSesion/edit_cita.html', {'form': form, 'footer': footer})
@@ -143,5 +143,5 @@ def delete_cita(request, pk):
     footer=Configuracion.objects.all().last()
     cita1=get_object_or_404(Cita, pk=pk)
     cita=get_object_or_404(Cita, pk=pk).delete()
-    messages.error(request,f'Se ha borrado la cita')
-    return redirect("cliente_details_citas", pk=cita1.paciente.id_paciente)
+    messages.error(request,f'Se ha borrado la zona')
+    return redirect("cliente_details_tratamientos", pk=cita1.paciente.id_paciente)

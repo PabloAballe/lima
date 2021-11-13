@@ -1,10 +1,8 @@
 <!doctype html>
-{% load unicorn %}
 <html lang="es" data-theme="light">
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
- {% unicorn_scripts %}
   <title>{{web.nombre_web_app}}</title>
   <meta name="description" content="{{web.descripcion_web_app}}">
   <meta name="author" content="Pablo Aballe">
@@ -45,6 +43,9 @@ nav a:hover {
     margin-bottom: 5rem;
     overflow: auto;
 }
+.contact{
+        padding: 1rem;
+}
 #loading {
   width: 100%;
   height: 100%;
@@ -78,7 +79,6 @@ width: 100%;
           <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
         </div>
         </div>
-{% csrf_token %}
 {% include 'core/message.html'%}
 {% include 'core/confirm.html'%}
 {% include 'web_nav.html'%}

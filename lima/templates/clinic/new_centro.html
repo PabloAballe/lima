@@ -5,18 +5,18 @@
 {%block content%}
 {%include 'core/nav.html'%}
 
-<div class="grid grid-cols-5 gap-4">
+<div class="{% if request.user_agent.is_mobile %}{%else%}grid grid-cols-5 gap-4{%endif %} ">
 <div class="aside-bar">
     {% include 'core/aside.html'%}
 </div>
 
      <div class="col-span-4">
-         <div class="login " >
+         <div class="{% if request.user_agent.is_mobile %}index1{% else %}login{%endif%}">
 <img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
   <br>
-  <h2>Añade un centro nuevo</h2>
+  <h2>Añadiendo centro nuevo</h2>
   <br>
-  <form method="post" >
+  <form method="post" style="grid-template-columns: repeat(1, minmax(0, 1fr));" >
     {% csrf_token %}
       {{ form|crispy }}
        <div class="buttons">
@@ -30,7 +30,7 @@
 </div>
 </div>
 
-
+<br><br><br><br>
 
 
 

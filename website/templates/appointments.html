@@ -1,6 +1,5 @@
 
 {% extends 'web_base.html' %}
-{% load unicorn %}
 {% block 'web_content'%}
 <div class="contact">
 {% for page in page %}
@@ -55,7 +54,7 @@ function deleteArrayIndex(i){
             calendar.changeView( 'timeGridDay', info.dateStr);
           },
      locale: 'es',
-    initialView: 'timeGridWeek',
+    initialView: 'dayGridMonth',
     slotLabelInterval: '00:{{footer.slots}}:00',
     slotDuration: '00:{{footer.slots}}:00',
     initialDate: today,
@@ -82,7 +81,7 @@ function deleteArrayIndex(i){
 <h1 class="text-3xl text-center">Agenda tu cita</h1>
 <br>
 <p class="text-2xl text-center"> ⚠️ Recuerda que el centro abre de  {{cen.dias_abre_centro}} de {{cen.horario_apertura}} a {{cen.horario_cierre}}</p>
-<p class="text-2xl text-center"> 📱 Solo es posible reservar una cita desde este módulo. En caso de querer agendar más de una por favor contacte con el centro en el siguiente teléfono {{footer.telefono}}</p>
+<p class="text-2xl text-center"> 📱 Solo es posible reservar {{footer.numero_citas}} cita desde este módulo. En caso de querer agendar más de una por favor contacte con el centro en el siguiente teléfono {{footer.telefono}}</p>
 <div class="grid grid-cols-1 ">
     <div class="form p-2">
    {% include 'website_cita_form.html'%}

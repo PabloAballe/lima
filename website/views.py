@@ -21,6 +21,8 @@ from django.template.loader import render_to_string
 from io import BytesIO
 from django.template.loader import get_template
 from xhtml2pdf import pisa
+from django.utils import timezone
+from django.utils.html import strip_tags
 
 def config_website(request):
     conf=ConfiguracionWEB.objects.all().last()
@@ -131,6 +133,11 @@ def website_appointment(request, centro, cliente, tecnica):
     form=AppointmentWEBForm()
     cliente=get_object_or_404(Paciente, pk=cliente)
     tec=get_object_or_404(Tecnica, pk=tecnica)
+    citasCliente=Lista.objects.filter(cliente=cliente, hora_inicio__gt=timezone.now(),is_app=True).count()
+
+    if citasCliente>0:
+        messages.warning(request,f'Ya tiene una cita agendada por favor contacte con el centro si ha perdido su resguardo')
+        return redirect("website_index")
 
     if request.method == 'POST':
         form = AppointmentWEBForm(request.POST)
@@ -147,39 +154,37 @@ def website_appointment(request, centro, cliente, tecnica):
                 lista.centro=cliente.centro
                 lista.tecnica=tec
                 lista.cliente=cliente
+                lista.is_app=True
                 fecha = (lista.hora_inicio +  dt.timedelta(minutes=lista.servicios.duracion_sevicio))
                 lista.hora_fin=fecha
-                flag=Lista.objects.raw(f"SELECT lima_lista.id_lista, COUNT(*) AS flag FROM 	lima_lista WHERE  	lima_lista.centro_id={centro} 	AND ( (	lima_lista.hora_inicio >= '{lista.hora_inicio}' AND lima_lista.hora_inicio<='{lista.hora_fin}') OR (lima_lista.hora_fin> '{lista.hora_inicio}' AND lima_lista.hora_fin < '{lista.hora_fin}'))")
-                if flag[0].flag!=0:
-                    #messages.error(request,f'No se ha podido guardar la cita {flag[0].flag} de tipo {type(flag[0].flag)}')
-                    messages.error(request,f'No se ha podido guardar la cita porque no se encuentra este espacio y técnica disponible actualmente de {lista.hora_inicio} a {lista.hora_fin}')
-                    return redirect("website_appointment", centro=cliente.centro.pk, cliente=cliente.pk, tecnica=tec.pk)
-                else:
-                    lista.save()
-                    messages.success(request,f'Se ha agendado la cita ')
-                    # mensaje=Template(msg)
-                    # c = Context({'usuario': f'{cliente.nombre_paciente} {cliente.apellidos_paciente}',
-                    #             'centro': cliente.centro.nombre_centro, 'localizacion_centro': cliente.centro.localizacion,
-                    #             'nombre_comercial': footer.nombre_comercial, 'propietario': footer.propietario,
-                    #             'telefono': footer.telefono,
-                    #             'TelefonoUsuario':  cliente.telefono_paciente,
-                    #             'EmailUsuario': cliente.email,
-                    #             'dni': cliente.dni,
-                    #             'poblacion': cliente.poblacion,
-                    #             'direccion': cliente.direccion,
-                    #             'FechaActual' : timezone.now(),
-                    #             'HoraInicioCita': lista.hora_inicio,
-                    #             'HoraFinCita': lista.hora_fin,
-                    #             'Servicio': lista.servicios.nombre_servicio,
-                    #             'CitaURL': f'https://{request.get_host()}/website/appointment/{cliente.centro.pk}94840{cliente.pk}042f02cf{request.user.tecnica.pk}29d55a'})
-                    # mensaje=mensaje.render(c)
-                    # subject = f'Resguardo de cita en{footer.nombre_comercial}'
-                    # template=mensaje
-                    # html_message = render_to_string('core/blanc.html', {'mensaje': template, 'footer': footer})
-                    # plain_message = strip_tags(html_message)
-                    # try:
-                    #     messages.success(request,f'Email Enviado a {cliente.email} ')
-                    # except Exception as e:
-                    #     messages.error(request,f"A ocurrido el siguiente error {e}")
-                    return redirect("website_pdf" , cita=lista.pk)
+                lista.save()
+                messages.success(request,f'Se ha agendado la cita ')
+                mensaje=Template(msg)
+                c = Context({'usuario': f'{cliente.nombre_paciente} {cliente.apellidos_paciente}',
+                            'centro': cliente.centro.nombre_centro, 'localizacion_centro': cliente.centro.localizacion,
+                            'nombre_comercial': footer.nombre_comercial, 'propietario': footer.propietario,
+                            'telefono': footer.telefono,
+                            'TelefonoUsuario':  cliente.telefono_paciente,
+                            'EmailUsuario': cliente.email,
+                            'dni': cliente.dni,
+                            'poblacion': cliente.poblacion,
+                            'direccion': cliente.direccion,
+                            'FechaActual' : timezone.now(),
+                            'HoraInicioCita': lista.hora_inicio,
+                            'HoraFinCita': lista.hora_fin,
+                            'Servicio': lista.servicios.nombre_servicio,
+                            'CitaURL': f'https://{request.get_host()}/website/appointment/{cliente.centro.pk}94840{cliente.pk}042f02cf{request.user.tecnica.pk}29d55a'})
+                mensaje=mensaje.render(c)
+                subject = f'Resguardo de cita en{footer.nombre_comercial}'
+                template=mensaje
+                html_message = render_to_string('core/blanc.html', {'mensaje': template, 'footer': footer})
+                plain_message = strip_tags(html_message)
+                try:
+                    from_email = f'Enviado por {footer.propietario}'
+                    to = cliente.email
+                    mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
+                    messages.success(request,f'Email Enviado a {cliente.email} ')
+                except Exception as e:
+                    messages.error(request,f"A ocurrido el siguiente error {e}")
+                return redirect("website_pdf" , cita=lista.pk)
     return render(request, "appointments.html", {'web': conf, 'nav': nav, 'bloqueos': bloqueos,'footer': footer,'form': form, 'cen': cen,'cliente': cliente})

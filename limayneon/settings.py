@@ -12,7 +12,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '!)^^qd0wp-%y)95no^1^%2&&mhm2z#5#eoxr)4#i*&$m0j*=r='
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = [
 '*'
@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     #custom admin
     'simple_history',
     'import_export',
-    'app_admin',
     'django_filters',
     'faicon',
     'tinymce',
@@ -47,6 +46,8 @@ INSTALLED_APPS = [
     'django.contrib.humanize',
     'multiselectfield',
     'jsignature',
+    'django_user_agents',
+     'email_log',
 ]
 
 MIDDLEWARE = [
@@ -59,6 +60,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'simple_history.middleware.HistoryRequestMiddleware',
     'admin_reorder.middleware.ModelAdminReorder',
+    'django_user_agents.middleware.UserAgentMiddleware',
 
 ]
 
@@ -81,6 +83,7 @@ TEMPLATES = [
     },
 ]
 
+USER_AGENTS_CACHE = 'default'
 INTERNAL_IPS = [
     '37.14.105.28',
 ]
@@ -179,6 +182,8 @@ EMAIL_HOST_USER = 'thewavecompany.app@gmail.com'
 EMAIL_HOST_PASSWORD = 'bworedjxndeiivbw'  # os.environ['password_key'] suggested
 EMAIL_USE_TLS = True
 
+# email log
+EMAIL_BACKEND = 'email_log.backends.EmailBackend'
 
 
 #firma
@@ -214,7 +219,7 @@ ADMIN_REORDER = (
     # Clientes
     {'app': 'lima', 'label': 'Clientes',
      'models': ('lima.Paciente','lima.Tratamientos','lima.Lista', 'lima.Cita', 'lima.ImagenesClientes', 'lima.Tags','lima.EstadosClientes',
-     'lima.DocSings')
+     'lima.DocSings', 'lima.Origenes')
     },
         # Centros
     {'app': 'lima', 'label': 'Centros',
@@ -244,7 +249,7 @@ ADMIN_REORDER = (
      'models': ('lima.Servicios',)
     },
     #Cajas
-    {'app': 'lima', 'label': 'Servicios',
+    {'app': 'lima', 'label': 'Cajas',
      'models': ('lima.Cajas',)
     },
     #Stock
@@ -256,6 +261,7 @@ ADMIN_REORDER = (
      'models': ('website.Blog','website.Conctact','website.Pages')},
     # Tema
     {'app': 'admin_interface', 'label': 'Temas del Configurador'},
+    {'app': 'email_log', 'label': 'Log de Emails'},
 )
 
 

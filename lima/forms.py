@@ -101,7 +101,7 @@ class DocTemplateNewForm(forms.ModelForm):
 class SingForm(forms.ModelForm):
     class Meta:
         model=DocSings
-        fields=('firma', )
+        fields=('plantilla_document','firma', )
 
 
 class SingForm_(forms.Form):
@@ -169,7 +169,11 @@ class WhatsappForm(forms.Form):
     # widgets = {
     #         'mensaje': forms.Textarea(attrs={'class':'some_class', 'id':'editor'}),
     #     }
-    mensaje=forms.CharField(label='Mensaje a enviar:', max_length=500)
+    mensaje=forms.CharField(label='Mensaje a enviar:', max_length=500,)
+
+    def __init__(self, *args, **kwargs):
+        super(WhatsappForm, self).__init__(*args, **kwargs) # Call to ModelForm constructor
+        self.fields['mensaje'].widget.attrs['style'] = 'height:10rem;'
 
 class EstadisticasAdminForm(forms.Form):
     fecha_inico=forms.DateTimeField(label='Fecha de inicio')

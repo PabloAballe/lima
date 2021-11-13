@@ -110,3 +110,20 @@ def index(request):
      # determino si el centro está trabajando o no
     now=dt.datetime.now()
     return render(request, 'index.html',{'cen': cen, 'form': form ,'notfound': notfound ,'salida': salida, 'footer': footer,'cTime':now,'perfiles': perfiles})
+
+
+
+
+
+def handler404(request, *args, **argv):
+    response = render_to_response('errors/404.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 404
+    return response
+
+
+def handler500(request, *args, **argv):
+    response = render_to_response('errors/500.html', {},
+                                  context_instance=RequestContext(request))
+    response.status_code = 500
+    return response

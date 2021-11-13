@@ -8,27 +8,32 @@
 <!-- XDSoft DateTimePicker -->
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
- <div class="grid grid-cols-5 gap-4 ">
+<div class="{% if request.user_agent.is_mobile %}{%else%}grid grid-cols-5 gap-4{%endif %} ">
 <div class="aside-bar">
     {% include 'core/aside.html'%}
 </div>
 
-     <div class="col-span-4 ">
-         <div class="index1">
-<div class="login ">
-  <h2>Editando centro</h2>
+     <div class="col-span-4">
+         <div class="{% if request.user_agent.is_mobile %}index1{% else %}login{%endif%}">
+<img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
   <br>
-
-  <form method="post">
+  <h2>Editando el centro </h2>
+  <br>
+  <form method="post" style="grid-template-columns: repeat(1, minmax(0, 1fr));" >
     {% csrf_token %}
-     {{ form|crispy }}
-      <div class="buttons">
-    <button type="submit" class="btn">Guardar</button>
-  </form>
-   <button class="btn" type="button" onClick="javascript:history.go(-1);">Cancelar</button>
-</div></div>
-</div></div>
+      {{ form|crispy }}
+       <div class="buttons">
+    <button type="submit" class="btn" >Añadir</button>
 
+  </form>
+  <button class="btn" type="button" onClick="javascript:history.go(-1);">Cancelar</button>
+</div>
+
+</div>
+</div>
+</div>
+
+<br><br><br><br>
 
 <script>
 

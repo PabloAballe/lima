@@ -123,19 +123,19 @@ def doc_prerender(request, user,doc):
     footer=Configuracion.objects.all().last()
     doc_=get_object_or_404(DocTemplate, pk=doc)
     user_=get_object_or_404(Paciente, pk=user)
-    #sign__ = DocSings.objects.get_or_create(cliente=user_, plantilla_doc=doc_)
-    sign=DocSings.objects.filter(cliente=user_, plantilla_doc=doc_).first()
-    firm='<img   width="10rem"  src="{{ sign.firma.url }}" alt=" {{sign.plantilla_doc.nombre_doc}} " />'
-    if sign.plantilla_doc=='':
+    sign__ = DocSings.objects.get_or_create(cliente=user_, plantilla_doc=doc_)
+    sign=DocSings.objects.filter(cliente=user_, plantilla_doc=doc_).last()
+    firm=f'<img   width="10rem"  src="{sign.firma.url}" alt="{sign.plantilla_doc.nombre_doc}" />'
+    if sign.plantilla_document=='':
         sign.plantilla_document=doc_.plantilla_doc
         sign.save()
-    mensaje=Template(sign.plantilla_doc)
+    mensaje=Template(sign.plantilla_document)
     c = Context({
                 'usuario': f'{user_.nombre_paciente} {user_.apellidos_paciente}',
                 'centro': user_.centro.nombre_centro, 'localizacion_centro': user_.centro.localizacion,
                 'nombre_comercial': footer.nombre_comercial, 'propietario': footer.propietario,
                 'telefono': footer.telefono,
-                'firma' : firm,
+                'firma' : sign.firma.url,
                 'TelefonoUsuario':  user_.telefono_paciente,
                 'EmailUsuario': user_.email,
                 'dni': user_.dni,
@@ -145,24 +145,23 @@ def doc_prerender(request, user,doc):
                 'CitaURL': f'https://{request.get_host()}/website/appointment/{user_.centro.pk}94840{user_.pk}042f02cf{request.user.tecnica.pk}29d55a',
                 })
     render_doc=mensaje.render(c)
-    form=PrerenderForm(initial={'plantilla_doc': render_doc})
-    firma_form = SingForm()
+    form=SingForm(instance=sign)
     if request.method == 'POST':
-        firma_form = SingForm(request.POST,request.FILES)
-        if firma_form.is_valid():
+        form = SingForm(request.POST,request.FILES,instance=sign)
+        if form.is_valid():
             try:
                 sign.delete()
-                firma=firma_form.save(commit=False)
+                firma=form.save(commit=False)
+                sign.plantilla_document=render_doc
                 firma.cliente=user_
                 firma.save()
                 messages.success(request,f'Se ha guardado el documento')
-                #return redirect("client_details_tratamientos", pk=user_.pk)
+                return redirect("cliente_details_tratamientos", pk=user_.pk)
             except ValueError as e:
                 messages.error(request,f'Ha ocurrido el siguiente error: ', e)
     else:
-        form=PrerenderForm(initial={'plantilla_doc': render_doc})
-        firma_form = SingForm()
-    return render(request, "docs/doc_prerender.html" , {'form': form, 'footer': footer, 'doc': doc_,'sign': sign, 'client': user_, 'firma_form':firma_form })
+        form=SingForm(instance=sign)
+    return render(request, "docs/doc_prerender.html" , {'form': form, 'footer': footer, 'doc': doc_,'sign': sign, 'cliente': user_ })
     #return HttpResponse('ok')
 @login_required(login_url='login')
 def docs_sign_list(request, user=0):
@@ -193,27 +192,20 @@ def docs_sign_list(request, user=0):
 
 @login_required(login_url='login')
 def doc_email(request, pk):
-    suscription=Suscription.objects.filter(type="S").latest('id_sicription')
-    if suscription.enddate<dt.datetime.now():
-        messages.error(request,f'Su suscripción ha caducado el día {suscription.enddate}')
-        return redirect("suscripcion")
-    elif suscription.clinicas_max < Centro.objects.all().filter(habilitado=True).count():
-        messages.error(request,f'Su suscripción ha excedido el número de clínicas por favor contrate un plan superior. Actualmente hace uso de {Centro.objects.all().filter(habilitado=True).count()} clínicas')
-        return redirect("suscripcion")
     footer=Configuracion.objects.all().last()
     doc=get_object_or_404(DocSings, pk=pk)
     cliente=doc.cliente
-    mensaje=doc.plantilla_render
+    mensaje=doc.plantilla_document
     mensaje=Template(mensaje)
     c = Context()
     mensaje=mensaje.render(c)
     subject = f'Tu documento de {doc.plantilla_doc.nombre_doc} de {footer.nombre_comercial}'
     template=mensaje
-    html_message = render_to_string('blanc.html', {'mensaje': template, 'footer': footer})
+    html_message = render_to_string('core/blanc.html', {'mensaje': template, 'footer': footer})
     plain_message = strip_tags(html_message)
     from_email = f'Enviado por {footer.propietario}'
     to = cliente.email
     mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
     mail.send_mail(subject, plain_message, from_email, [footer.email_sistema], html_message=html_message)
-
+    messages.success(request,f'Se ha enviado el documento por email')
     return redirect("cliente_details_tratamientos", pk=doc.cliente.pk)

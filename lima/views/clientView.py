@@ -14,7 +14,7 @@ from django.template import Context, Template
 from django.contrib import messages
 from ..filters import *
 import os
-
+from django.utils.html import strip_tags
 #email
 from twilio.rest import Client
 from django.conf import settings
@@ -62,6 +62,7 @@ def cliente_details_tratamientos(request, pk):
     footer=Configuracion.objects.all().last()
     cliente1=get_object_or_404(Paciente, pk=pk)
     tratamientos=Tratamientos.objects.all().order_by("-fecha").filter(cliente=cliente1)
+    cita=Cita.objects.all().order_by("-fecha").filter(paciente=cliente1)
     c_citas=Lista.objects.filter(cliente=cliente1).order_by("-hora_inicio").count()
     c_tratamientos=Tratamientos.objects.all().order_by("-fecha").filter(cliente=cliente1).count()
     c_zonas=Cita.objects.all().order_by("fecha").filter(paciente=cliente1).count()
@@ -72,7 +73,7 @@ def cliente_details_tratamientos(request, pk):
     request.session['cliente_telefono'] = cliente1.telefono_paciente
     request.session['cliente_email'] = cliente1.email
     request.session['cliente_centro'] = cliente1.centro.nombre_centro
-    return render(request, "client/cliente_details_tratamientos.html", {'cliente': cliente1, 'footer': footer, 'tratamientos': tratamientos , 'c_citas': c_citas, 'c_tratamientos': c_tratamientos, 'c_zonas': c_zonas})
+    return render(request, "client/cliente_details_tratamientos.html", {'cliente': cliente1, 'footer': footer, 'tratamientos': tratamientos , 'c_citas': c_citas, 'c_tratamientos': c_tratamientos, 'c_zonas': c_zonas,'cita': cita})
 
 @login_required(login_url='login')
 def cliente_details_zonas(request, pk):
@@ -112,8 +113,6 @@ def new_cliente(request, pk):
         if form.is_valid():
             cliente = form.save(commit=False)
             cliente.centro=centro1
-            if cliente.estado is None:
-                cliente.estado=1
             form.save()
             if footer.enviar_email_nuevos_clientes and footer.plantilla_email:
                 mensaje=Template(mensaje)
@@ -133,18 +132,11 @@ def new_cliente(request, pk):
                 template=mensaje
                 html_message = render_to_string('blanc.html', {'mensaje': template, 'footer': footer})
                 plain_message = strip_tags(html_message)
-                # from_email = f'Enviado por {footer.propietario}'
-                # to = cliente.email
-                # mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
-                try:
-                    message = Mail(
-                        from_email=footer.email_sistema,
-                        to_emails=cliente.email,
-                        subject=subject,
-                        html_content=html_message)
 
-                    sg = SendGridAPIClient(footer.twilio_SENDGRID_API_KEY)
-                    sg.send(message)
+                try:
+                    from_email = f'Enviado por {footer.propietario}'
+                    to = cliente.email
+                    mail.send_mail(subject, plain_message, from_email, [to], html_message=html_message)
                     messages.success(request,f'Se ha enviado el Email a la dirección {cliente.email} ')
                 except Exception as e:
                     messages.error(request,f"A ocurrido el siguiente error {e}")

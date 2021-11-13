@@ -3,24 +3,47 @@ from .models import *
 from import_export import resources
 from import_export.admin import ImportExportModelAdmin
 import datetime as dt
+from django.contrib.auth.admin import UserAdmin
+from django.contrib.auth.models import User
 
+class UserAdmin(UserAdmin):
+    list_display = ('first_name', 'last_name','email',)
+    fieldsets = (
+        (None, {
+            'fields': ('first_name', 'last_name','email','last_login','date_joined')
+        }),
+        ('Opciones Avanzadas', {
+            'classes': ('collapse',),
+            'fields': ('password', 'groups','user_permissions','is_staff','is_active',),
+        }),
+    )
+    list_filter = ('is_staff', 'last_login','date_joined')
+    search_fields = ['first_name', 'last_name','email' ]
+    readonly_fields = ['password','is_active','date_joined', 'last_login']
+
+class OrigenesAdmin(ImportExportModelAdmin):
+    list_display= ['origen', 'fecha_creacion',]
+    search_fields = ['origen', ]
+    list_filter =  ['origen', 'fecha_creacion',]
 
 
 class CentroAdmin(ImportExportModelAdmin):
-    list_display= ['nombre_centro', 'propietaria', 'localizacion']
+    list_display= ['image_tag','nombre_centro', 'propietaria', 'localizacion']
     search_fields = ['nombre_centro', 'propietaria', 'localizacion']
     list_filter =  ['nombre_centro', 'propietaria', 'localizacion']
+    readonly_fields = ['image_tag',]
 
 class PacienteAdmin(ImportExportModelAdmin):
-    list_display= ['id_paciente','nombre_paciente', 'apellidos_paciente', 'telefono_paciente', 'email', 'documento_de_autorizacion','estado','documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion', 'direccion' ]
+    list_display= ['id_paciente','image_tag','nombre_paciente', 'apellidos_paciente', 'telefono_paciente', 'email', 'documento_de_autorizacion','estado','documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion', 'direccion' ]
     search_fields =['id_paciente','nombre_paciente', 'apellidos_paciente', 'telefono_paciente', 'email', 'poblacion', 'direccion' ]
-    list_filter = ['centro__nombre_centro','fecha_alta','estado__nombre_estado','documento_de_autorizacion', 'documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion' ]
+    list_filter = ['centro__nombre_centro','fecha_alta','estado__nombre_estado','documento_de_autorizacion', 'documento_proteccion_de_datos','autorizacion_envio_informacion_comercial', 'poblacion', 'origen' ]
+    readonly_fields = ['image_tag']
 
 class TecnicaAdmin(ImportExportModelAdmin):
-    list_display= ['nombre_tecnica', 'apellidos_tecnica']
+    list_display= ['image_tag','nombre_tecnica', 'apellidos_tecnica']
     search_fields = ['nombre_tecnica', 'apellidos_tecnica']
     list_filter =  ['nombre_tecnica', 'apellidos_tecnica']
-
+    readonly_fields = ['image_tag']
 
 class CitaAdmin(ImportExportModelAdmin):
     list_display= ['tecnica','fecha', 'zona']
@@ -28,9 +51,10 @@ class CitaAdmin(ImportExportModelAdmin):
     list_filter =   ['tecnica__nombre_tecnica','fecha', 'zona']
 
 class AnuncioAdmin(ImportExportModelAdmin):
-    list_display= ['cuerpo_anuncio','centro']
+    list_display= ['image_tag','cuerpo_anuncio','centro']
     search_fields = ['cuerpo_anuncio','centro__nombre_centro']
-    list_filter =  ['cuerpo_anuncio','centro__nombre_centro']
+    list_filter =  ['activo','cuerpo_anuncio','centro__nombre_centro','todos_los_centros']
+    readonly_fields = ['image_tag']
 
 class HorariosAdmin(ImportExportModelAdmin):
     list_display= ['tecnica','fecha', 'entrada', 'salida','trabajado']
@@ -52,9 +76,10 @@ class TurnosAdmin(ImportExportModelAdmin):
     list_filter =   ['tecnica__nombre_tecnica','centro__nombre_centro', 'turno_inicio', 'turno_fin']
 
 class TratamientosAdmin(ImportExportModelAdmin):
-    list_display= ['fecha', 'cliente','js', 'jl', 'tecnica','comentario']
+    list_display= ['image_tag','fecha', 'cliente','js', 'jl', 'tecnica','comentario']
     search_fields =  ['fecha','tecnica', 'cliente']
     list_filter =   ['fecha','tecnica', 'cliente']
+    readonly_fields = ['image_tag']
 
 class ServiciosAdmin(ImportExportModelAdmin):
     list_display= ['nombre_servicio', 'duracion_sevicio']
@@ -77,10 +102,10 @@ class EmailTemplatesAdmin(ImportExportModelAdmin):
     list_filter =   ['nombre', 'plantilla']
 
 class ImagenesClientesAdmin(ImportExportModelAdmin):
-    list_display= ['cliente', 'tecnica', 'comentario', 'fecha']
+    list_display= ['cliente', 'image_tag','tecnica', 'comentario', 'fecha']
     search_fields = ['cliente__nombre_paciente', 'tecnica__nombre_tecnica', 'comentario', 'fecha']
     list_filter =  ['cliente__nombre_paciente', 'tecnica__nombre_tecnica', 'comentario', 'fecha']
-    readonly_fields=('fecha',)
+    readonly_fields=('fecha','image_tag',)
 
 class CajasAdmin(ImportExportModelAdmin):
     list_display= ['centro', 'tecnica','porcentaje', 'cantidad_total', 'cantidad_total_centro']
@@ -119,15 +144,18 @@ class DocTemplateAdmin(ImportExportModelAdmin):
     list_filter =  ['nombre_doc','creado_el']
 
 class DocSingsAdmin(ImportExportModelAdmin):
-    list_display= ['cliente','firmado_el']
+    list_display= ['cliente','image_tag','firmado_el']
     search_fields =  ['cliente__nombre_paciente','firmado_el']
     list_filter =  ['cliente__nombre_paciente','firmado_el']
+    readonly_fields = ['image_tag']
 
-admin.site.site_header = "My Manager"
-admin.site.site_title = "My Manager"
-admin.site.index_title = "My Manager"
+admin.site.site_header = "WaveSense"
+admin.site.site_title = "WaveSense"
+admin.site.index_title = "WaveSense"
 
-
+admin.site.unregister(User)
+admin.site.register(User, UserAdmin)
+admin.site.register(Origenes, OrigenesAdmin)
 admin.site.register(DocTemplate, DocTemplateAdmin)
 admin.site.register(DocSings, DocSingsAdmin)
 admin.site.register(EstadosClientes, EstadosClientesAdmin)

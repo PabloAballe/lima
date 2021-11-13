@@ -10,20 +10,20 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
 
-<div class="grid grid-cols-5 gap-4">
+<div class="{% if request.user_agent.is_mobile %}{%else%}grid grid-cols-5 gap-4{%endif %} ">
 <div class="aside-bar">
     {% include 'core/aside.html'%}
 </div>
 
      <div class="col-span-4">
-         <div class="login ">
+         <div class="{% if request.user_agent.is_mobile %}{% else %}login{%endif%}">
 <img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
   <h2>Cita </h2>
   <hr>
   <p><i>Unicamente debemos añadir citas a futuro de lo contrario contácte con el administrador</i></p>
   <br>
 
-  <form method="post" >
+  <form method="post" style="grid-template-columns: repeat(1, minmax(0, 1fr));">
     {% csrf_token %}
     {{ form|crispy }}
      <div class="buttons">
@@ -34,7 +34,7 @@
 </div>
 </div>
          </div>
-
+<br><br><br><br>
 <script>
 
   $(function () {
