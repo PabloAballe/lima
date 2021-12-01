@@ -36,7 +36,7 @@ label {
 
 .required label, label.required {
     font-weight: bold;
-    color: #333;
+    /*color: #333;*/
 }
 
 /* RADIO BUTTONS */
@@ -69,15 +69,15 @@ form ul.inline li {
 
 .aligned label {
     display: block;
-    padding: 4px 10px 0 0;
-    float: left;
-    width: 160px;
+    /*padding: 4px 10px 0 0;*/
+    /*float: left;*/
+    /*width: 160px;*/
     word-wrap: break-word;
-    line-height: 1;
+    /*line-height: 1;*/
 }
 
 .aligned label:not(.vCheckboxLabel):after {
-    content: '';
+    /*content: '';*/
     display: inline-block;
     vertical-align: middle;
     height: 26px;
@@ -87,7 +87,7 @@ form ul.inline li {
     padding: 6px 0;
     margin-top: 0;
     margin-bottom: 0;
-    margin-left: 170px;
+    /*margin-left: 170px;*/
 }
 
 .aligned ul label {
@@ -118,9 +118,9 @@ form .aligned ul.radiolist {
 form .aligned p.help,
 form .aligned div.help {
     clear: left;
-    margin-top: 0;
-    margin-left: 160px;
-    padding-left: 10px;
+    /*margin-top: 0;*/
+    /*margin-left: 130px;*/
+    /*padding-left: 3px;*/
 }
 
 form .aligned label + p.help,
@@ -141,12 +141,12 @@ form .aligned select + p.help,
 form .aligned input + div.help,
 form .aligned textarea + div.help,
 form .aligned select + div.help {
-    margin-left: 160px;
-    padding-left: 10px;
+    /*margin-left: 160px;*/
+    /*padding-left: 10px;*/
 }
 
 form .aligned ul li {
-    list-style: none;
+    /*list-style: none;*/
 }
 
 form .aligned table p {
@@ -158,8 +158,8 @@ form .aligned table p {
     float: none;
     width: auto;
     display: inline-block;
-    vertical-align: -3px;
-    padding: 0 0 5px 5px;
+    /*vertical-align: -3px;*/
+    /*padding: 0 0 5px 5px;*/
 }
 
 .aligned .vCheckboxLabel + p.help,
@@ -191,12 +191,12 @@ fieldset .fieldBox {
 form .wide p,
 form .wide input + p.help,
 form .wide input + div.help {
-    margin-left: 200px;
+    /*margin-left: 200px;*/
 }
 
 form .wide p.help,
 form .wide div.help {
-    padding-left: 38px;
+    /*padding-left: 38px;*/
 }
 
 form div.help ul {
@@ -390,12 +390,12 @@ body.popup .submit-row {
 
 .inline-related h3 {
     margin: 0;
-    color: #666;
+    /*color: #666;*/
     padding: 5px;
     font-size: 13px;
-    background: #f8f8f8;
-    border-top: 1px solid #eee;
-    border-bottom: 1px solid #eee;
+    /*background: #f8f8f8;*/
+    /*border-top: 1px solid #eee;*/
+    /*border-bottom: 1px solid #eee;*/
 }
 
 .inline-related h3 span.delete {
@@ -409,7 +409,7 @@ body.popup .submit-row {
 
 .inline-related fieldset {
     margin: 0;
-    background: #fff;
+    /*background: #fff;*/
     border: none;
     width: 100%;
 }
@@ -430,7 +430,6 @@ body.popup .submit-row {
 
 .inline-related.tabular fieldset.module table {
     width: 100%;
-    overflow-x: scroll;
 }
 
 .last-related fieldset {
@@ -454,13 +453,13 @@ body.popup .submit-row {
 
 .inline-group .tabular td.original p {
     position: absolute;
-    left: 0;
-    height: 1.1em;
-    padding: 2px 9px;
+    right: 0;
+    /*height: 1.1em;*/
+    /*padding: 2px 9px;*/
     overflow: hidden;
-    font-size: 9px;
+    font-size: 12px;
     font-weight: bold;
-    color: #666;
+    /*color: #666;*/
     _width: 700px;
 }
 
@@ -478,9 +477,9 @@ body.popup .submit-row {
 .inline-group div.add-row,
 .inline-group .tabular tr.add-row td {
     color: #666;
-    background: #f8f8f8;
+    background: #f2f4f6;
     padding: 8px 10px;
-    border-bottom: 1px solid #eee;
+    /*border-bottom: 1px solid #eee;*/
 }
 
 .inline-group .tabular tr.add-row td {
@@ -502,12 +501,18 @@ body.popup .submit-row {
 
 /* RELATED FIELD ADD ONE / LOOKUP */
 
-.related-lookup {
+.add-another, .related-lookup {
     margin-left: 5px;
     display: inline-block;
     vertical-align: middle;
     background-repeat: no-repeat;
     background-size: 14px;
+}
+
+.add-another {
+    width: 16px;
+    height: 16px;
+    background-image: url(../img/icon-addlink.svg);
 }
 
 .related-lookup {

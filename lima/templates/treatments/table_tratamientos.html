@@ -21,9 +21,14 @@
       {%for tratamiento in tratamientos %}
       <tr >
         <th>{{ tratamiento.numero_de_sesion }}</th>
+        {% if tratamiento.firma %}
         <td>{{tratamiento.image_tag}}</td>
+        {% else %}
+        <td>&nbsp;</td>
+        {%endif%}
+
         <th>{{ tratamiento.zona }}</th>
-        <td>{{tratamiento.tecnica}}</td>
+        <td>{}{tratamiento.tecnica}}</td>
         <td>{{tratamiento.js}}</td>
         <td>{{tratamiento.jl}}</td>
         <td>{{tratamiento.fecha}}</td>

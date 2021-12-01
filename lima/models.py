@@ -449,7 +449,11 @@ class Tratamientos(models.Model):
         return f"Sesión de tratamiento con fecha : {self.fecha}"
 
     def image_tag(self):
-        return mark_safe(f'<img src="{self.firma.url}" width="50rem" height="50rem" style="border-radius:25%" />')
+        if self.firma:
+            return mark_safe(f'<img src="{self.firma.url}" width="50rem" height="50rem" style="border-radius:25%" />')
+        else:
+            return mark_safe(f'&nbsp;')
+
 
     image_tag.short_description = 'Imagen'
 

@@ -7,10 +7,10 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import User
 
 class UserAdmin(UserAdmin):
-    list_display = ('first_name', 'last_name','email',)
+    list_display = ('username','first_name', 'last_name','email',)
     fieldsets = (
         (None, {
-            'fields': ('first_name', 'last_name','email','last_login','date_joined')
+            'fields': ('username','first_name', 'last_name','email','last_login','date_joined')
         }),
         ('Opciones Avanzadas', {
             'classes': ('collapse',),
