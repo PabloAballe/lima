@@ -2,13 +2,7 @@
 tailwind_filters %} {%include 'core/nav.html'%} {% load tz %}
 <div
   class="
-    {%
-    if
-    request.user_agent.is_mobile
-    %}{%else%}grid
-    grid-cols-5
-    gap-4{%endif
-    %}
+    {% if request.user_agent.is_mobile %}{%else%}grid grid-cols-5 gap-4{%endif %}
   "
 >
   <div class="aside-bar">{% include 'core/aside.html'%}</div>

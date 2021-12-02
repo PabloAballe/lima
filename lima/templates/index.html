@@ -1,14 +1,7 @@
 {%extends 'core/base.html'%} {%block content%} {%include 'core/nav.html'%} {% if
 request.user.is_staff %} {%include 'helpSystem/chat.html'%} {% endif %}
 <div
-  class="
-    {%
-    if
-    request.user_agent.is_mobile
-    %}{%else%}grid
-    grid-cols-5
-    gap-4{%endif
-    %}
+  class=" {% if request.user_agent.is_mobile %}{%else%}grid grid-cols-5 gap-4{%endif %}
   "
 >
   <div class="aside-bar">{% include 'core/aside.html'%}</div>
