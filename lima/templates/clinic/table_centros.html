@@ -46,7 +46,7 @@
         </td>
         <td>
           {% now "H:i" as todays_date %} 
-          {% if todays_date >=cen.horario_apertura | date:"H:i" and cen.horario_cierre|date:"H:i" >=todays_date %}
+          {% if todays_date >=cen.horario_apertura | date:"H:i" and cen.horario_cierre | date:"H:i" >=todays_date %}
           <svg
             xmlns="http://www.w3.org/2000/svg"
             width="16"
