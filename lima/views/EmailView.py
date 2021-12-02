@@ -3,10 +3,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth.decorators import login_required
 from ..models import *
-from django.contrib.auth.models import User
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from ..forms import *
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import get_object_or_404
 import datetime as dt
 from django.utils import timezone, dateformat
 from django.http import HttpResponse
