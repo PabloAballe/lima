@@ -11,22 +11,21 @@
 
      <div class="col-span-4">
          <div class="login " style="width: 80%; margin:auto; 	">
-  <br>
-  <h2>Plantilla de Email</h2>
-  {% include 'marketing/variables_email.html'%}
-  <br>
-  <form method="post" style="grid-template-columns: repeat(1, minmax(0, 1fr));" >
-    {% csrf_token %}
-    {{ form|crispy }}
-    <div class="buttons">
-    <button type="submit" class="btn">Guardar</button>
+            <br>
+              <h2>Plantilla de Email</h2>
+              {% include 'marketing/variables_email.html'%}
+              <br>
+              <form method="post" style="grid-template-columns: repeat(1, minmax(0, 1fr));" >
+                {% csrf_token %}
+                {{ form|crispy }}
+                <div class="buttons">
+                <button type="submit" class="btn">Guardar</button>
 
-  </form>
-  <button class="btn" type="button" onClick="javascript:history.go(-1);">Cancelar</button>
-</div></div>
+              </form>
+              <button class="btn" type="button" onClick="javascript:history.go(-1);">Cancelar</button>
+            </div>
+          </div>
         </div>
     </div>
-
-
 
 {%endblock%}

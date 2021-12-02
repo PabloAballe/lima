@@ -1,26 +1,23 @@
-
 <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-{% if messages %}
-    {% for message in messages %}
+{% if messages %} {% for message in messages %}
 
-        <script>
-        //const Swal = require('sweetalert2')
-      const Toast = Swal.mixin({
-          toast: true,
-          position: 'top-end',
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener('mouseenter', Swal.stopTimer)
-            toast.addEventListener('mouseleave', Swal.resumeTimer)
-          }
-        })
+<script>
+  //const Swal = require('sweetalert2')
+  const Toast = Swal.mixin({
+    toast: true,
+    position: "top-end",
+    showConfirmButton: false,
+    timer: 3000,
+    timerProgressBar: true,
+    didOpen: (toast) => {
+      toast.addEventListener("mouseenter", Swal.stopTimer);
+      toast.addEventListener("mouseleave", Swal.resumeTimer);
+    },
+  });
 
-        Toast.fire({
-          icon: '{{ message.tags }}',
-          title: '{{ message }}'
-        })
-        </script>
-    {% endfor %}
-{% endif %}
+  Toast.fire({
+    icon: "{{ message.tags }}",
+    title: "{{ message }}",
+  });
+</script>
+{% endfor %} {% endif %}

@@ -1,28 +1,22 @@
-{%extends 'client/cliente_details.html'%}
-{% block 'cliente' %}
+{%extends 'client/cliente_details.html'%} {% block 'cliente' %}
 
-<br>
+<br />
 <div class="collapse w-150 border rounded-box border-base-300 collapse-arrow">
-  <input type="checkbox">
-  <div class="collapse-title text-sm font-medium">
-    Zonas
-  </div>
+  <input type="checkbox" />
+  <div class="collapse-title text-sm font-medium">Zonas</div>
   <div class="collapse-content">
-     {% include 'treatmentSesion/table_citas.html'%}
+    {% include 'treatmentSesion/table_citas.html'%}
   </div>
 </div>
-<br>
-<br>
+<br />
+<br />
 <div class="collapse w-150 border rounded-box border-base-300 collapse-arrow">
-  <input type="checkbox">
-  <div class="collapse-title text-sm font-medium">
-    Sesiones de tratamiento
-  </div>
+  <input type="checkbox" />
+  <div class="collapse-title text-sm font-medium">Sesiones de tratamiento</div>
   <div class="collapse-content">
     {% include 'treatments/table_tratamientos.html'%}
   </div>
 </div>
-<br><br><br>
-
+<br /><br /><br />
 
 {%endblock%}

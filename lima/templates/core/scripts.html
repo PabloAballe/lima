@@ -1,139 +1,151 @@
 <script>
-
-
-// Quick and simple export target #table_id into a csv
-function download_table_as_csv(table_id, separator = ';') {
+  // Quick and simple export target #table_id into a csv
+  function download_table_as_csv(table_id, separator = ";") {
     // Select rows from table_id
-    var rows = document.querySelectorAll('table.' + table_id + ' tr');
+    var rows = document.querySelectorAll("table." + table_id + " tr");
     // Construct csv
     var csv = [];
     for (var i = 0; i < rows.length; i++) {
-        var row = [], cols = rows[i].querySelectorAll('td, th');
-        for (var j = 0; j < cols.length; j++) {
-            // Clean innertext to remove multiple spaces and jumpline (break csv)
-            var data = cols[j].innerText.replace(/(\r\n|\n|\r)/gm, '').replace(/(\s\s)/gm, ' ')
-            // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
-            data = data.replace(/"/g, '""');
-            // Push escaped string
-            row.push('"' + data + '"');
-        }
-        csv.push(row.join(separator));
+      var row = [],
+        cols = rows[i].querySelectorAll("td, th");
+      for (var j = 0; j < cols.length; j++) {
+        // Clean innertext to remove multiple spaces and jumpline (break csv)
+        var data = cols[j].innerText
+          .replace(/(\r\n|\n|\r)/gm, "")
+          .replace(/(\s\s)/gm, " ");
+        // Escape double-quote with double-double-quote (see https://stackoverflow.com/questions/17808511/properly-escape-a-double-quote-in-csv)
+        data = data.replace(/"/g, '""');
+        // Push escaped string
+        row.push('"' + data + '"');
+      }
+      csv.push(row.join(separator));
     }
-    var csv_string = csv.join('\n');
+    var csv_string = csv.join("\n");
     // Download it
-    var filename = 'export_' + table_id + '_' + new Date().toLocaleDateString() + '.csv';
-    var link = document.createElement('a');
-    link.style.display = 'none';
-    link.setAttribute('target', '_blank');
-    link.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(csv_string));
-    link.setAttribute('download', filename);
+    var filename =
+      "export_" + table_id + "_" + new Date().toLocaleDateString() + ".csv";
+    var link = document.createElement("a");
+    link.style.display = "none";
+    link.setAttribute("target", "_blank");
+    link.setAttribute(
+      "href",
+      "data:text/csv;charset=utf-8," + encodeURIComponent(csv_string)
+    );
+    link.setAttribute("download", filename);
     document.body.appendChild(link);
     link.click();
     document.body.removeChild(link);
-}
+  }
 
-
-
-
-
-function onLoad(loading, loaded) {
-    if(document.readyState === 'complete'){
-        return loaded();
+  function onLoad(loading, loaded) {
+    if (document.readyState === "complete") {
+      return loaded();
     }
     loading();
     if (window.addEventListener) {
-        window.addEventListener('load', loaded, false);
+      window.addEventListener("load", loaded, false);
+    } else if (window.attachEvent) {
+      window.attachEvent("onload", loaded);
     }
-    else if (window.attachEvent) {
-        window.attachEvent('onload', loaded);
-    }
-};
+  }
 
- function clearcontent(elementID) {
+  function clearcontent(elementID) {
     var gfg_down = document.getElementById(elementID);
     gfg_down.parentNode.removeChild(gfg_down);
-        };
+  }
 
-onLoad(function(){
-
-   //clearcontent('loading')
-   console.log('I am waiting for the page to be loaded');
-},
-function(){
-    clearcontent('loading')
-    console.log('The page is loaded');
-});
-
-
-
+  onLoad(
+    function () {
+      //clearcontent('loading')
+      console.log("I am waiting for the page to be loaded");
+    },
+    function () {
+      clearcontent("loading");
+      console.log("The page is loaded");
+    }
+  );
 </script>
 
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
-<script   src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script
+  src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js"
+  referrerpolicy="origin"
+></script>
 
- <script   src="https://cdn.tiny.cloud/1/no-api-key/tinymce/5/tinymce.min.js" referrerpolicy="origin"></script>
-
-    <script  >
-      tinymce.init({
-  selector: 'textarea',
-  plugins: 'code autoresize lists checklist print preview powerpaste casechange importcss tinydrive searchreplace autolink autosave save directionality advcode visualblocks visualchars fullscreen image link media mediaembed template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists checklist wordcount tinymcespellchecker a11ychecker imagetools textpattern noneditable help formatpainter permanentpen pageembed charmap tinycomments mentions quickbars linkchecker emoticons advtable export',
-  tinydrive_token_provider: 'URL_TO_YOUR_TOKEN_PROVIDER',
-  tinydrive_dropbox_app_key: 'YOUR_DROPBOX_APP_KEY',
-  tinydrive_google_drive_key: 'YOUR_GOOGLE_DRIVE_KEY',
-  tinydrive_google_drive_client_id: 'YOUR_GOOGLE_DRIVE_CLIENT_ID',
-  mobile: {
-    plugins: 'print preview powerpaste casechange importcss tinydrive searchreplace autolink autosave save directionality advcode visualblocks visualchars fullscreen image link media mediaembed template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists checklist wordcount tinymcespellchecker a11ychecker textpattern noneditable help formatpainter pageembed charmap mentions quickbars linkchecker emoticons advtable'
-  },
-  menu: {
-    tc: {
-      title: 'Comments',
-      items: 'addcomment showcomments deleteallconversations'
-    }
-  },
-  menubar: 'file edit view insert format tools table tc help',
-  toolbar: 'code | checklist | undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment',
-  autosave_ask_before_unload: true,
-  autosave_interval: '30s',
-  autosave_prefix: '{path}{query}-{id}-',
-  autosave_restore_when_empty: false,
-  autosave_retention: '2m',
-  image_advtab: true,
-
-});
-
-    </script>
-    <!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
-      <script   src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
-    <script  >
-        $('button, input:button').addClass('btn-sm');
-         $("a").click(function(){
-
-        $('button, input:button').addClass('btn-disabled');
-        document.body.style.cursor = 'wait';
-         document.body.style.pointerEvents  = 'none';
-         setTimeout(function(){
-             $('button, input:button').removeClass('btn-disabled');
-             document.body.style.cursor = 'default';
-            document.body.style.pointerEvents  = 'auto';
-
-
-         }, 2000);
-
+<script>
+  tinymce.init({
+    selector: "textarea",
+    plugins:
+      "code autoresize lists checklist print preview powerpaste casechange importcss tinydrive searchreplace autolink autosave save directionality advcode visualblocks visualchars fullscreen image link media mediaembed template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists checklist wordcount tinymcespellchecker a11ychecker imagetools textpattern noneditable help formatpainter permanentpen pageembed charmap tinycomments mentions quickbars linkchecker emoticons advtable export",
+    tinydrive_token_provider: "URL_TO_YOUR_TOKEN_PROVIDER",
+    tinydrive_dropbox_app_key: "YOUR_DROPBOX_APP_KEY",
+    tinydrive_google_drive_key: "YOUR_GOOGLE_DRIVE_KEY",
+    tinydrive_google_drive_client_id: "YOUR_GOOGLE_DRIVE_CLIENT_ID",
+    mobile: {
+      plugins:
+        "print preview powerpaste casechange importcss tinydrive searchreplace autolink autosave save directionality advcode visualblocks visualchars fullscreen image link media mediaembed template codesample table charmap hr pagebreak nonbreaking anchor toc insertdatetime advlist lists checklist wordcount tinymcespellchecker a11ychecker textpattern noneditable help formatpainter pageembed charmap mentions quickbars linkchecker emoticons advtable",
+    },
+    menu: {
+      tc: {
+        title: "Comments",
+        items: "addcomment showcomments deleteallconversations",
+      },
+    },
+    menubar: "file edit view insert format tools table tc help",
+    toolbar:
+      "code | checklist | undo redo | bold italic underline strikethrough | fontselect fontsizeselect formatselect | alignleft aligncenter alignright alignjustify | outdent indent |  numlist bullist checklist | forecolor backcolor casechange permanentpen formatpainter removeformat | pagebreak | charmap emoticons | fullscreen  preview save print | insertfile image media pageembed template link anchor codesample | a11ycheck ltr rtl | showcomments addcomment",
+    autosave_ask_before_unload: true,
+    autosave_interval: "30s",
+    autosave_prefix: "{path}{query}-{id}-",
+    autosave_restore_when_empty: false,
+    autosave_retention: "2m",
+    image_advtab: true,
   });
-  $('table tr').addClass('hover');
-  $('table').addClass('table-compact');
-  $('form').addClass('grid grid-cols-3 md:grid-cols-3 gap-4 sm:grid-cols-1');
-    </script>
-
+</script>
+<!--<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>-->
+<script
+  src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
+  integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
+  crossorigin="anonymous"
+></script>
+<script>
+  $("button, input:button").addClass("btn-sm");
+  $("a").click(function () {
+    $("button, input:button").addClass("btn-disabled");
+    document.body.style.cursor = "wait";
+    document.body.style.pointerEvents = "none";
+    setTimeout(function () {
+      $("button, input:button").removeClass("btn-disabled");
+      document.body.style.cursor = "default";
+      document.body.style.pointerEvents = "auto";
+    }, 2000);
+  });
+  $("table tr").addClass("hover");
+  $("table").addClass("table-compact");
+  $("form").addClass("grid grid-cols-3 md:grid-cols-3 gap-4 sm:grid-cols-1");
+</script>
 
 <!-- XDSoft DateTimePicker -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css" integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y=" crossorigin="anonymous" />
-<script   src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js" integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk=" crossorigin="anonymous"></script>
+<link
+  rel="stylesheet"
+  href="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.min.css"
+  integrity="sha256-DOS9W6NR+NFe1fUhEE0PGKY/fubbUCnOfTje2JMDw3Y="
+  crossorigin="anonymous"
+/>
+<script
+  src="https://cdnjs.cloudflare.com/ajax/libs/jquery-datetimepicker/2.5.20/jquery.datetimepicker.full.min.js"
+  integrity="sha256-FEqEelWI3WouFOo2VWP/uJfs1y8KJ++FLh2Lbqc8SJk="
+  crossorigin="anonymous"
+></script>
 
-    <script>
-
+<script>
   $(function () {
-    jQuery.datetimepicker.setLocale('es');
-    $(".datetimeinput").datetimepicker({  format:'Y-m-d',timepicker:false, step: 15, });
+    jQuery.datetimepicker.setLocale("es");
+    $(".datetimeinput").datetimepicker({
+      format: "Y-m-d",
+      timepicker: false,
+      step: 15,
+    });
   });
 </script>

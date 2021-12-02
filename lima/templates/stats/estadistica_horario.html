@@ -16,76 +16,60 @@
      <div class="col-span-4">
          <div class="index1">
              <div class="index">
-<h1>Estadísticas de horarios </h1>
-<h1 style="color: grey">Hoy es {% now "SHORT_DATETIME_FORMAT" %}</h1>
-
-
-</h1>
-
-{%include 'stats/estadisticas_form.html'%}
-
-
-
-<div id="accordion">
-  <div class="card">
-    <div class="card-header" id="headingOne">
-      <h5 class="mb-0">
-        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-         Barra
-        </button>
-      </h5>
-    </div>
-
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion" style="height: 40vw;">
-        <center style="height: 40rem;overflow: auto ">
-           <div class="chart-container" style="position: relative; height:40rem; width:60vh; overflow: auto; ">
-
-
-        <canvas id="bar" width="50px" height="50px"></canvas>
-
-     </div>
-     </center>
-    </div>
-  </div>
-  <div id="accordion">
-  <div class="card">
-    <div class="card-header" id="headingsTwo">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" >
-          Circular
-        </button>
-      </h5>
-    </div>
-
-    <div id="collapseTwo" class="collapse " aria-labelledby="headingsTwo" data-parent="#accordion"  >
-        <center style="height: 40rem; overflow: auto">
-  <div class="chart-container" style="position: relative; height:40rem; width:40vh; overflow: auto">
-        <canvas id="circle" width="50px" height="50px"></canvas>
-     </div>
-        </center>
-
- </div>
-  </div>
-   <div id="accordion">
-  <div class="card">
-    <div class="card-header" id="headingsTree">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTree" aria-expanded="false" aria-controls="collapseTree" >
-          Lineal
-        </button>
-      </h5>
-    </div>
-
-    <div id="collapseTree" class="collapse " aria-labelledby="headingsTree" data-parent="#accordion"  style="height: 40vw;">
-      <center style="height: 40rem;overflow: auto ">
- <div class="chart-container" style="position: relative; height:40rem; width:60vh; overflow: auto;">
-
-        <canvas id="line" width="50px" height="50px"></canvas>
-     </div>
-  </center>
- </div>
-
-  </div>
+                <h1>Estadísticas de horarios </h1>
+                <h1 style="color: grey">Hoy es {% now "SHORT_DATETIME_FORMAT" %}</h1>
+                {%include 'stats/estadisticas_form.html'%}
+                <div id="accordion">
+                <div class="card">
+                <div class="card-header" id="headingOne">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                    Barra
+                    </button>
+                </h5>
+                </div>
+                <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion" style="height: 40vw;">
+                    <center style="height: 40rem;overflow: auto ">
+                    <div class="chart-container" style="position: relative; height:40rem; width:60vh; overflow: auto; ">
+                    <canvas id="bar" width="50px" height="50px"></canvas>
+                </div>
+                </center>
+                </div>
+            </div>
+            <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingsTwo">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo" >
+                    Circular
+                    </button>
+                </h5>
+                </div>
+                <div id="collapseTwo" class="collapse " aria-labelledby="headingsTwo" data-parent="#accordion"  >
+                    <center style="height: 40rem; overflow: auto">
+                    <div class="chart-container" style="position: relative; height:40rem; width:40vh; overflow: auto">
+                        <canvas id="circle" width="50px" height="50px"></canvas>
+                    </div>
+                </center>
+             </div>
+            </div>
+            <div id="accordion">
+            <div class="card">
+                <div class="card-header" id="headingsTree">
+                <h5 class="mb-0">
+                    <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTree" aria-expanded="false" aria-controls="collapseTree" >
+                    Lineal
+                    </button>
+                </h5>
+                </div>
+                <div id="collapseTree" class="collapse " aria-labelledby="headingsTree" data-parent="#accordion"  style="height: 40vw;">
+                <center style="height: 40rem;overflow: auto ">
+                <div class="chart-container" style="position: relative; height:40rem; width:60vh; overflow: auto;">
+                    <canvas id="line" width="50px" height="50px"></canvas>
+                </div>
+                </center>
+            </div>
+        </div>
   </div>
 <script>
 

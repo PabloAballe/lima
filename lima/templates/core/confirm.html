@@ -1,39 +1,41 @@
 <script>
-function confirmSwall(url){
+  function confirmSwall(url) {
     const swalWithBootstrapButtons = Swal.mixin({
-  customClass: {
-    confirmButton: 'btn btn-success',
-    cancelButton: 'btn btn-danger'
-  },
-  buttonsStyling: false
-})
+      customClass: {
+        confirmButton: "btn btn-success",
+        cancelButton: "btn btn-danger",
+      },
+      buttonsStyling: false,
+    });
 
-swalWithBootstrapButtons.fire({
-  title: 'Solo por confirmar!',
-  text: "Estas seguro de que desea borrar el elemento?",
-  icon: 'warning',
-  showCancelButton: true,
-  confirmButtonText: 'Si , borrar!',
-  cancelButtonText: 'No, cancelar!',
-  reverseButtons: true
-}).then((result) => {
-  if (result.isConfirmed) {
-    swalWithBootstrapButtons.fire(
-      'Eliminado!',
-      'El registro fue eliminado',
-      'success'
-    )
-    window.location.href = url;
-  } else if (
-    /* Read more about handling dismissals below */
-    result.dismiss === Swal.DismissReason.cancel
-  ) {
-    swalWithBootstrapButtons.fire(
-      'Cancelado',
-      'Has cancelado la operación!',
-      'error'
-    )
+    swalWithBootstrapButtons
+      .fire({
+        title: "Solo por confirmar!",
+        text: "Estas seguro de que desea borrar el elemento?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonText: "Si , borrar!",
+        cancelButtonText: "No, cancelar!",
+        reverseButtons: true,
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          swalWithBootstrapButtons.fire(
+            "Eliminado!",
+            "El registro fue eliminado",
+            "success"
+          );
+          window.location.href = url;
+        } else if (
+          /* Read more about handling dismissals below */
+          result.dismiss === Swal.DismissReason.cancel
+        ) {
+          swalWithBootstrapButtons.fire(
+            "Cancelado",
+            "Has cancelado la operación!",
+            "error"
+          );
+        }
+      });
   }
-})
-}
 </script>

@@ -9,14 +9,12 @@
         <th><abbr title="Localización">Hora de salida</abbr></th>
       </tr>
     </thead>
-    <tfoot>
-
-    </tfoot>
+    <tfoot></tfoot>
     <tbody>
       {%for cita in cita%}
-      <tr >
+      <tr>
         <th>{{ cita.pk }}</th>
-        <td><a href="#" </td>
+        <td><a href="#"</td>
         <td>{{cita.tecnica}}</td>
         <td>{{cita.zona}}</td>
         <td>{{cita.hertz}}</td>
@@ -29,16 +27,16 @@
             <button class="button is-warning">Editar</button>
 
           </a> -->
-
-
-            <button style="margin-right:30px;" class="button is-danger" onclick="confirmSwall('{%url 'delete_cita' pk=cita.id_cita %}')">Borrar</button>
-
+          <button
+            style="margin-right: 30px"
+            class="button is-danger"
+            onclick="confirmSwall('{%url 'delete_cita' pk=cita.id_cita %}')"
+          >
+            Borrar
+          </button>
         </td>
-
       </tr>
       {%endfor%}
-
     </tbody>
   </table>
-
 </div>

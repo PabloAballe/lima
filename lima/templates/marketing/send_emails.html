@@ -1,83 +1,71 @@
-{%extends 'core/base.html'%}
-{%load static%}
-{% load crispy_forms_tags %}
-
-{%block content%}
-{%include 'core/nav.html'%}
+{%extends 'core/base.html'%} {%load static%} {% load crispy_forms_tags %}
+{%block content%} {%include 'core/nav.html'%}
 <!-- include libraries(jQuery, bootstrap) -->
 <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
 
- <div class="grid grid-cols-5 gap-4">
-<div class="aside-bar">
-    {% include 'core/aside.html'%}
+<div class="grid grid-cols-5 gap-4">
+  <div class="aside-bar">{% include 'core/aside.html'%}</div>
+
+  <div class="col-span-4">
+    <div class="index1">
+      <div class="index">
+        <br />
+        <h2>{{title}}</h2>
+        <br />
+        {% include 'marketing/variables_email.html'%}
+        <br />
+        <form method="post" enctype="multipart/form-data">
+          {% csrf_token %} {{ form|crispy }}
+          <div class="buttons">
+            <button type="submit" class="btn">Enviar</button>
+            <button class="btn">Cancelar</button>
+          </div>
+        </form>
+        <hr />
+        <br />
+        <form method="get">
+          {{ filter.form|crispy }}
+          <button type="submit" class="btn">Buscar</button>
+        </form>
+        <hr />
+        <br />
+        <p>Listado de clientes encontrados</p>
+        <table class="table overflow-auto">
+          <thead>
+            <tr>
+              <th>ID</th>
+              <th><abbr title="ID">Imágen</abbr></th>
+              <th>Centro</th>
+              <th>Nombre Cliente</th>
+              <th>Apellidos Cliente</th>
+              <th>Teléfono</th>
+              <th>Email</th>
+            </tr>
+          </thead>
+          <tbody style="height: 50vh">
+            {% for cliente in filter.qs %}
+            <tr
+              onclick="window.location='{% url 'cliente_details_citas' pk=cliente.id_paciente %}';"
+            >
+              <td>{{ cliente.pk }}</td>
+              <th>{{ cliente.image_tag }}</th>
+              <th>{{ cliente.centro.nombre_centro }}</th>
+              <td>{{ cliente.nombre_paciente }}</td>
+              <td>{{ cliente.apellidos_paciente }}</td>
+              <td>{{cliente.telefono_paciente}}</td>
+              <td>{{ cliente.email }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
 </div>
-
-     <div class="col-span-4">
-         <div class="index1">
-             <div class="index">
-
-  <br>
-  <h2>{{title}}</h2>
-  <br>
-  {% include 'marketing/variables_email.html'%}
-  <br>
-    <form method="post" enctype="multipart/form-data" >
-    {% csrf_token %}
-    {{ form|crispy }}
-    <div class="buttons">
-    <button type="submit" class="btn">Enviar</button>
-    <button  class="btn">Cancelar</button>
-    </div>
-  </form>
-   <hr>
-   <br>
-    <form method="get">
-    {{ filter.form|crispy }}
-    <button type="submit" class="btn">Buscar</button>
- </form>
-  <hr>
-  <br>
-    <p>Listado de clientes encontrados</p>
-  <table class="table overflow-auto" >
-    <thead>
-      <tr >
-          <th >ID</th>
-          <th><abbr title="ID">Imágen</abbr></th>
-          <th>Centro</th>
-        <th>Nombre Cliente</th>
-        <th>Apellidos Cliente</th>
-        <th >Teléfono</th>
-        <th >Email</th>
-      </tr>
-    </thead>
-    <tbody style="height: 50vh;">
-
-         {% for cliente in filter.qs %}
-        <tr onclick="window.location='{% url 'cliente_details_citas' pk=cliente.id_paciente %}';">
-            <td >{{ cliente.pk }}</td>
-            <th>{{ cliente.image_tag }}</th>
-            <th>{{ cliente.centro.nombre_centro }}</th>
-        <td >{{ cliente.nombre_paciente }}</td>
-        <td >{{ cliente.apellidos_paciente }}</td>
-        <td>{{cliente.telefono_paciente}}</td>
-        <td >{{ cliente.email }}</td>
-      </tr>
-        {% endfor %}
-    </tbody>
-  </table>
-
-
-    </div>
-    </div>
-</div>
-
-    </div>
 <script>
-
- $(document).ready(function() {
-  $('#summernote').summernote();
-});
+  $(document).ready(function () {
+    $("#summernote").summernote();
+  });
 </script>
-
 
 {%endblock%}

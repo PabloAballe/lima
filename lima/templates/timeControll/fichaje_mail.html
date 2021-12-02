@@ -1,12 +1,14 @@
-{% include 'core/base.html' %}
-{%block content%}
-<h1 style="font-size:25px; font-weight: bold; text-align: center ;">{{horario.tecnica.nombre_tecnica |title }} ha realizado un nuevo fichaje</h1>
-<hr>
+{% include 'core/base.html' %} {%block content%}
+<h1 style="font-size: 25px; font-weight: bold; text-align: center">
+  {{horario.tecnica.nombre_tecnica |title }} ha realizado un nuevo fichaje
+</h1>
+<hr />
 <h3>Día {{horario.fecha}}</h3>
 <p>Hora de entrada {{horario.entrada}}</p>
 <p>Hora de salida {{horario.fecha}}</p>
-<hr>
-<p style="font-size:20px; font-weight: bold;">Tiempo trabajado {{horario.trabajado}}</p>
+<hr />
+<p style="font-size: 20px; font-weight: bold">
+  Tiempo trabajado {{horario.trabajado}}
+</p>
 
-  {%endblock%}
-
+{%endblock%}

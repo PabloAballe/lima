@@ -12,25 +12,25 @@
 
 <div class="{% if request.user_agent.is_mobile %}{%else%}grid grid-cols-5 gap-4{%endif %} ">
 <div class="aside-bar">
-    {% include 'core/aside.html'%}
+{% include 'core/aside.html'%}
 </div>
+      <div class="col-span-4">
+          <div class="{% if request.user_agent.is_mobile %}index1{% else %}login{%endif%}">
+      <img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
+        <br>
+        <h2>Añade un cliente nuevo</h2>
+        <br>
+        <form method="post" enctype="multipart/form-data" style="{% if request.user_agent.is_mobile %}grid-template-columns: repeat(1, minmax(0, 1fr));{% else %}grid-template-columns: repeat(3, minmax(0, 1fr));{%endif%}">
+          {% csrf_token %}
+        {{ form|crispy }}
+          <div class="buttons">
+          <button type="submit" class="btn">Añadir</button>
 
-     <div class="col-span-4">
-         <div class="{% if request.user_agent.is_mobile %}index1{% else %}login{%endif%}">
-<img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
-  <br>
-  <h2>Añade un cliente nuevo</h2>
-  <br>
-  <form method="post" enctype="multipart/form-data" style="{% if request.user_agent.is_mobile %}grid-template-columns: repeat(1, minmax(0, 1fr));{% else %}grid-template-columns: repeat(3, minmax(0, 1fr));{%endif%}">
-    {% csrf_token %}
-   {{ form|crispy }}
-     <div class="buttons">
-    <button type="submit" class="btn">Añadir</button>
-
-  </form>
-    <button class="btn" type="button" onClick="javascript:history.go(-1);">Cancelar</button>
-</div></div>
-</div>
+        </form>
+          <button class="btn" type="button" onClick="javascript:history.go(-1);">Cancelar</button>
+      </div>
+    </div>
+  </div>
 </div>
 
 <script>

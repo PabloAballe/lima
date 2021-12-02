@@ -1,78 +1,71 @@
-{%extends 'core/base.html'%}
-{%load static%}
-{%block content%}
-{%include 'core/nav.html'%}
- {% load tz %}
+{%extends 'core/base.html'%} {%load static%} {%block content%} {%include
+'core/nav.html'%} {% load tz %}
 
-<div class="{% if request.user_agent.is_mobile %}{%else%}grid grid-cols-5 gap-4{%endif %} ">
-<div class="aside-bar">
-    {% include 'core/aside.html'%}
+<div
+  class="
+    {%if request.user_agent.is_mobile%}
+    {%else%}
+    grid grid-cols-5 gap-4
+    {%endif%}
+  "
+>
+  <div class="aside-bar">{% include 'core/aside.html'%}</div>
+
+  <div class="col-span-4">
+    <div class="{% if request.user_agent.is_mobile %}{% else %}index{%endif%}">
+      <link href="{% static 'fullcalendar/main.css' %}" rel="stylesheet" />
+      <script src="{% static 'fullcalendar/main.js' %}"></script>
+      <script src="{% static 'fullcalendar/locales-all.js' %}"></script>
+      <script>
+
+        document.addEventListener('DOMContentLoaded', function() {
+          var calendarEl = document.getElementById('calendar');
+          var today = new Date();
+          var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+          var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+
+          var eventos = [
+             {%for lista in lista %}
+                {% if not forloop.first %},{% endif %}
+                {
+                    title: "Cliente {{lista.cliente.nombre_paciente}} // Centro {{lista.centro.nombre_centro}} // Técnica {{lista.tecnica.nombre_tecnica}}",
+                    start: "{{lista.hora_inicio |date:'Y-m-d H:i:s'  }}",
+                    end: "{{lista.hora_fin |date:'Y-m-d H:i:s' }}",
+                    color: "{{lista.tecnica.color}}"
+                }
+            {% endfor %}
+            ];
+
+
+            console.log(eventos)
+             var calendar = new FullCalendar.Calendar(calendarEl, {
+              dateClick: function(info) {
+                    calendar.gotoDate( info.dateStr )
+                    calendar.changeView( 'timeGridDay', info.dateStr);
+                  },
+             locale: 'es',
+            initialView: 'timeGridWeek',
+            slotLabelInterval: '00:{{footer.slots}}:00',
+            slotDuration: '00:{{footer.slots}}:00',
+            initialDate: today,
+            headerToolbar: {
+              left: 'prev,next today',
+              center: 'title',
+              right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+            },
+            lang: 'es',
+            events: eventos
+          });
+          calendar.render();
+        });
+      </script>
+
+      <div id="calendar"></div>
+      <h1>Citas Pendientes</h1>
+      {% include 'appointments/table_listas.html'%}
+      <script></script>
+    </div>
+  </div>
+
+  {%endblock%}
 </div>
-
-     <div class="col-span-4">
-           <div class="{% if request.user_agent.is_mobile %}{% else %}index{%endif%}">
-<link href="{% static 'fullcalendar/main.css' %}" rel='stylesheet' />
-<script src="{% static 'fullcalendar/main.js' %}"></script>
-<script src="{% static 'fullcalendar/locales-all.js' %}"></script>
-<script>
-
-document.addEventListener('DOMContentLoaded', function() {
-  var calendarEl = document.getElementById('calendar');
-  var today = new Date();
-  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-
-  var eventos = [
-     {%for lista in lista %}
-        {% if not forloop.first %},{% endif %}
-        {
-            title: "Cliente {{lista.cliente.nombre_paciente}} // Centro {{lista.centro.nombre_centro}} // Técnica {{lista.tecnica.nombre_tecnica}}",
-            start: "{{lista.hora_inicio |date:'Y-m-d H:i:s'  }}",
-            end: "{{lista.hora_fin |date:'Y-m-d H:i:s' }}",
-            color: "{{lista.tecnica.color}}"
-        }
-    {% endfor %}
-    ];
-
-
-    console.log(eventos)
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-      dateClick: function(info) {
-            calendar.gotoDate( info.dateStr )
-            calendar.changeView( 'timeGridDay', info.dateStr);
-          },
-     locale: 'es',
-    initialView: 'timeGridWeek',
-    slotLabelInterval: '00:{{footer.slots}}:00',
-    slotDuration: '00:{{footer.slots}}:00',
-    initialDate: today,
-    headerToolbar: {
-      left: 'prev,next today',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-    },
-    lang: 'es',
-    events: eventos
-  });
-  calendar.render();
-});
-
-
-</script>
-
-
-
-<div id="calendar" ></div>
-<h1>Citas Pendientes</h1>
-{% include 'appointments/table_listas.html'%}
-<script>
-
-</script>
-</div>
- </div>
-
-
-
-
-
-{%endblock%}

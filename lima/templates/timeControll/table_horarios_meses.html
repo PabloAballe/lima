@@ -1,4 +1,3 @@
-
 {% load tz %}
 <div class="table">
   <table class="table overflow-auto">
@@ -12,32 +11,24 @@
         <th><abbr title="Localización">Horas trabajadas</abbr></th>
       </tr>
     </thead>
-    <tfoot>
-
-    </tfoot>
+    <tfoot></tfoot>
     <tbody>
       {%for mes in meses %}
       <tr>
         <th>{{ mes.pk }}</th>
 
-        <td>{{mes.tecnica.nombre_tecnica}} &nbsp;{{mes.tecnica.apellidos_tecnica}}</td>
-        <td>{{mes.fecha }}</td>
-        <td>{{mes.entrada  }} UTC</td>
         <td>
-
-          {% if mes.salida is None %}
-            Trabajando...
-          {% else %}
-          {{mes.salida  }} UTC
-          {%endif  %}
-
-           </td>
-    <td>{{mes.trabajado }}</td>
-
+          {{mes.tecnica.nombre_tecnica}} &nbsp;{{mes.tecnica.apellidos_tecnica}}
+        </td>
+        <td>{{mes.fecha }}</td>
+        <td>{{mes.entrada }} UTC</td>
+        <td>
+          {% if mes.salida is None %} Trabajando... {% else %} {{mes.salida }}
+          UTC {%endif %}
+        </td>
+        <td>{{mes.trabajado }}</td>
       </tr>
       {%endfor%}
-
     </tbody>
   </table>
-
 </div>

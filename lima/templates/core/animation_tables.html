@@ -1,30 +1,28 @@
-
-
 <script>
- $("tr:not(:first-child)").each(function (index ) {
-   $(this).css('animation-delay',index *0.2 +'s');
-});
+  $("tr:not(:first-child)").each(function (index) {
+    $(this).css("animation-delay", index * 0.2 + "s");
+  });
 </script>
 <style>
-    table {
+  table {
     font-family: arial, sans-serif;
     border-collapse: collapse;
     width: 100%;
-}
- tr:not(:first-child){
-  opacity: 0;
-  animation-name: fadeIn;
-  animation-duration: 1s;
-  animation-iteration-count: 1;
-  animation-fill-mode: forwards;
-}
-@keyframes fadeIn {
-  from {
+  }
+  tr:not(:first-child) {
     opacity: 0;
+    animation-name: fadeIn;
+    animation-duration: 1s;
+    animation-iteration-count: 1;
+    animation-fill-mode: forwards;
   }
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
 
-  to {
-    opacity: 1;
+    to {
+      opacity: 1;
+    }
   }
-}
 </style>

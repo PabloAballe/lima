@@ -1,26 +1,26 @@
-{%extends 'core/base.html'%}
+{%extends 'core/base.html'%} {%block content%} {%include 'core/nav.html'%}
+<div
+  class="
+    {%
+    if
+    request.user_agent.is_mobile
+    %}{%else%}grid
+    grid-cols-5
+    gap-4{%endif
+    %}
+  "
+>
+    <div class="aside-bar">{% include 'core/aside.html'%}</div>
 
-{%block content%}
-
-{%include 'core/nav.html'%}
-<div class="{% if request.user_agent.is_mobile %}{%else%}grid grid-cols-5 gap-4{%endif %} ">
-<div class="aside-bar">
-    {% include 'core/aside.html'%}
+    <div class="col-span-4">
+        <div class="map-centro">{%include 'core/maps.html'%}</div>
+    </div>
 </div>
-
-     <div class="col-span-4">
-         <div class="map-centro">
-{%include 'core/maps.html'%}
-</div>
-</div>
-</div>
-
 
 <style>
-    .map-centro{
-        overflow-x: auto;
-    }
+  .map-centro {
+    overflow-x: auto;
+  }
 </style>
-
 
 {%endblock%}

@@ -1,25 +1,14 @@
-{%extends 'core/base.html'%}
-
-{%block content%}
-{%include 'core/nav.html'%}
-
- <div class="grid grid-cols-5 gap-4 ">
-<div class="aside-bar">
-    {% include 'core/aside.html'%}
+{%extends 'core/base.html'%} {%block content%} {%include 'core/nav.html'%}
+<div class="grid grid-cols-5 gap-4">
+  <div class="aside-bar">{% include 'core/aside.html'%}</div>
+  <div class="col-span-4">
+    <div class="index1">
+      <div class="index">
+        <h1>Artículos de la base de conocimientos</h1>
+        {% include 'core/shearch.html' %} {% include 'academy_table.html' %}
+      </div>
+    </div>
+  </div>
 </div>
-
-     <div class="col-span-4">
-         <div class="index1">
-             <div class="index">
-<h1>Artículos de la base de conocimientos</h1>
-
-{% include 'core/shearch.html' %}
-{% include 'academy_table.html' %}
-</div>
-</div>
-</div>
-</div>
-
-
 
 {% endblock %}

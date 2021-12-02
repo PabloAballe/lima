@@ -11,113 +11,100 @@
 <div class="aside-bar">
     {% include 'core/aside.html'%}
 </div>
-
      <div class="col-span-4">
          <div class="index1">
              <div class="index">
-{%include 'stats/estadisticas_form.html'%}
+                {%include 'stats/estadisticas_form.html'%}
 
-<h1>Estadísticas del sistema </h1>
+                <h1>Estadísticas del sistema </h1>
+                    <!--clientes nuevos -->
+                    <div id="accordion">
+                    <div class="card">
+                        <div class="card-header" id="headingOne">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+                            Historial de alta de clientes
+                            </button>
+                        </h5>
+                        </div>
+                        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                            <center style="height: 30vw; overflow: auto">
+                                <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
+                                <canvas id="clientes" width="10%" height="10%"></canvas>
+                                </div>
+                            </center>
+                        </div>
+                    </div>
+                    <!--citas agendadas-->
+                    <div id="accordion">
+                    <div class="card">
+                        <div class="card-header" id="headingsSix">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
+                            Historial de citas agendadas
+                            </button>
+                        </h5>
+                        </div>
+                        <div id="collapseSix" class="collapse" aria-labelledby="headingsSix" data-parent="#accordion">
+                        <center style="height: 30vw;overflow: auto;">
+                            <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
+                            <canvas id="citas" width="10%" height="10%"></canvas>
+                            </div>
+                        </center>
+                        </div>
+                    </div>
 
+                    <!--tratatamintos-->
+                    <div class="card">
+                        <div class="card-header" id="headingThree">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+                            Historial de sesiones de tratamientos agendados
+                            </button>
+                        </h5>
+                        </div>
+                        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+                            <center style="height: 30vw;overflow: auto ">
+                                <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
+                                <canvas id="tratamiento" width="10%" height="10%"></canvas>
+                                </div>
+                            </center>
+                        </div>
+                    </div>
+                    <div class="card">
+                        <div class="card-header" id="headingFour">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
+                            Historial de Facturación
+                            </button>
+                        </h5>
+                        </div>
+                        <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
+                                <!--facturación-->
+                                <center style="height: 30vw; overflow: auto;">
+                                        <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
+                                        <canvas id="facturacion" width="10%" height="10%"></canvas>
+                                </center>
+                            </div>
+                        </div>
+                    </div>
 
-<!--boostrap-->
-
-<!--clientes nuevos -->
-<div id="accordion">
-  <div class="card">
-    <div class="card-header" id="headingOne">
-      <h5 class="mb-0">
-        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Historial de alta de clientes
-        </button>
-      </h5>
-    </div>
-
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-
-
- <center style="height: 30vw; overflow: auto">
-     <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
-  <canvas id="clientes" width="10%" height="10%"></canvas>
-  </div>
-  </center>
-    </div>
-  </div>
-
-<!--citas agendadas-->
-<div id="accordion">
-  <div class="card">
-    <div class="card-header" id="headingsSix">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseSix" aria-expanded="false" aria-controls="collapseSix">
-          Historial de citas agendadas
-        </button>
-      </h5>
-    </div>
-
-    <div id="collapseSix" class="collapse" aria-labelledby="headingsSix" data-parent="#accordion">
-
-
- <center style="height: 30vw;overflow: auto;">
-      <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
-  <canvas id="citas" width="10%" height="10%"></canvas>
-  </div>
-  </center>
-    </div>
-  </div>
-
-<!--tratatamintos-->
-  <div class="card">
-    <div class="card-header" id="headingThree">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-          Historial de sesiones de tratamientos agendados
-        </button>
-      </h5>
-    </div>
-    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-
- <center style="height: 30vw;overflow: auto ">
-     <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
-  <canvas id="tratamiento" width="10%" height="10%"></canvas>
-  </div>
-  </center>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header" id="headingFour">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFour" aria-expanded="false" aria-controls="collapseFour">
-          Historial de Facturación
-        </button>
-      </h5>
-    </div>
-    <div id="collapseFour" class="collapse" aria-labelledby="headingFour" data-parent="#accordion">
-      <!--facturación-->
-    <center style="height: 30vw; overflow: auto;">
-           <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
-  <canvas id="facturacion" width="10%" height="10%"></canvas>
-  </center>
-  </div>
-    </div>
-  </div>
-
-  <!--horarios-->
-<div class="card">
-    <div class="card-header" id="headingFive">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
-          Historial de Horas trabajadas
-        </button>
-      </h5>
-    </div>
-    <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
-      <!--facturación-->
-      <center style="height: 30vw; overflow: auto">
-           <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
-  <canvas id="tiempo" width="10%" height="10%"></canvas>
-  </div>
-  </center>
+                    <!--horarios-->
+                    <div class="card">
+                        <div class="card-header" id="headingFive">
+                        <h5 class="mb-0">
+                            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseFive" aria-expanded="false" aria-controls="collapseFive">
+                            Historial de Horas trabajadas
+                            </button>
+                        </h5>
+                        </div>
+                        <div id="collapseFive" class="collapse" aria-labelledby="headingFive" data-parent="#accordion">
+                            <!--facturación-->
+                            <center style="height: 30vw; overflow: auto">
+                                <div class="chart-container" style="position: relative; height:30vh; width:60vh;">
+                            <canvas id="tiempo" width="10%" height="10%"></canvas>
+                        </div>
+                     </center>
 
 <script>
 

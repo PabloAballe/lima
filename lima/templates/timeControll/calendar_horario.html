@@ -1,80 +1,80 @@
-{%extends 'core/base.html'%}
-{%load static%}
-{%block content%}
-{% load tz %}
+{%extends 'core/base.html'%} {%load static%} {%block content%} {% load tz %}
 {%include 'core/nav.html'%}
-<div class="{% if request.user_agent.is_mobile %}{%else%}grid grid-cols-5 gap-4{%endif %} ">
-<div class="aside-bar">
-    {% include 'core/aside.html'%}
-</div>
+<div
+  class="
+    {%
+    if
+    request.user_agent.is_mobile
+    %}{%else%}grid
+    grid-cols-5
+    gap-4{%endif
+    %}
+  "
+>
+  <div class="aside-bar">{% include 'core/aside.html'%}</div>
 
-     <div class="col-span-4">
-         <div class="index1">
-            <div class="{% if request.user_agent.is_mobile %}{% else %}index{%endif%}">
-<h1>Horario de {{tecnica.nombre_tecnica}}</h1>
+  <div class="col-span-4">
+    <div class="index1">
+      <div
+        class="{% if request.user_agent.is_mobile %}{% else %}index{%endif%}"
+      >
+        <h1>Horario de {{tecnica.nombre_tecnica}}</h1>
 
-<link href="{% static 'fullcalendar/main.css' %}" rel='stylesheet' />
-<script src="{% static 'fullcalendar/main.js' %}"></script>
-<script src="{% static 'fullcalendar/locales-all.js' %}"></script>
-<script>
+        <link href="{% static 'fullcalendar/main.css' %}" rel="stylesheet" />
+        <script src="{% static 'fullcalendar/main.js' %}"></script>
+        <script src="{% static 'fullcalendar/locales-all.js' %}"></script>
+        <script>
 
-document.addEventListener('DOMContentLoaded', function() {
-  var calendarEl = document.getElementById('calendar');
-  var today = new Date();
-  var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
-  var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
-  var articles = [
-     {%for mes in meses %}
-        {% if not forloop.first %},{% endif %}
-        {
-            title: "{{mes.tecnica.nombre_tecnica}}  {{mes.tecnica.apellidos_tecnica}} // Tiempo trabajado {{mes.trabajado}}",
-            start: "{{mes.fecha  |date:'Y-m-d' }} {{mes.entrada }}",
-            end: "{{mes.fecha  |date:'Y-m-d'}}{% if mes.salida is None %}"+time+" {% else %} {{mes.salida  }}{%endif  %}",
-            color: "{{mes.tecnica.color}}"
-        }
-    {% endfor %}
-    ];
-    console.log(articles)
-  var calendar = new FullCalendar.Calendar(calendarEl, {
-       dateClick: function(info) {
-            //alert('Date: ' + info.dateStr);
-            //alert('Resource ID: ' + info.resource.id);
-            calendar.gotoDate( info.dateStr )
-            calendar.changeView( 'timeGridDay', info.dateStr);
-          },
+          document.addEventListener('DOMContentLoaded', function() {
+            var calendarEl = document.getElementById('calendar');
+            var today = new Date();
+            var date = today.getFullYear()+'-'+(today.getMonth()+1)+'-'+today.getDate();
+            var time = today.getHours() + ":" + today.getMinutes() + ":" + today.getSeconds();
+            var articles = [
+               {%for mes in meses %}
+                  {% if not forloop.first %},{% endif %}
+                  {
+                      title: "{{mes.tecnica.nombre_tecnica}}  {{mes.tecnica.apellidos_tecnica}} // Tiempo trabajado {{mes.trabajado}}",
+                      start: "{{mes.fecha  |date:'Y-m-d' }} {{mes.entrada }}",
+                      end: "{{mes.fecha  |date:'Y-m-d'}}{% if mes.salida is None %}"+time+" {% else %} {{mes.salida  }}{%endif  %}",
+                      color: "{{mes.tecnica.color}}"
+                  }
+              {% endfor %}
+              ];
+              console.log(articles)
+            var calendar = new FullCalendar.Calendar(calendarEl, {
+                 dateClick: function(info) {
+                      //alert('Date: ' + info.dateStr);
+                      //alert('Resource ID: ' + info.resource.id);
+                      calendar.gotoDate( info.dateStr )
+                      calendar.changeView( 'timeGridDay', info.dateStr);
+                    },
 
-     locale: 'es',
-    initialView: 'timeGridWeek',
-    slotLabelInterval: '00:{{footer.slots}}:00',
-    slotDuration: '00:{{footer.slots}}:00',
-    initialDate: today,
-    headerToolbar: {
-      left: 'prev,next today',
-      center: 'title',
-      right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
+               locale: 'es',
+              initialView: 'timeGridWeek',
+              slotLabelInterval: '00:{{footer.slots}}:00',
+              slotDuration: '00:{{footer.slots}}:00',
+              initialDate: today,
+              headerToolbar: {
+                left: 'prev,next today',
+                center: 'title',
+                right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
 
-    },
-    events: articles
-  });
+              },
+              events: articles
+            });
 
-  calendar.getOption('locale', 'es');
-  calendar.render();
-});
+            calendar.getOption('locale', 'es');
+            calendar.render();
+          });
+        </script>
 
+        <div id="calendar"></div>
 
-</script>
-
-
-<div id="calendar"></div>
-
-<script>
-
-</script>
-</div>
+        <script></script>
+      </div>
     </div>
+  </div>
+
+  {%endblock%}
 </div>
-
-
-
-
-{%endblock%}

@@ -12,22 +12,19 @@
      <div class="col-span-4">
          <div class="index1">
              <div class="{% if request.user_agent.is_mobile %}{% else %}login{%endif%}">
-
-<img src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" style="height: 300px;" />
-  <br>
-  <h2>Stock</h2>
-  <br>
-  <form method="post"  style="grid-template-columns: repeat(1, minmax(0, 1fr));">
-    {% csrf_token %}
-      {{ form|crispy }}
-      <div class="buttons">
-    <button type="submit" class="btn btn-sm" >Guardar</button>
-
-  </form>
-<button class="btn btn-sm" onClick="javascript:history.go(-1);">Cancelar</button>
-
-
-</div></div>
+              <img src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" style="height: 300px;" />
+                <br>
+                <h2>Stock</h2>
+                <br>
+                <form method="post"  style="grid-template-columns: repeat(1, minmax(0, 1fr));">
+                  {% csrf_token %}
+                    {{ form|crispy }}
+                    <div class="buttons">
+                  <button type="submit" class="btn btn-sm" >Guardar</button>
+                </form>
+              <button class="btn btn-sm" onClick="javascript:history.go(-1);">Cancelar</button>
+          </div>
+        </div>
     </div>
 </div>
 

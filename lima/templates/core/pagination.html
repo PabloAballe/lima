@@ -1,21 +1,20 @@
-
-<br><br><br>
-  {% if cen.has_other_pages %}
+<br /><br /><br />
+{% if cen.has_other_pages %}
 <center>
-<div class="btn-group pagination">
+  <div class="btn-group pagination">
     {% if cen.has_previous %}
-  <button class="btn"><a href="?page={{ cen.previous_page_number }}">Atras</a></button>
-   {% endif %}
-   {% for i in cen.paginator.page_range %}
-   {% if cen.number == i %}
-  <button class="btn">{{ i }}</button>
-  {% else %}
-  <button class="btn btn-active"><a href="?page={{ i }}">{{ i }}</a></button>
-  {% endif %}
-  {% endfor %}
-  {% if cen.has_next %}
-  <button class="btn"><a href="?page={{ cen.next_page_number }}">Siguiente</a></button>
-  {% endif %}
-</div>
+    <button class="btn">
+      <a href="?page={{ cen.previous_page_number }}">Atras</a>
+    </button>
+    {% endif %} {% for i in cen.paginator.page_range %} {% if cen.number == i %}
+    <button class="btn">{{ i }}</button>
+    {% else %}
+    <button class="btn btn-active"><a href="?page={{ i }}">{{ i }}</a></button>
+    {% endif %} {% endfor %} {% if cen.has_next %}
+    <button class="btn">
+      <a href="?page={{ cen.next_page_number }}">Siguiente</a>
+    </button>
+    {% endif %}
+  </div>
 </center>
-  {% endif %}
+{% endif %}

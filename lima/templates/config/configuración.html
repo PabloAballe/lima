@@ -5,28 +5,24 @@
 {%include 'core/nav.html'%}
 <div class="grid grid-cols-5 gap-4">
 <div class="aside-bar">
-    {% include 'core/aside.html'%}
+{% include 'core/aside.html'%}
 </div>
-
      <div class="col-span-4">
          <div class="login ">
-<img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
-  <br>
-  <h2>Configuración del Sistema</h2>
-
-  <br>
-  <form method="post" enctype="multipart/form-data" >
-    {% csrf_token %}
-     {{ form | crispy }}
-    <div class="buttons">
-    <button type="submit" class="btn">Guardar</button>
-
-  </form>
-  <input type="button" value="Cancelar" class="btn" onClick="javascript:history.go(-1);">
-
-
-</div></div>
-</div>
+        <img async loding="lazy"  src="{{footer.logo.url}}" alt="{{footer.nombre_comercial}}" width="350rem">
+          <br>
+          <h2>Configuración del Sistema</h2>
+          <br>
+          <form method="post" enctype="multipart/form-data" >
+            {% csrf_token %}
+            {{ form | crispy }}
+            <div class="buttons">
+            <button type="submit" class="btn">Guardar</button>
+          </form>
+          <input type="button" value="Cancelar" class="btn" onClick="javascript:history.go(-1);">
+        </div>
+      </div>
+  </div>
 </div>
 
 

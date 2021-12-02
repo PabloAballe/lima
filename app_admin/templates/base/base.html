@@ -1,112 +1,128 @@
-
 <html lang="es">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <title>Admin App WaveSense</title>
-  <meta name="description" content="A simple HTML5 Template for new projects.">
-  <meta name="author" content="SitePoint">
+    <title>Admin App WaveSense</title>
+    <meta
+      name="description"
+      content="A simple HTML5 Template for new projects."
+    />
+    <meta name="author" content="SitePoint" />
 
-  <meta property="og:title" content="Admin App WaveSense">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://wavecompany.pythonanywhere.com/">
-  <meta property="og:description" content="Admin App para WaveSense ">
-  <meta property="og:image" content="image.png">
+    <meta property="og:title" content="Admin App WaveSense" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://wavecompany.pythonanywhere.com/" />
+    <meta property="og:description" content="Admin App para WaveSense " />
+    <meta property="og:image" content="image.png" />
 
-  <link rel="icon" href="{{footer.logo.url}}">
-  <link rel="icon" href="{{footer.logo.url}}" type="image/svg+xml">
-  <link rel="apple-touch-icon" href="{{footer.imagen.url}}">
+    <link rel="icon" href="{{footer.logo.url}}" />
+    <link rel="icon" href="{{footer.logo.url}}" type="image/svg+xml" />
+    <link rel="apple-touch-icon" href="{{footer.imagen.url}}" />
 
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@1.16.0/dist/full.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <link
+      href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2/dist/tailwind.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
 
-  <link href="https://cdn.jsdelivr.net/npm/daisyui@1.16.0/dist/full.css" rel="stylesheet" type="text/css" />
-  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2/dist/tailwind.min.css" rel="stylesheet" type="text/css" />
+    <script
+      type="module"
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"
+    ></script>
+    <script
+      nomodule
+      src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"
+    ></script>
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"
+    />
+  </head>
 
-
-
-  <script type="module" src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.esm.js"></script>
-  <script nomodule src="https://cdn.jsdelivr.net/npm/@ionic/core/dist/ionic/ionic.js"></script>
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@ionic/core/css/ionic.bundle.css"/>
-</head>
-
-<body>
+  <body>
     <style>
-        #loading-spinner {
-          position: absolute;
-          top: 50%;;
-          left: 50%;;
-          z-index: 100;
-        }
-        ::-webkit-scrollbar {
-          width: 16px;
-          height: 16px;
-        }
-        /* Track */
-        ::-webkit-scrollbar-track {
-          border-radius: 100vh;
-          background: #edf2f7;
-        }
+      #loading-spinner {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        z-index: 100;
+      }
+      ::-webkit-scrollbar {
+        width: 16px;
+        height: 16px;
+      }
+      /* Track */
+      ::-webkit-scrollbar-track {
+        border-radius: 100vh;
+        background: #edf2f7;
+      }
 
-        /* Handle */
-        ::-webkit-scrollbar-thumb {
-          background: #cbd5e0;
-          border-radius: 100vh;
-          border: 3px solid #edf2f7;
-        }
+      /* Handle */
+      ::-webkit-scrollbar-thumb {
+        background: #cbd5e0;
+        border-radius: 100vh;
+        border: 3px solid #edf2f7;
+      }
 
-        /* Handle on hover */
-        ::-webkit-scrollbar-thumb:hover {
-          background: #a0aec0;
-        }
+      /* Handle on hover */
+      ::-webkit-scrollbar-thumb:hover {
+        background: #a0aec0;
+      }
     </style>
-      <div id="loading">
-         <div class=" flex justify-center items-center" id="loading-spinner">
-          <div class="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"></div>
-        </div>
+    <div id="loading">
+      <div class="flex justify-center items-center" id="loading-spinner">
+        <div
+          class="animate-spin rounded-full h-32 w-32 border-b-2 border-gray-900"
+        ></div>
+      </div>
     </div>
     <ion-header translucent>
-    <ion-toolbar>
-      <ion-buttons slot="start">
-        <ion-back-button defaultHref="/"></ion-back-button>
-      </ion-buttons>
-      <ion-title>{{page_name}}</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  {% include 'base/navigation.html'%}
-  <ion-content color="primary" padding>
- {% block contenido %}
- {% endblock%}
- </ion-content>
+      <ion-toolbar>
+        <ion-buttons slot="start">
+          <ion-back-button defaultHref="/"></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{page_name}}</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    {% include 'base/navigation.html'%}
+    <ion-content color="primary" padding>
+      {% block contenido %} {% endblock%}
+    </ion-content>
 
- <script>
-     function onLoad(loading, loaded) {
-    if(document.readyState === 'complete'){
-        return loaded();
-    }
-    loading();
-    if (window.addEventListener) {
-        window.addEventListener('load', loaded, false);
-    }
-    else if (window.attachEvent) {
-        window.attachEvent('onload', loaded);
-    }
-};
+    <script>
+      function onLoad(loading, loaded) {
+        if (document.readyState === "complete") {
+          return loaded();
+        }
+        loading();
+        if (window.addEventListener) {
+          window.addEventListener("load", loaded, false);
+        } else if (window.attachEvent) {
+          window.attachEvent("onload", loaded);
+        }
+      }
 
- function clearcontent(elementID) {
-    var gfg_down = document.getElementById(elementID);
-    gfg_down.parentNode.removeChild(gfg_down);
-        };
+      function clearcontent(elementID) {
+        var gfg_down = document.getElementById(elementID);
+        gfg_down.parentNode.removeChild(gfg_down);
+      }
 
-onLoad(function(){
-
-   //clearcontent('loading')
-   console.log('I am waiting for the page to be loaded');
-},
-function(){
-    clearcontent('loading')
-    console.log('The page is loaded');
-});
-
- </script>
-</body>
+      onLoad(
+        function () {
+          //clearcontent('loading')
+          console.log("I am waiting for the page to be loaded");
+        },
+        function () {
+          clearcontent("loading");
+          console.log("The page is loaded");
+        }
+      );
+    </script>
+  </body>
 </html>
