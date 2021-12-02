@@ -36,9 +36,9 @@ def centro_details(request, pk):
 
     if form.is_valid():
             q= form.cleaned_data['shearch']
-            existe=Paciente.objects.all().filter(centro=centro).order_by('nombre_paciente').filter(nombre_paciente__icontains=q).exists() | Paciente.objects.all().filter(centro=centro).order_by('nombre_paciente').filter(nombre_paciente__icontains=q).exists()
+            existe=Paciente.objects.all().filter(centro=centro).order_by('nombre_paciente').filter(nombre_paciente__icontains=q).exists() | Paciente.objects.all().filter(centro=centro).order_by('nombre_paciente').filter(apellidos_paciente__icontains=q).exists() | Paciente.objects.all().filter(centro=centro).order_by('nombre_paciente').filter(id_paciente__icontains=q).exists()
             if existe==True:
-                cliente=Paciente.objects.all().filter(centro=centro).order_by('nombre_paciente').filter(nombre_paciente__icontains=q) | Paciente.objects.all().filter(centro=centro).order_by('nombre_paciente').filter(nombre_paciente__icontains=q)
+                cliente=Paciente.objects.all().filter(centro=centro).order_by('nombre_paciente').filter(nombre_paciente__icontains=q) | Paciente.objects.all().filter(centro=centro).order_by('nombre_paciente').filter(apellidos_paciente__icontains=q) | Paciente.objects.all().filter(centro=centro).order_by('nombre_paciente').filter(id_paciente__icontains=q)
             else:
                 notfound=True
                 print("no hay resultados")
