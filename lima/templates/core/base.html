@@ -129,13 +129,17 @@
       );
     </script>
     <div class="main-div">
-      {%block content%} {%endblock%} {% if 'cliente_pk' in request.session %} {%
-      include 'client/client_floating_bar.html'%} {% endif %}
+      {%block content%}
+      {%endblock%}
+      {% if 'cliente_pk' in request.session %}
+      {%include 'client/client_floating_bar.html'%}
+      {% endif %}
     </div>
 
     <script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-    {% include 'core/message.html'%} {% include 'core/confirm.html'%} {% include
-    'core/animation_tables.html'%}
+    {% include 'core/message.html'%}
+    {% include 'core/confirm.html'%}
+    {% include 'core/animation_tables.html'%}
 
     <script src="{% static 'js/main.js' %}"></script>
     {% include 'core/cookies.html'%}

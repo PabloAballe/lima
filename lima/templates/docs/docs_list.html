@@ -1,19 +1,17 @@
-{%extends 'core/base.html'%} {%block content%} {%include 'core/nav.html'%}
+{%extends 'core/base.html'%}
+{%block content%}
+{%include 'core/nav.html'%}
 <div
   class="
     {% if request.user_agent.is_mobile %}{%else%}grid grid-cols-5 gap-4{%endif %}
   "
 >
-  <div class="aside-bar">{% include 'core/aside.html'%}</div>
+  <div class="aside-bar">
+      {% include 'core/aside.html'%}</div>
   <div class="col-span-4">
     <div
       class="
-        {%
-        if
-        request.user_agent.is_mobile
-        %}index1{%
-        else
-        %}index{%endif%}
+        {% if request.user_agent.is_mobile %}index1{% else %}index{%endif%}
       "
     >
       <br /><br />
@@ -39,8 +37,10 @@
           &nbsp; Añadir una nueva plantilla
         </button>
       </a>
-      {% endif %} {%include 'core/shearch.html'%} {%include
-      'docs/table_doc_list.html'%} {%include 'core/pagination.html'%}
+      {% endif %}
+      {%include 'core/shearch.html'%}
+      {%include 'docs/table_doc_list.html'%}
+      {%include 'core/pagination.html'%}
     </div>
   </div>
 </div>

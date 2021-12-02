@@ -1,4 +1,6 @@
-{% ifequal notfound True %} {% include 'core/notfound.html'%} {% else %}
+{% ifequal notfound True %}
+{% include 'core/notfound.html'%}
+{% else %}
 <div class="table" id="table">
   <table class="table overflow-auto">
     <thead>
@@ -18,10 +20,7 @@
     <tbody>
       {%for caja in cajas %}
       <tr
-        {%
-        if
-        perms.lima.change_cajas
-        %}
+        {% if perms.lima.change_cajas %}
         onclick="window.location='{% url 'caja' pk=caja.pk %}';"
         {%endif%}
       >

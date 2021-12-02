@@ -125,7 +125,10 @@ def doc_prerender(request, user,doc):
     user_=get_object_or_404(Paciente, pk=user)
     sign__ = DocSings.objects.get_or_create(cliente=user_, plantilla_doc=doc_)
     sign=DocSings.objects.filter(cliente=user_, plantilla_doc=doc_).last()
-    firm=f'<img   width="10rem"  src="{sign.firma.url}" alt="{sign.plantilla_doc.nombre_doc}" />'
+    if sign.firma:
+        firm=f'<img   width="10rem"  src="{sign.firma.url}" alt="{sign.plantilla_doc.nombre_doc}" />'
+    else:
+        firm=''
     if sign.plantilla_document=='':
         sign.plantilla_document=doc_.plantilla_doc
         sign.save()
@@ -135,7 +138,7 @@ def doc_prerender(request, user,doc):
                 'centro': user_.centro.nombre_centro, 'localizacion_centro': user_.centro.localizacion,
                 'nombre_comercial': footer.nombre_comercial, 'propietario': footer.propietario,
                 'telefono': footer.telefono,
-                'firma' : sign.firma.url,
+                'firma' : firm,
                 'TelefonoUsuario':  user_.telefono_paciente,
                 'EmailUsuario': user_.email,
                 'dni': user_.dni,

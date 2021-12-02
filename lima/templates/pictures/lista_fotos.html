@@ -1,10 +1,14 @@
-{%extends 'core/base.html'%} {%block content%} {%include 'core/nav.html'%}
+{%extends 'core/base.html'%}
+{%block content%}
+{%include 'core/nav.html'%}
 <div
   class="
     {% if request.user_agent.is_mobile %}{%else%}grid grid-cols-5 gap-4{%endif %}
   "
 >
-  <div class="aside-bar">{% include 'core/aside.html'%}</div>
+  <div class="aside-bar">
+      {% include 'core/aside.html'%}
+  </div>
 
   <div class="col-span-4">
     <div class="index1">
@@ -73,8 +77,8 @@
               </div>
               <footer class="card-footer">
                 <a class="card-footer-item">
-                  {{foto.comentario}} &nbsp; {% if
-                  perms.lima.download_imagenesclientes %}
+                  {{foto.comentario}} &nbsp;
+                  {% if perms.lima.download_imagenesclientes %}
                   <a
                     href="{{foto.imagen.url}}"
                     class="top-menu"
@@ -101,7 +105,8 @@
                     </button>
                     {%endif%}
                   </a>
-                  &nbsp; {% if perms.lima.delete_imagenesclientes %}
+                  &nbsp;
+                  {% if perms.lima.delete_imagenesclientes %}
                   <button
                     class="btn is-danger is-rounded"
                     style="margin-left: 5%"
@@ -125,7 +130,6 @@
                     </svg>
                     &nbsp;Borrar
                   </button>
-
                   {%endif%}
                 </a>
               </footer>

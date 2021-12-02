@@ -1,4 +1,6 @@
-{% ifequal notfound True %} {% include 'core/notfound.html'%} {% else %}
+{% ifequal notfound True %}
+{% include 'core/notfound.html'%}
+{% else %}
 
 <div class="table" id="table">
   <table class="table overflow-auto">
@@ -54,7 +56,8 @@
                 &nbsp; Ver
               </button>
             </a>
-            {%endif%} {% if perms.lima.delete_emailtemplates %}
+            {%endif%}
+            {% if perms.lima.delete_emailtemplates %}
             <button
               class="btn"
               onclick="confirmSwall('{%url 'delete_doc' pk=doc.pk %}')"
@@ -77,8 +80,8 @@
               &nbsp; Borrar Plantilla
             </button>
 
-            {%endif%} {% if request.resolver_match.url_name ==
-            "docs_sign_list"%}
+            {%endif%}
+            {% if request.resolver_match.url_name == "docs_sign_list"%}
             <a href="{%url 'doc_prerender' user=cliente.pk  doc=doc.pk %}">
               <button class="btn">
                 <svg

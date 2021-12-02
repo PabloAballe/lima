@@ -1,4 +1,6 @@
-{%extends 'core/base.html'%} {%block content%} {%include 'core/nav.html'%}
+{%extends 'core/base.html'%}
+{%block content%}
+{%include 'core/nav.html'%}
 <div class="grid grid-cols-5 gap-4">
   <div class="aside-bar">{% include 'core/aside.html'%}</div>
 
@@ -11,8 +13,9 @@
             Añadir una nueva plantilla
           </button>
         </a>
-        {%include 'core/shearch.html'%} {%include
-        'marketing/table_emails.html'%} {%include 'core/pagination.html'%}
+        {%include 'core/shearch.html'%}
+        {%include 'marketing/table_emails.html'%}
+        {%include 'core/pagination.html'%}
       </div>
     </div>
   </div>

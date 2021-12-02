@@ -1,5 +1,7 @@
-{%extends 'core/base.html'%} {% load humanize %} {%block content%} {%include
-'core/nav.html'%}
+{%extends 'core/base.html'%}
+{% load humanize %}
+{%block content%}
+{%include 'core/nav.html'%}
 <div class="grid grid-cols-5 gap-4">
   <div class="aside-bar">{% include 'core/aside.html'%}</div>
 
@@ -114,8 +116,7 @@
                                     text text-gray-700 text-sm
                                     hover:text-black
                                   "
-                                  >{{tarea.propietario.nombre_tecnica |
-                                  capfirst}}</a
+                                  >{{tarea.propietario.nombre_tecnica | capfirst}}</a
                                 >
                               </p>
                               <a

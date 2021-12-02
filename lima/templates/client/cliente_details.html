@@ -1,4 +1,6 @@
-{%extends 'core/base.html'%} {%block content%} {%include 'core/nav.html'%}
+{%extends 'core/base.html'%}
+{% block content %}
+{%include 'core/nav.html'%}
 
 <div
   class="
@@ -37,7 +39,8 @@
             &nbsp; Añadir sesión de tratamiento
           </button>
         </a>
-        {%endif%} {% if perms.lima.add_cita %}
+        {%endif%}
+        {% if perms.lima.add_cita %}
         <a
           href="{% url 'new_cita' pk=cliente.id_paciente %}"
           class="top-menu"
@@ -62,7 +65,8 @@
             &nbsp; Añadir Zona
           </button>
         </a>
-        {%endif%} {% if perms.lima.add_lista %}
+        {%endif%}
+        {% if perms.lima.add_lista %}
         <a
           href="{% url 'edit_lista'  paciente=cliente.id_paciente  pk=0 %}"
           class="top-menu"
@@ -116,7 +120,8 @@
             &nbsp; Generar enlace citas
           </button>
         </a>
-        {%endif%} {% if perms.lima.add_docsings %}
+        {%endif%}
+        {% if perms.lima.add_docsings %}
         <a
           href="{% url 'docs_sign_list' user=cliente.pk  %}"
           class="top-menu"
@@ -142,7 +147,8 @@
             &nbsp; Ver documentos
           </button>
         </a>
-        {%endif%} {% if perms.lima.view_imagenesclientes %}
+        {%endif%}
+        {% if perms.lima.view_imagenesclientes %}
         <a
           href="{% url 'lista_fotos'  client=cliente.id_paciente %}"
           class="top-menu"
@@ -167,8 +173,9 @@
         {%endif%}
       </div>
       <br /><br />
-      {%include 'client/cliente_tabs.html'%} {% block 'cliente' %} {% endblock
-      %}
+      {%include 'client/cliente_tabs.html'%}
+      {% block 'cliente' %}
+      {% endblock %}
     </div>
   </div>
 
@@ -208,5 +215,6 @@
     }
   </script>
   <br /><br /><br />
-  {%endblock%}
+
 </div>
+  {%endblock%}
